@@ -27,6 +27,7 @@ import java.util.List;
 public class GoogleMapViewPagerActivity extends FragmentActivity implements OnMapReadyCallback, IMapMarker{
 
     private Marker currentMarker = null;
+    private String name;
 
     private GoogleMap mMap;
     private RecyclerView mapRecyclerview;
