@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">Airbnb</string>
+    <string name="title_activity_google_map_view_pager">Map</string>
+</resources>
