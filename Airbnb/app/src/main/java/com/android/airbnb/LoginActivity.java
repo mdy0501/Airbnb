@@ -10,9 +10,14 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         setViews();
+        setListeners();
     }
 
     private void setViews(){
+
+    }
+
+    private void setListeners(){
 
     }
 }
