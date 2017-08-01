@@ -1,4 +1,7 @@
 <resources>
     <string name="app_name">Airbnb</string>
     <string name="title_activity_google_map_view_pager">Map</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

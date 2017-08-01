@@ -9,7 +9,7 @@ import android.widget.Button;
 public class MainActivity extends AppCompatActivity {
 
     private Button goMaps;
-    private Button btnGoLogin;
+    private Button btnGoWelcome;
     private String name;
 
     @Override
@@ -30,10 +30,10 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        btnGoLogin.setOnClickListener(new View.OnClickListener() {
+        btnGoWelcome.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+                Intent intent = new Intent(MainActivity.this, WelcomeActivity.class);
                 startActivity(intent);
             }
         });
@@ -41,6 +41,6 @@ public class MainActivity extends AppCompatActivity {
 
     private void initView() {
         goMaps = (Button) findViewById(R.id.goMaps);
-        btnGoLogin = (Button) findViewById(R.id.btnGoLogin);
+        btnGoWelcome = (Button) findViewById(R.id.btnGoWelcome);
     }
 }
