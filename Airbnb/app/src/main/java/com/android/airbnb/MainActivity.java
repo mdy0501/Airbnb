@@ -9,6 +9,7 @@ import android.widget.Button;
 public class MainActivity extends AppCompatActivity {
 
     private Button goMaps;
+    private Button btnGoLogin;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,9 +29,18 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        btnGoLogin.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+                startActivity(intent);
+            }
+        });
+
     }
 
     private void initView() {
         goMaps = (Button) findViewById(R.id.goMaps);
+        btnGoLogin = (Button) findViewById(R.id.btnGoLogin);
     }
 }
