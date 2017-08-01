@@ -11,6 +11,7 @@ public class LoginActivity extends AppCompatActivity {
         setContentView(R.layout.activity_login);
         setViews();
         setListeners();
+        init();
     }
 
     private void setViews(){
@@ -18,6 +19,10 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void setListeners(){
+
+    }
+
+    private void init(){
 
     }
 }
