@@ -10,6 +10,7 @@ public class MainActivity extends AppCompatActivity {
 
     private Button goMaps;
     private Button btnGoLogin;
+    private String name;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,7 +37,6 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-
     }
 
     private void initView() {
