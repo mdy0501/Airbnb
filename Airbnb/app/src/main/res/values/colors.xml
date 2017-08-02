@@ -6,4 +6,6 @@
     <color name="colorWhite">#FFFFFFFF</color>
     <color name="colorLine">#aeaca8a8</color>
 
+    <color name="DeepGreen">#247c83</color>
+    <color name="white">#ffffff</color>
 </resources>
