@@ -6,10 +6,12 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 
+import com.android.airbnb.main.Main2Activity;
+
 public class MainActivity extends AppCompatActivity {
 
     private Button goMaps;
-    private Button btnGoWelcome;
+    private Button btnGoWelcome, btnGoMain;
     private String name;
 
     @Override
@@ -37,10 +39,19 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
+        btnGoMain.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, Main2Activity.class);
+                startActivity(intent);
+            }
+        });
     }
 
     private void initView() {
         goMaps = (Button) findViewById(R.id.goMaps);
         btnGoWelcome = (Button) findViewById(R.id.btnGoWelcome);
+        btnGoMain = (Button) findViewById(R.id.btnGoMain);
     }
 }
