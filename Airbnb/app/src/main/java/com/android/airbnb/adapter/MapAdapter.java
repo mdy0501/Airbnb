@@ -1,6 +1,7 @@
 package com.android.airbnb.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -10,11 +11,11 @@ import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
+import com.android.airbnb.DetailHouseActivity;
 import com.android.airbnb.R;
-import com.android.airbnb.domain.House;
-import com.android.airbnb.domain.IMapMarker;
+import com.android.airbnb.presenter.House;
+import com.android.airbnb.presenter.IMapMarker;
 import com.bumptech.glide.Glide;
-import com.google.android.gms.maps.model.LatLng;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,9 +29,6 @@ public class MapAdapter extends RecyclerView.Adapter<MapAdapter.Holder> {
     List<House> houseList = new ArrayList<>();
     Context mContext;
     IMapMarker onMapAdapter;
-
-
-    private LatLng currentLatLng;
 
     public MapAdapter(List<House> houseList, Context context, IMapMarker onMapAdapter) {
         this.houseList = houseList;
@@ -63,6 +61,8 @@ public class MapAdapter extends RecyclerView.Adapter<MapAdapter.Holder> {
                 .into(holder.houseImg);
     }
 
+    public static final String SERIAL_HOUSE = "house";
+
     @Override
     public int getItemCount() {
         return houseList.size();
@@ -90,6 +90,17 @@ public class MapAdapter extends RecyclerView.Adapter<MapAdapter.Holder> {
             housePrice = (TextView) itemView.findViewById(R.id.house_price);
             houseDetail = (TextView) itemView.findViewById(R.id.house_detail);
             mRatingBar = (RatingBar) itemView.findViewById(R.id.ratingBar);
+
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(v.getContext(), DetailHouseActivity.class);
+//                    Bundle extra = new Bundle();
+//                    extra.putSerializable(SERIAL_HOUSE, );
+                    v.getContext().startActivity(intent);
+
+                }
+            });
         }
     }
 

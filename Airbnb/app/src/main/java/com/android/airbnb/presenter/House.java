@@ -1,13 +1,15 @@
-package com.android.airbnb.domain;
+package com.android.airbnb.presenter;
 
 import com.android.airbnb.R;
 import com.google.android.gms.maps.model.LatLng;
+
+import java.io.Serializable;
 
 /**
  * Created by JunHee on 2017. 8. 1..
  */
 
-public class House {
+public class House implements Serializable {
 
     private LatLng houseLatLng;
     private String title = "";

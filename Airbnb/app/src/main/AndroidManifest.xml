@@ -38,7 +38,14 @@
 
         <activity
             android:name=".GoogleMapViewPagerActivity"
-            android:label="@string/title_activity_google_map_view_pager"></activity>
+            android:label="@string/title_activity_google_map_view_pager" />
+        <activity
+            android:name=".DetailHouseActivity"
+            android:theme="@style/NoActioinBarTheme" />
+        <activity
+            android:name=".HostInfoActivity"
+            android:theme="@style/NoActioinBarTheme"
+            ></activity>
     </application>
 
 </manifest>

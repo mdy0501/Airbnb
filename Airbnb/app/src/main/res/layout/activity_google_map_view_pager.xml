@@ -9,7 +9,7 @@
 
 
     <fragment
-        android:id="@+id/map"
+        android:id="@+id/mapFragment"
         android:name="com.google.android.gms.maps.SupportMapFragment"
         android:layout_width="0dp"
         android:layout_height="0dp"
@@ -46,12 +46,12 @@
         app:fabSize="mini"
         app:rippleColor="@color/common_google_signin_btn_text_dark_focused"
         app:srcCompat="@mipmap/icon_map"
-        app:layout_constraintTop_toTopOf="@+id/map"
+        app:layout_constraintTop_toTopOf="@+id/mapFragment"
         android:layout_marginTop="8dp"
         android:layout_marginBottom="8dp"
         app:layout_constraintBottom_toTopOf="@+id/map_recyclerview"
         android:layout_marginLeft="8dp"
-        app:layout_constraintLeft_toLeftOf="@+id/map"
+        app:layout_constraintLeft_toLeftOf="@+id/mapFragment"
         android:layout_marginRight="8dp"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintHorizontal_bias="0.487"

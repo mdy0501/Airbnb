@@ -1,4 +1,10 @@
 <resources>
     <string name="app_name">Airbnb</string>
     <string name="title_activity_google_map_view_pager">Map</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="hostInfo_intro_dummy">Hi, there! I\'m Ji-eun from south korea.\n
+        I\'m Ji-eun from south korea.\nI\'m Ji-eun from south korea.\nI\'m Ji-eun from south korea.
+    </string>
 </resources>

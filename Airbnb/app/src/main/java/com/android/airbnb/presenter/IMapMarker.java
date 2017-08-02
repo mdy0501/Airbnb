@@ -1,4 +1,4 @@
-package com.android.airbnb.domain;
+package com.android.airbnb.presenter;
 
 /**
  * Created by JunHee on 2017. 8. 1..

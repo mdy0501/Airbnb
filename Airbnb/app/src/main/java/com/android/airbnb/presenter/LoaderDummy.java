@@ -1,4 +1,4 @@
-package com.android.airbnb.domain;
+package com.android.airbnb.presenter;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -1,5 +1,6 @@
 package com.android.airbnb;
 
+import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.FragmentActivity;
@@ -12,9 +13,9 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.android.airbnb.adapter.MapAdapter;
-import com.android.airbnb.domain.House;
-import com.android.airbnb.domain.IMapMarker;
-import com.android.airbnb.domain.LoaderDummy;
+import com.android.airbnb.presenter.House;
+import com.android.airbnb.presenter.IMapMarker;
+import com.android.airbnb.presenter.LoaderDummy;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -24,11 +25,9 @@ import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.util.List;
 
-public class GoogleMapViewPagerActivity extends FragmentActivity implements OnMapReadyCallback, IMapMarker{
+public class GoogleMapViewPagerActivity extends FragmentActivity implements OnMapReadyCallback, IMapMarker {
 
     private Marker currentMarker = null;
-    private String name;
-
     private GoogleMap mMap;
     private RecyclerView mapRecyclerview;
     private MapAdapter adapter;
@@ -41,7 +40,7 @@ public class GoogleMapViewPagerActivity extends FragmentActivity implements OnMa
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_google_map_view_pager);
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
-                .findFragmentById(R.id.map);
+                .findFragmentById(R.id.mapFragment);
         mapFragment.getMapAsync(this);
         initView();
         setBtnOnClick();
@@ -76,13 +75,22 @@ public class GoogleMapViewPagerActivity extends FragmentActivity implements OnMa
     }
 
     private void setAdapter() {
-        Log.e("googlemap", "new adapter");
+        Log.e("googlemap", "new mAdapter");
         adapter = new MapAdapter(houseList, GoogleMapViewPagerActivity.this, GoogleMapViewPagerActivity.this);
         // 라이브러리를 활용하여 리사이클러 아이템이 항상 중앙에 위치하게끔 설정해줌.
         SnapHelper snapHelper = new LinearSnapHelper();
         snapHelper.attachToRecyclerView(mapRecyclerview);
         mapRecyclerview.setAdapter(adapter);
         mapRecyclerview.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            mapRecyclerview.setOnScrollChangeListener(new View.OnScrollChangeListener() {
+                @Override
+                public void onScrollChange(View v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
+
+                }
+            });
+        }
+
     }
 
     private void setBtnOnClick() {
@@ -94,12 +102,21 @@ public class GoogleMapViewPagerActivity extends FragmentActivity implements OnMa
         });
     }
 
-    private void setMapOnClick(){
+    private void setMapOnClick() {
         if (mapInit == true) {
             mMap.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
                 @Override
                 public void onInfoWindowClick(Marker marker) {
                     Toast.makeText(getBaseContext(), "눌렸씁니다!!!", Toast.LENGTH_SHORT).show();
+                }
+            });
+
+            mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
+                @Override
+                public boolean onMarkerClick(Marker marker) {
+                    currentMarker = marker;
+                    Toast.makeText(GoogleMapViewPagerActivity.this, marker.getPosition() + "", Toast.LENGTH_SHORT).show();
+                    return true;
                 }
             });
         }
