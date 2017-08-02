@@ -48,7 +48,8 @@
             ></activity>
         <activity android:name=".signup.SignUpActivity" />
         <activity android:name=".WelcomeActivity" />
-        <activity android:name=".login.FindPasswordActivity"></activity>
+        <activity android:name=".login.FindPasswordActivity" />
+        <activity android:name=".main.Main2Activity"></activity>
     </application>
 
 </manifest>
