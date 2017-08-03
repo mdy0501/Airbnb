@@ -1,137 +1,149 @@
 package com.android.airbnb;
 
-import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.FragmentActivity;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.LinearSnapHelper;
-import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.SnapHelper;
+import android.support.v4.view.ViewPager;
 import android.util.Log;
-import android.view.View;
 import android.widget.Toast;
 
-import com.android.airbnb.adapter.MapAdapter;
-import com.android.airbnb.presenter.House;
+import com.android.airbnb.adapter.MapListAdapter;
+import com.android.airbnb.domain.Host;
+import com.android.airbnb.domain.House;
 import com.android.airbnb.presenter.IMapMarker;
-import com.android.airbnb.presenter.LoaderDummy;
+import com.android.airbnb.presenter.ITask;
+import com.android.airbnb.util.Remote.Loader;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+import java.util.ArrayList;
 import java.util.List;
 
-public class GoogleMapViewPagerActivity extends FragmentActivity implements OnMapReadyCallback, IMapMarker {
+
+public class GoogleMapViewPagerActivity extends FragmentActivity implements OnMapReadyCallback, IMapMarker, ITask {
 
     private Marker currentMarker = null;
     private GoogleMap mMap;
-    private RecyclerView mapRecyclerview;
-    private MapAdapter adapter;
+    /* data setting */
     private List<House> houseList;
+    private List<CameraPosition> cameraPositionList;
+    private List<MarkerOptions> markerList;
+    // =============
     private boolean mapInit = false;
     private FloatingActionButton fabMap;
+    private SupportMapFragment mapFragment;
+    private ViewPager mapListPager;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_google_map_view_pager);
-        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
-                .findFragmentById(R.id.mapFragment);
-        mapFragment.getMapAsync(this);
+        mapFragment = (SupportMapFragment) getSupportFragmentManager()
+                .findFragmentById(R.id.detail_house_mapFragment);
+        mapFragment.getMapAsync(GoogleMapViewPagerActivity.this);
         initView();
-        setBtnOnClick();
-        houseList = LoaderDummy.getDummyHouseList();
-        setAdapter();
+        cameraPositionList = new ArrayList<>();
+        markerList = new ArrayList<>();
+        Loader.getHouseList(this);
+
+
     }
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
         Log.e("GoogleMapViewPager", "onMapReady");
         mMap = googleMap;
-        setMarkers();
-        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(houseList.get(0).getHouseLatLng(), 12));
-        mapInit = true;
-        setMapOnClick();
-    }
-
-
-    private void setMarkers() {
-        for (House temp : houseList) {
-            MarkerOptions markerOptions = new MarkerOptions();
-            markerOptions.position(temp.getHouseLatLng())
-                    .title("₩" + temp.getPrice());
-            Marker marker = mMap.addMarker(markerOptions);
-            marker.showInfoWindow();
-        }
     }
 
     private void initView() {
-        mapRecyclerview = (RecyclerView) findViewById(R.id.map_recyclerview);
-        fabMap = (FloatingActionButton) findViewById(R.id.fabMap);
+        fabMap = (FloatingActionButton) findViewById(R.id.fab_filter);
+        mapListPager = (ViewPager) findViewById(R.id.map_list_pager);
     }
 
     private void setAdapter() {
-        Log.e("googlemap", "new mAdapter");
-        adapter = new MapAdapter(houseList, GoogleMapViewPagerActivity.this, GoogleMapViewPagerActivity.this);
-        // 라이브러리를 활용하여 리사이클러 아이템이 항상 중앙에 위치하게끔 설정해줌.
-        SnapHelper snapHelper = new LinearSnapHelper();
-        snapHelper.attachToRecyclerView(mapRecyclerview);
-        mapRecyclerview.setAdapter(adapter);
-        mapRecyclerview.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            mapRecyclerview.setOnScrollChangeListener(new View.OnScrollChangeListener() {
-                @Override
-                public void onScrollChange(View v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
+        MapListAdapter adapter = new MapListAdapter(houseList, this);
+        Log.e("MapActivity", "==== adapter");
+        mapListPager.setAdapter(adapter);
+    }
 
-                }
-            });
-        }
+    private void setViewPager(){
+        mapListPager.addOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener(){
+            @Override
+            public void onPageSelected(int position) {
+                Log.e("MapViewPager", "pos :: " + position);
+                Log.e("MapViewPager", "houseList :: " + houseList.get(position).toString());
+                mMap.moveCamera(CameraUpdateFactory.newLatLng(houseList.get(position).getLatLng()));
+                mMap.animateCamera(CameraUpdateFactory.zoomTo(15));
+            }
+        });
 
     }
 
-    private void setBtnOnClick() {
-        fabMap.setOnClickListener(new View.OnClickListener() {
+    public void setMarker(GoogleMap googleMap,int position) {
+        MarkerOptions markerOptions = new MarkerOptions()
+                .position(houseList.get(position).getLatLng())
+                .title("₩"+houseList.get(position).getPrice_per_day());
+        googleMap.addMarker(markerOptions).showInfoWindow();
+        markerList.add(markerOptions);
+        Log.e("MarketList size :: ", "" + markerList.size());
+    }
+
+
+    @Override
+    public void moveMarker(House house) {
+
+    }
+
+    @Override
+    public void doHostListTask(List<Host> hostList) {
+
+    }
+
+    /* marker 온클릭 셋팅 */
+    public void setMarkerOnClick(){
+        mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
             @Override
-            public void onClick(View v) {
-                Toast.makeText(GoogleMapViewPagerActivity.this, "필터 기능으로 이동합니다..", Toast.LENGTH_SHORT).show();
+            public boolean onMarkerClick(Marker marker) {
+                int position = 0;
+                for(int i=0; i < houseList.size(); i++){
+                    if (marker.getPosition().equals(houseList.get(i).getLatLng())){
+                        position = i;
+                    }
+                }
+                Toast.makeText(GoogleMapViewPagerActivity.this, marker.getId() + " :: idid", Toast.LENGTH_SHORT).show();
+                mapListPager.setCurrentItem(position);
+                return false;
             }
         });
     }
 
-    private void setMapOnClick() {
-        if (mapInit == true) {
-            mMap.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
-                @Override
-                public void onInfoWindowClick(Marker marker) {
-                    Toast.makeText(getBaseContext(), "눌렸씁니다!!!", Toast.LENGTH_SHORT).show();
-                }
-            });
+    @Override
+    public void doHouseListTask(List<House> houseList) {
+        this.houseList = houseList;
+        Log.e("Map", "doHouseListTask :: " + houseList.size());
+        /* Async 처리 */
+        setAdapter();
+        setMarker(mMap, 1);
+        setMarker(mMap, 0);
+        setMarkerOnClick();
+        setViewPager();
 
-            mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
-                @Override
-                public boolean onMarkerClick(Marker marker) {
-                    currentMarker = marker;
-                    Toast.makeText(GoogleMapViewPagerActivity.this, marker.getPosition() + "", Toast.LENGTH_SHORT).show();
-                    return true;
-                }
-            });
-        }
+        mMap.moveCamera(CameraUpdateFactory
+                .newLatLng(houseList.get(0).getLatLng()));
+        mMap.animateCamera(CameraUpdateFactory.zoomTo(15));
+
+
     }
 
     @Override
-    public void moveMarker(House house) {
-        if (mapInit == true) {
-            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(house.getHouseLatLng(), 12));
-            MarkerOptions markerOptions = new MarkerOptions();
-            markerOptions.position(house.getHouseLatLng())
-                    .title("₩" + house.getPrice());
-            Marker marker = mMap.addMarker(markerOptions);
-            marker.showInfoWindow();
-        }
-    }
+    public void doMapSync() {
+        Log.e("MapViewPager", "================== getMapAsync");
 
+    }
 }

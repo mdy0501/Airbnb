@@ -32,4 +32,16 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/goMaps" />
+
+    <Button
+        android:id="@+id/btnHouse"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:layout_marginTop="8dp"
+        android:text="go house detail"
+        app:layout_constraintBottom_toTopOf="@+id/goMaps"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:layout_editor_absoluteX="134dp"
+        app:layout_constraintVertical_bias="0.493" />
 </android.support.constraint.ConstraintLayout>

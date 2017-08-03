@@ -3,60 +3,47 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_height="match_parent"
     android:layout_width="match_parent"
-    tools:context="com.android.airbnb.GoogleMapViewPagerActivity">
+    android:layout_height="match_parent"
+    android:orientation="vertical">
 
 
     <fragment
-        android:id="@+id/mapFragment"
+        android:id="@+id/detail_house_mapFragment"
         android:name="com.google.android.gms.maps.SupportMapFragment"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginRight="8dp"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:layout_marginTop="8dp"
         android:layout_marginBottom="8dp"
-        app:layout_constraintBottom_toTopOf="@+id/map_recyclerview"
-        app:layout_constraintVertical_bias="1.0" />
-
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/map_recyclerview"
-        android:layout_width="0dp"
-        android:layout_height="250dp"
-        android:layout_marginBottom="10dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginRight="8dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent" />
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <android.support.v4.view.ViewPager
+        android:id="@+id/map_list_pager"
+        android:layout_width="0dp"
+        android:layout_height="200dp"
+        android:layout_marginBottom="0dp"
+        android:layout_marginLeft="0dp"
+        android:layout_marginRight="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"></android.support.v4.view.ViewPager>
 
     <android.support.design.widget.FloatingActionButton
-        android:id="@+id/fabMap"
+        android:id="@+id/fab_filter"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
         android:clickable="true"
         app:backgroundTint="@color/cardview_light_background"
-        app:elevation="3dp"
+        app:elevation="4dp"
         app:fabSize="mini"
-        app:rippleColor="@color/common_google_signin_btn_text_dark_focused"
-        app:srcCompat="@mipmap/icon_map"
-        app:layout_constraintTop_toTopOf="@+id/mapFragment"
-        android:layout_marginTop="8dp"
-        android:layout_marginBottom="8dp"
-        app:layout_constraintBottom_toTopOf="@+id/map_recyclerview"
-        android:layout_marginLeft="8dp"
-        app:layout_constraintLeft_toLeftOf="@+id/mapFragment"
-        android:layout_marginRight="8dp"
+        app:layout_constraintBottom_toTopOf="@+id/map_list_pager"
+        app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintHorizontal_bias="0.487"
-        app:layout_constraintVertical_bias="0.953" />
-
+        app:srcCompat="@android:drawable/radiobutton_off_background" />
 
 </android.support.constraint.ConstraintLayout>
-

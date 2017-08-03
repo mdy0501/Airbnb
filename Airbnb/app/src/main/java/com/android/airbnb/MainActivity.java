@@ -11,6 +11,7 @@ public class MainActivity extends AppCompatActivity {
     private Button goMaps;
     private Button btnGoWelcome;
     private String name;
+    private Button btnHouse;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -20,7 +21,7 @@ public class MainActivity extends AppCompatActivity {
         setOnClick();
     }
 
-    private void setOnClick(){
+    private void setOnClick() {
         goMaps.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -37,10 +38,20 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
+        btnHouse.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, DetailHouseActivity.class);
+                v.getContext().startActivity(intent);
+
+            }
+        });
     }
 
     private void initView() {
         goMaps = (Button) findViewById(R.id.goMaps);
         btnGoWelcome = (Button) findViewById(R.id.btnGoWelcome);
+        btnHouse = (Button) findViewById(R.id.btnHouse);
     }
 }
