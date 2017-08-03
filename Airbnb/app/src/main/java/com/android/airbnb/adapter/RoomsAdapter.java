@@ -15,8 +15,6 @@ import com.android.airbnb.data.RoomsData;
 
 import java.util.List;
 
-import static com.android.airbnb.data.RoomsList.roomsData;
-
 /**
  * Created by MDY on 2017-08-02.
  */
@@ -48,7 +46,8 @@ public class RoomsAdapter extends RecyclerView.Adapter<RoomsAdapter.Holder> {
 
     @Override
     public int getItemCount() {
-        return roomsData.size();
+        // TODO
+        return 0;
     }
 
     class Holder extends RecyclerView.ViewHolder{
