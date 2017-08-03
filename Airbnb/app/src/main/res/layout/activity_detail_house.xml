@@ -27,7 +27,7 @@
 
 
             <fragment
-                android:id="@+id/mapFragment"
+                android:id="@+id/detail_house_mapFragment"
                 android:name="com.google.android.gms.maps.SupportMapFragment"
                 android:layout_width="0dp"
                 android:layout_height="300dp"
@@ -84,7 +84,7 @@
                 android:text="체크인 시간"
                 android:textSize="20sp"
                 app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/mapFragment" />
+                app:layout_constraintTop_toBottomOf="@+id/detail_house_mapFragment" />
 
             <TextView
                 android:id="@+id/textView11"
@@ -109,7 +109,7 @@
                 android:layout_marginTop="8dp"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/line2">
+                app:layout_constraintTop_toBottomOf="@+id/room_intro">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -176,7 +176,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="0dp"
-                    android:text="침대침구"
+                    android:text="침대/침구"
                     android:textSize="20sp"
                     android:textStyle="bold" />
             </RelativeLayout>
@@ -246,6 +246,20 @@
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/linearLayout"
                 app:srcCompat="@mipmap/icon_line" />
+
+            <ImageView
+                android:id="@+id/line3"
+                android:layout_width="wrap_content"
+                android:layout_height="5dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginLeft="8dp"
+                android:layout_marginRight="8dp"
+                android:layout_marginStart="8dp"
+                app:layout_constraintHorizontal_bias="0.485"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:srcCompat="@mipmap/icon_line"
+                tools:layout_editor_absoluteY="564dp" />
 
             <ImageView
                 android:id="@+id/line4"

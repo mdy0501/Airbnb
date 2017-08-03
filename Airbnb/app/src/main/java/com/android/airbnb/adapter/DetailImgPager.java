@@ -15,12 +15,12 @@ import com.bumptech.glide.Glide;
  * Created by JunHee on 2017. 8. 2..
  */
 
-public class CustomPagerAdapter extends PagerAdapter {
+public class DetailImgPager extends PagerAdapter {
 
     Context mContext;
     int[] imgId = {R.mipmap.dummy_room2, R.mipmap.dummy_room, R.mipmap.dummy_room3};
 
-    public CustomPagerAdapter(Context mContext) {
+    public DetailImgPager(Context mContext) {
         this.mContext = mContext;
     }
 
@@ -36,7 +36,6 @@ public class CustomPagerAdapter extends PagerAdapter {
                 .into(imageView);
         ((ViewPager)container).addView(viewItem);
         return viewItem;
-
     }
 
     @Override

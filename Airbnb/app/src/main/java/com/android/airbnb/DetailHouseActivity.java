@@ -8,7 +8,10 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.ImageView;
 
-import com.android.airbnb.adapter.CustomPagerAdapter;
+import com.android.airbnb.adapter.DetailImgPager;
+import com.android.airbnb.domain.House;
+
+import java.util.List;
 
 import me.relex.circleindicator.CircleIndicator;
 
@@ -18,6 +21,8 @@ public class DetailHouseActivity extends AppCompatActivity {
     CircleIndicator indicator;
     PagerAdapter mAdapter;
     private ImageView detailHostImg;
+    private House house;
+    private List<House> houseList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,6 +35,13 @@ public class DetailHouseActivity extends AppCompatActivity {
         setOnClick();
     }
 
+    /* 이 부분이 데이터 통신하게 되면 필요 */
+    private void getExIntent() {
+//        Intent intent = getIntent();
+//        house = (House) intent.getSerializableExtra(MapAdapter.SERIAL_HOUSE);
+
+    }
+
     // 외부 라이브러리를 사용해 완성도를 viewpager indicator를 viewpager와 연결하였다.
     private void setPagerIndicator() {
         indicator = (CircleIndicator) findViewById(R.id.detail_pagerIndicator);
@@ -39,7 +51,7 @@ public class DetailHouseActivity extends AppCompatActivity {
 
     private void setViewPager() {
         viewPager = (ViewPager) findViewById(R.id.detail_room_viewPager);
-        mAdapter = new CustomPagerAdapter(this);
+        mAdapter = new DetailImgPager(this);
         viewPager.setAdapter(mAdapter);
     }
 
@@ -48,7 +60,7 @@ public class DetailHouseActivity extends AppCompatActivity {
         detailHostImg.setClickable(true);
     }
 
-    private void setOnClick(){
+    private void setOnClick() {
         detailHostImg.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
