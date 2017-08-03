@@ -50,11 +50,8 @@
         <activity android:name=".signup.SignUpActivity" />
         <activity android:name=".WelcomeActivity" />
         <activity android:name=".login.FindPasswordActivity" />
-<<<<<<< HEAD
         <activity android:name=".ReviewActivity"></activity>
-=======
         <activity android:name=".main.Main2Activity"></activity>
->>>>>>> fc76ece01c27ef2330856fd6b1e29144fdede522
     </application>
 
 </manifest>

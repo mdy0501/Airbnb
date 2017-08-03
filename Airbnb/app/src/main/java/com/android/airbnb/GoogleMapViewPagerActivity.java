@@ -72,8 +72,8 @@ public class GoogleMapViewPagerActivity extends FragmentActivity implements OnMa
         mapListPager.setAdapter(adapter);
     }
 
-    private void setViewPager(){
-        mapListPager.addOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener(){
+    private void setViewPager() {
+        mapListPager.addOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
             @Override
             public void onPageSelected(int position) {
                 Log.e("MapViewPager", "pos :: " + position);
@@ -85,11 +85,11 @@ public class GoogleMapViewPagerActivity extends FragmentActivity implements OnMa
 
     }
 
-    public void setMarker(GoogleMap googleMap,int position) {
+    public void setMarker(/* GoogleMap googleMap, */int position) {
         MarkerOptions markerOptions = new MarkerOptions()
                 .position(houseList.get(position).getLatLng())
-                .title("₩"+houseList.get(position).getPrice_per_day());
-        googleMap.addMarker(markerOptions).showInfoWindow();
+                .title("₩" + houseList.get(position).getPrice_per_day());
+        // googleMap.addMarker(markerOptions).showInfoWindow();
         markerList.add(markerOptions);
         Log.e("MarketList size :: ", "" + markerList.size());
     }
@@ -106,13 +106,13 @@ public class GoogleMapViewPagerActivity extends FragmentActivity implements OnMa
     }
 
     /* marker 온클릭 셋팅 */
-    public void setMarkerOnClick(){
+    public void setMarkerOnClick() {
         mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
             @Override
             public boolean onMarkerClick(Marker marker) {
                 int position = 0;
-                for(int i=0; i < houseList.size(); i++){
-                    if (marker.getPosition().equals(houseList.get(i).getLatLng())){
+                for (int i = 0; i < houseList.size(); i++) {
+                    if (marker.getPosition().equals(houseList.get(i).getLatLng())) {
                         position = i;
                     }
                 }
@@ -127,16 +127,38 @@ public class GoogleMapViewPagerActivity extends FragmentActivity implements OnMa
     public void doHouseListTask(List<House> houseList) {
         this.houseList = houseList;
         Log.e("Map", "doHouseListTask :: " + houseList.size());
-        /* Async 처리 */
         setAdapter();
-        setMarker(mMap, 1);
-        setMarker(mMap, 0);
+        /* Async 처리 */
+        setMarkers();
         setMarkerOnClick();
         setViewPager();
 
         mMap.moveCamera(CameraUpdateFactory
                 .newLatLng(houseList.get(0).getLatLng()));
         mMap.animateCamera(CameraUpdateFactory.zoomTo(15));
+
+
+    }
+
+    /* 비동기 처리 thread 구현부 */
+    private void setMarkers() {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                for (int i = 0; i < houseList.size(); i++) {
+                    setMarker(i);
+                }
+
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        for (int i = 0; i < markerList.size(); i++) {
+                            mMap.addMarker(markerList.get(i));
+                        }
+                    }
+                });
+            }
+        }).start();
 
 
     }
