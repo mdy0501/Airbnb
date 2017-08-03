@@ -37,6 +37,12 @@ dependencies {
     compile 'com.android.support:support-v4:25.3.1'
     compile 'me.relex:circleindicator:1.2.2@aar'
     testCompile 'junit:junit:4.12'
+
+
+    // 동연 라이브러리
+    compile 'com.squareup.retrofit2:retrofit:2.3.0'
+    compile 'com.google.code.gson:gson:2.8.+'
+    compile 'com.github.bumptech.glide:glide:3.6.0'
 }
 
 
