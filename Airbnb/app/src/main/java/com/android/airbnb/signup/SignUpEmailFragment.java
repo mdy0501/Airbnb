@@ -51,7 +51,7 @@ public class SignUpEmailFragment extends Fragment implements View.OnClickListene
         btnToggle = (ToggleButton) view.findViewById(R.id.btnToggle);
         txtTitle = (TextView) view.findViewById(R.id.txtTitle);
         txtEmail = (TextView) view.findViewById(R.id.txtEmail);
-        txtDescription = (TextView) view.findViewById(R.id.txtDescription);
+        txtDescription = (TextView) view.findViewById(R.id.txtIntroduce);
         editEmail = (EditText) view.findViewById(R.id.editEmail);
 
 
