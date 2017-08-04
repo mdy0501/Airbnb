@@ -1,10 +1,13 @@
 package com.android.airbnb.domain;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 /**
  * Created by JunHee on 2017. 8. 2..
  */
 
-public class Host {
+public class Host implements Parcelable {
 
     private String birthday;
 
@@ -36,9 +39,37 @@ public class Host {
 
     private String pk;
 
-    public String
+    protected Host(Parcel in) {
+        birthday = in.readString();
+        preference_language = in.readString();
+        introduce = in.readString();
+        living_site = in.readString();
+        last_login = in.readString();
+        preference_currency = in.readString();
+        first_name = in.readString();
+        username = in.readString();
+        date_joined = in.readString();
+        email = in.readString();
+        img_profile = in.readString();
+        phone_num = in.readString();
+        last_name = in.readString();
+        gender = in.readString();
+        pk = in.readString();
+    }
 
-    getBirthday() {
+    public static final Creator<Host> CREATOR = new Creator<Host>() {
+        @Override
+        public Host createFromParcel(Parcel in) {
+            return new Host(in);
+        }
+
+        @Override
+        public Host[] newArray(int size) {
+            return new Host[size];
+        }
+    };
+
+    public String getBirthday() {
         return birthday;
     }
 
@@ -46,9 +77,7 @@ public class Host {
         this.birthday = birthday;
     }
 
-    public String
-
-    getPreference_language() {
+    public String getPreference_language() {
         return preference_language;
     }
 
@@ -171,6 +200,30 @@ public class Host {
     @Override
     public String toString() {
         return "ClassPojo [birthday = " + birthday + ", preference_language = " + preference_language + ", introduce = " + introduce + ", living_site = " + living_site + ", last_login = " + last_login + ", preference_currency = " + preference_currency + ", first_name = " + first_name + ", username = " + username + ", date_joined = " + date_joined + ", email = " + email + ", img_profile = " + img_profile + ", phone_num = " + phone_num + ", last_name = " + last_name + ", gender = " + gender + ", pk = " + pk + "]";
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(birthday);
+        dest.writeString(preference_language);
+        dest.writeString(introduce);
+        dest.writeString(living_site);
+        dest.writeString(last_login);
+        dest.writeString(preference_currency);
+        dest.writeString(first_name);
+        dest.writeString(username);
+        dest.writeString(date_joined);
+        dest.writeString(email);
+        dest.writeString(img_profile);
+        dest.writeString(phone_num);
+        dest.writeString(last_name);
+        dest.writeString(gender);
+        dest.writeString(pk);
     }
 }
 
