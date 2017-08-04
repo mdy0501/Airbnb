@@ -9,7 +9,8 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import com.android.airbnb.R;
-import com.bumptech.glide.Glide;
+import com.android.airbnb.domain.House_images;
+import com.android.airbnb.util.GlideApp;
 
 /**
  * Created by JunHee on 2017. 8. 2..
@@ -17,30 +18,34 @@ import com.bumptech.glide.Glide;
 
 public class DetailImgPager extends PagerAdapter {
 
-    Context mContext;
-    int[] imgId = {R.mipmap.dummy_room2, R.mipmap.dummy_room, R.mipmap.dummy_room3};
+    private House_images[] mimgUrl;
+    private Context mContext;
 
-    public DetailImgPager(Context mContext) {
+    public DetailImgPager(House_images[] imgUrl, Context mContext) {
         this.mContext = mContext;
+        this.mimgUrl = imgUrl;
     }
 
     @Override
     public Object instantiateItem(ViewGroup container, int position) {
+
         LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
         View viewItem = inflater.inflate(R.layout.detail_house_fragment, container, false);
         ImageView imageView = (ImageView) viewItem.findViewById(R.id.detail_viewpager_img);
-        Glide
+        GlideApp
                 .with(mContext)
-                .load(imgId[position])
+                .load(mimgUrl.length > 0 ? mimgUrl[position] : null)
+                .fallback(R.mipmap.dummy_room)
                 .into(imageView);
-        ((ViewPager)container).addView(viewItem);
+        ((ViewPager) container).addView(viewItem);
         return viewItem;
     }
 
+    /* image count check 하기 */
     @Override
     public int getCount() {
-        return imgId.length;
+        return mimgUrl.length;
     }
 
     @Override
