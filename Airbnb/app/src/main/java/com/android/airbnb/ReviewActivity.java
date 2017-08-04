@@ -58,7 +58,12 @@ public class ReviewActivity extends AppCompatActivity implements ITask {
     }
 
     @Override
-    public void doMapSync() {
-        // 안씀
+    public void doOnHouseTask(House house) {
+
+    }
+
+    @Override
+    public void doOnHostTask(Host host) {
+
     }
 }
