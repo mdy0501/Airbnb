@@ -23,18 +23,18 @@
         android:id="@+id/map_list_pager"
         android:layout_width="0dp"
         android:layout_height="200dp"
-        android:layout_marginBottom="0dp"
-        android:layout_marginLeft="0dp"
-        android:layout_marginRight="0dp"
+        android:layout_marginBottom="1dp"
         app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"></android.support.v4.view.ViewPager>
+        app:layout_constraintRight_toRightOf="parent">
+
+    </android.support.v4.view.ViewPager>
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fab_filter"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
         android:layout_marginLeft="8dp"
         android:layout_marginRight="8dp"
         android:clickable="true"
@@ -44,6 +44,25 @@
         app:layout_constraintBottom_toTopOf="@+id/map_list_pager"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:srcCompat="@android:drawable/radiobutton_off_background" />
+        app:srcCompat="@android:drawable/radiobutton_off_background"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        app:layout_constraintHorizontal_bias="0.498" />
+
+    <com.victor.loading.rotate.RotateLoading
+        android:id="@+id/indicator_loading"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginLeft="116dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginTop="304dp"
+        app:layout_constraintHorizontal_bias="0.27"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:loading_speed="11"
+        app:loading_width="5dp"
+        android:layout_marginStart="116dp"
+        android:layout_marginEnd="8dp" />
 
 </android.support.constraint.ConstraintLayout>
