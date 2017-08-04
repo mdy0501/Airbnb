@@ -13,7 +13,10 @@ public interface ITask {
 
     public void doHostListTask(List<Host> hostList);
     public void doHouseListTask(List<House> houseList);
-    public void doMapSync();
+    public void doOnHouseTask(House house);
+    public void doOnHostTask(Host host);
 
 
 }
+
+
