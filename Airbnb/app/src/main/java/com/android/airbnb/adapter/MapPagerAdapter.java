@@ -26,7 +26,7 @@ import java.util.List;
  * Created by JunHee on 2017. 8. 3..
  */
 
-public class MapListAdapter extends PagerAdapter {
+public class MapPagerAdapter extends PagerAdapter {
 
     private List<House> houseList = new ArrayList<>();
     private Context mContext;
@@ -36,8 +36,10 @@ public class MapListAdapter extends PagerAdapter {
     private RatingBar ratingBar;
     private TextView houseReviewCount;
     private CheckBox checkBox;
+    public static final String HOUSE_OBJ = "house obj";
+    public static final String HOUSE_IMG = "house img";
 
-    public MapListAdapter(List<House> houseList, Context context) {
+    public MapPagerAdapter(List<House> houseList, Context context) {
         this.houseList = houseList;
         this.mContext = context;
     }
@@ -51,7 +53,6 @@ public class MapListAdapter extends PagerAdapter {
         connectDate(position);
         ((ViewPager) parent).addView(view, 0);
         setOnClick();
-
         return view;
     }
 
@@ -61,6 +62,7 @@ public class MapListAdapter extends PagerAdapter {
             public void onClick(View v) {
                 Intent intent = new Intent(mContext, DetailHouseActivity.class);
                 /* index 값 같이 넘기기 */
+                intent.putExtra(HOUSE_OBJ, house);
                 v.getContext().startActivity(intent);
             }
         });
@@ -109,4 +111,10 @@ public class MapListAdapter extends PagerAdapter {
         houseReviewCount = (TextView) view.findViewById(R.id.house_review_count);
         checkBox = (CheckBox) view.findViewById(R.id.checkBox);
     }
+
+    @Override
+    public float getPageWidth(int position) {
+        return (0.9f);
+    }
+
 }

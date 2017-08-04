@@ -7,6 +7,7 @@ import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.http.GET;
+import retrofit2.http.Path;
 
 /**
  * Created by JunHee on 2017. 8. 3..
@@ -14,10 +15,16 @@ import retrofit2.http.GET;
 
 public interface IServerApi {
 
-    @GET("house")
-    Call<List<House>> getHouseList();
+    @GET("house/")
+    Call<List<House>> readAllHouses();
 
-    @GET("user")
-    Call<List<Host>> getHostList();
+    @GET("house/{pk}")
+    Call<House> readOneHouse(@Path("pk") String pk);
+
+    @GET("user/")
+    Call<List<Host>> readAllHosts();
+
+    @GET("house/{pk}")
+    Call<Host> readOneHost(@Path("pk") String pk);
 
 }

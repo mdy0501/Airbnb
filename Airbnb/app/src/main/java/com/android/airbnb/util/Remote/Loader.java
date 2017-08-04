@@ -1,7 +1,5 @@
 package com.android.airbnb.util.Remote;
 
-import android.util.Log;
-
 import com.android.airbnb.domain.Host;
 import com.android.airbnb.domain.House;
 import com.android.airbnb.presenter.ITask;
@@ -23,6 +21,31 @@ public class Loader {
     public static final String BASE_URL = "http://crusia.xyz/apis/";
     public static List<Host> hostList;
     public static List<House> houseList;
+    public static House house;
+    public static Host host;
+
+    public static void getOneHouse(String pk, final ITask iTask) {
+        Retrofit client = new Retrofit.Builder()
+                .baseUrl(BASE_URL)
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+
+        IServerApi serverApi = client.create(IServerApi.class);
+        Call<House> call = serverApi.readOneHouse(pk);
+        call.enqueue(new Callback<House>() {
+            @Override
+            public void onResponse(Call<House> call, Response<House> response) {
+                house = response.body();
+                iTask.doOnHouseTask(house);
+            }
+
+            @Override
+            public void onFailure(Call<House> call, Throwable t) {
+                t.printStackTrace();
+            }
+        });
+
+    }
 
     public static void getHouseList(final ITask iTask) {
         Retrofit client = new Retrofit.Builder()
@@ -31,27 +54,46 @@ public class Loader {
                 .build();
 
         IServerApi serverApi = client.create(IServerApi.class);
-        Call<List<House>> call = serverApi.getHouseList();
+        Call<List<House>> call = serverApi.readAllHouses();
         call.enqueue(new Callback<List<House>>() {
             @Override
             public void onResponse(Call<List<House>> call, Response<List<House>> response) {
                 try {
                     houseList = response.body();
-                    Log.e("Loader :: onResponse", houseList.size() + "");
-                    iTask.doMapSync();
                     iTask.doHouseListTask(houseList);
                 } catch (Exception e) {
-                    Log.e("Loader :: onResponse", "Error :: ");
                     e.printStackTrace();
                 }
             }
 
             @Override
             public void onFailure(Call<List<House>> call, Throwable t) {
-                Log.e("getHouseList", "Error ===========");
                 t.printStackTrace();
             }
         });
+    }
+
+    public static void getOneHost(String pk, final ITask iTask) {
+        Retrofit client = new Retrofit.Builder()
+                .baseUrl(BASE_URL)
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+
+        IServerApi serverApi = client.create(IServerApi.class);
+        Call<Host> call = serverApi.readOneHost(pk);
+        call.enqueue(new Callback<Host>() {
+            @Override
+            public void onResponse(Call<Host> call, Response<Host> response) {
+                host = response.body();
+                iTask.doOnHostTask(host);
+            }
+
+            @Override
+            public void onFailure(Call<Host> call, Throwable t) {
+
+            }
+        });
+
     }
 
     public static void getHostList(final ITask iTask) {
@@ -61,19 +103,16 @@ public class Loader {
                 .build();
 
         IServerApi serverApi = client.create(IServerApi.class);
-        Call<List<Host>> call = serverApi.getHostList();
+        Call<List<Host>> call = serverApi.readAllHosts();
         call.enqueue(new Callback<List<Host>>() {
             @Override
             public void onResponse(Call<List<Host>> call, Response<List<Host>> response) {
                 hostList = response.body();
-                Log.e("Loader", "============== hostList :: " + hostList.toString());
-                Log.e("Loader", "============== hostList.size :: " + hostList.size());
                 iTask.doHostListTask(hostList);
             }
 
             @Override
             public void onFailure(Call<List<Host>> call, Throwable t) {
-                Log.e("getHostList", "Error ===========");
                 t.printStackTrace();
             }
         });
