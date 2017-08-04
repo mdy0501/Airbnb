@@ -115,7 +115,7 @@
                     android:layout_alignParentBottom="true"
                     android:layout_alignParentLeft="true"
                     android:layout_alignParentStart="true"
-                    android:layout_below="@+id/txtType"
+                    android:layout_below="@+id/txtRoomType"
                     android:orientation="horizontal"
                     tools:layout_editor_absoluteX="8dp"
                     tools:layout_editor_absoluteY="8dp">
@@ -170,7 +170,7 @@
                 </LinearLayout>
 
                 <TextView
-                    android:id="@+id/txtType"
+                    android:id="@+id/txtRoomType"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="0dp"

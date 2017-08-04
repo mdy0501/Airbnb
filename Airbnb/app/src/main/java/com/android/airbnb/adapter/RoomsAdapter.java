@@ -11,7 +11,9 @@ import android.widget.RatingBar;
 import android.widget.TextView;
 
 import com.android.airbnb.R;
+import com.android.airbnb.data.House_images;
 import com.android.airbnb.data.RoomsData;
+import com.bumptech.glide.Glide;
 
 import java.util.List;
 
@@ -24,9 +26,8 @@ public class RoomsAdapter extends RecyclerView.Adapter<RoomsAdapter.Holder> {
     List<RoomsData> data;
     LayoutInflater inflater;
 
-
-    public RoomsAdapter(List<RoomsData> roomsData, Context context){
-        data = roomsData;
+    public RoomsAdapter(Context context, List<RoomsData> data){
+        this.data = data;
         inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
 
@@ -39,19 +40,23 @@ public class RoomsAdapter extends RecyclerView.Adapter<RoomsAdapter.Holder> {
     @Override
     public void onBindViewHolder(Holder holder, int position) {
         RoomsData roomsData = data.get(position);
-//        holder.txtPrice.setText("$" + roomsData.);
-//        holder.setPrice();
-//        holder.setDescription(roomsData.);
+        holder.setPrice(roomsData.getPrice_per_day());
+        holder.setIntroduce(roomsData.getIntroduce());
+        holder.setRoomType(roomsData.getRoom_type());
+
+        House_images[] images = roomsData.getHouse_images();
+        Glide.with(inflater.getContext())
+                .load(images.length > 0 ? images[0].getImage() : null)
+                .into(holder.img);
     }
 
     @Override
     public int getItemCount() {
-        // TODO
-        return 0;
+        return data.size();
     }
 
     class Holder extends RecyclerView.ViewHolder{
-        TextView txtPrice, txtDescripton, txtType, txtReview, txtReviewCount;
+        TextView txtPrice, txtIntroduce, txtRoomType, txtReview, txtReviewCount;
         ImageView img;
         ImageButton imgBtnHeart;
         RatingBar ratingBar;
@@ -59,8 +64,8 @@ public class RoomsAdapter extends RecyclerView.Adapter<RoomsAdapter.Holder> {
         public Holder(View itemView) {
             super(itemView);
             txtPrice = (TextView) itemView.findViewById(R.id.txtPrice);
-            txtDescripton = (TextView) itemView.findViewById(R.id.txtDescription);
-            txtType = (TextView) itemView.findViewById(R.id.txtType);
+            txtIntroduce = (TextView) itemView.findViewById(R.id.txtIntroduce);
+            txtRoomType = (TextView) itemView.findViewById(R.id.txtRoomType);
             txtReview = (TextView) itemView.findViewById(R.id.txtReview);
             txtReviewCount = (TextView) itemView.findViewById(R.id.txtReviewCount);
             img = (ImageView) itemView.findViewById(R.id.img);
@@ -68,29 +73,14 @@ public class RoomsAdapter extends RecyclerView.Adapter<RoomsAdapter.Holder> {
             ratingBar = (RatingBar) itemView.findViewById(R.id.ratingBar);
         }
 
-        private void setPrice(int price){
-            txtPrice.setText("$"+price);
+        private void setPrice(String price){
+            txtPrice.setText(price + " 원");
         }
-
-        private void setDescription(String description){
-            txtDescripton.setText(description);
+        private void setIntroduce(String introduce){
+            txtIntroduce.setText(introduce);
         }
-
-        private void setType(String type){
-            txtType.setText(type);
+        private void setRoomType(String roomType){
+            txtRoomType.setText(roomType);
         }
-
-        private void setReviewCount(int reviewCount){
-            txtReviewCount.setText(reviewCount + "개");
-        }
-
-        private void setRatingBar(int ratingCount){
-            ratingBar.setRating( (float)ratingCount );
-        }
-
-        private void setImg(int imgUri){
-            img.setImageResource(imgUri);
-        }
-
     }
 }

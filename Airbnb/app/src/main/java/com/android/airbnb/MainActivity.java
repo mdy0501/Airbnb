@@ -47,16 +47,14 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intent = new Intent(MainActivity.this, DetailHouseActivity.class);
                 v.getContext().startActivity(intent);
+            }
+        });
 
-
-                btnGoMain.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        Intent intent = new Intent(MainActivity.this, Main2Activity.class);
-                        startActivity(intent);
-
-                    }
-                });
+        btnGoMain.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, Main2Activity.class);
+                startActivity(intent);
             }
         });
     }
