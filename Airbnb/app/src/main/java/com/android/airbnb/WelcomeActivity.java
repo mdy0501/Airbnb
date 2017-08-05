@@ -32,7 +32,7 @@ public class WelcomeActivity extends AppCompatActivity implements View.OnClickLi
         btnLoginFacebook = (Button) findViewById(R.id.btnLoginFacebook);
         btnSignUp = (Button) findViewById(R.id.btnSignUp);
         imageAirbnb = (ImageView) findViewById(R.id.imageAirbnb);
-        txtTitle = (TextView) findViewById(R.id.txtTitle);
+        txtTitle = (TextView) findViewById(R.id.txtTitle1);
         txtOptions = (TextView) findViewById(R.id.txtOptions);
         txtDescription = (TextView) findViewById(R.id.txtIntroduce);
     }
