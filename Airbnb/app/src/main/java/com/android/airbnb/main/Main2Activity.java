@@ -101,4 +101,5 @@ public class Main2Activity extends AppCompatActivity {
         messageFragment = new MessageFragment();
         profileFragment = new ProfileFragment();
     }
+
 }

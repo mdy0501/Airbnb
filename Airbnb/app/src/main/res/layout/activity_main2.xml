@@ -1,28 +1,40 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     android:background="@color/DeepGreen"
     tools:context="com.android.airbnb.main.Main2Activity">
 
     <FrameLayout
         android:id="@+id/main_container"
-        android:layout_width="match_parent"
-        android:layout_height="600dp">
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginTop="0dp"
+        android:layout_marginRight="0dp"
+        app:layout_constraintRight_toRightOf="parent"
+        android:layout_marginLeft="0dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:layout_marginBottom="0dp"
+        app:layout_constraintBottom_toTopOf="@+id/mainTabLayout">
 
     </FrameLayout>
 
-    <android.support.design.widget.TabLayout
-        xmlns:app="http://schemas.android.com/apk/res-auto"
+    <android.support.design.widget.TabLayout xmlns:app="http://schemas.android.com/apk/res-auto"
         android:id="@+id/mainTabLayout"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_width="0dp"
+        android:layout_height="65dp"
         android:background="@color/white"
         app:tabSelectedTextColor="@color/colorAccent"
-        app:tabTextColor="@color/black">
+        app:tabTextColor="@color/black"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginBottom="0dp"
+        android:layout_marginRight="0dp"
+        app:layout_constraintRight_toRightOf="parent"
+        android:layout_marginLeft="0dp"
+        app:layout_constraintLeft_toLeftOf="parent">
 
 
         <android.support.design.widget.TabItem
@@ -61,4 +73,4 @@
             android:text="프로필" />
     </android.support.design.widget.TabLayout>
 
-</LinearLayout>
+</android.support.constraint.ConstraintLayout>

@@ -9,7 +9,6 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 import com.android.airbnb.R;
 import com.android.airbnb.adapter.RoomsAdapter;
@@ -34,7 +33,6 @@ public class SearchRoomsFragment extends Fragment {
     private List<RoomsData> dataList;
 
     private Main2Activity main2Activity;
-    private TextView txtTitle;
     private RecyclerView recyclerRooms;
     private RoomsAdapter roomsAdapter;
 
@@ -60,7 +58,6 @@ public class SearchRoomsFragment extends Fragment {
 
 
     private void setViews(View view){
-        txtTitle = (TextView) view.findViewById(R.id.txtTitle);
         recyclerRooms = (RecyclerView) view.findViewById(R.id.recyclerRooms);
     }
 

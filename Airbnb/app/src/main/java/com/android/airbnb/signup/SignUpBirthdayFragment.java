@@ -52,7 +52,7 @@ public class SignUpBirthdayFragment extends Fragment implements View.OnClickList
     private void setViews(View view) {
         btnPreviousBirthday = (Button) view.findViewById(R.id.btnPreviousBirthday);
         btnNextBirthday = (Button) view.findViewById(R.id.btnNextBirthday);
-        txtTitle = (TextView) view.findViewById(R.id.txtTitle);
+        txtTitle = (TextView) view.findViewById(R.id.txtTitle1);
         txtDescription = (TextView) view.findViewById(R.id.txtIntroduce);
         txtBirthday = (TextView) view.findViewById(R.id.txtBirthday);
         txtBirthdaySetting = (TextView) view.findViewById(R.id.txtBirthdaySetting);

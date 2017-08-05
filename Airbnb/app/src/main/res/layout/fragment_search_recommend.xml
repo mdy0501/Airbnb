@@ -8,7 +8,7 @@
     tools:context="com.android.airbnb.main.SearchRecommendFragment">
 
     <TextView
-        android:id="@+id/txtTitle"
+        android:id="@+id/txtTitle1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="90dp"
