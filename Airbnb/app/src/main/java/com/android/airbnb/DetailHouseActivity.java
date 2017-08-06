@@ -129,7 +129,7 @@ public class DetailHouseActivity extends AppCompatActivity implements ITask, OnM
         setPagerIndicator();
         setOnClick();
     }
-    
+
     /* 이 부분이 parcelable로 넘겨 받음 == 아직 이미지가 넘어오지 않음 */
     private void getExIntent() {
         Intent intent = getIntent();

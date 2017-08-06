@@ -36,7 +36,6 @@ public class MapListFragment extends Fragment {
         return mf;
     }
 
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
