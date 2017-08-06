@@ -95,7 +95,6 @@ public class MapPagerAdapter extends PagerAdapter {
     private void setBtnWish(CompoundButton buttonView, int resId, boolean isChecked) {
         buttonView.setBackgroundResource(resId);
         buttonView.setChecked(isChecked);
-
     }
 
     private void connectDate(int position) {
