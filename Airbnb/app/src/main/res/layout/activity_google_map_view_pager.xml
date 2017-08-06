@@ -90,6 +90,38 @@
         android:id="@+id/map_bottomsheet"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:clickable="true"
+        app:backgroundTint="@color/cardview_light_background"
+        app:elevation="4dp"
+        app:fabSize="mini"
+        app:layout_constraintBottom_toTopOf="@+id/map_list_pager"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:srcCompat="@android:drawable/radiobutton_off_background"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        app:layout_constraintHorizontal_bias="0.498" />
+
+    <com.victor.loading.rotate.RotateLoading
+        android:id="@+id/indicator_loading"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginLeft="116dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginTop="529dp"
+        app:layout_constraintHorizontal_bias="0.291"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:loading_speed="11"
+        app:loading_width="5dp"
+        android:layout_marginStart="116dp"
+        android:layout_marginEnd="8dp" />
+
+</android.support.constraint.ConstraintLayout>
+
         android:background="@color/white"
         android:orientation="vertical"
         android:paddingBottom="0dp"
@@ -160,3 +192,4 @@
 
 
 </android.support.design.widget.CoordinatorLayout>
+
