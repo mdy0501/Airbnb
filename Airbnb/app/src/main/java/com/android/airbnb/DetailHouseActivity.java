@@ -145,7 +145,7 @@ public class DetailHouseActivity extends AppCompatActivity implements ITask, OnM
         detailHostImg.setClickable(true);
         detailRoomDateMin = (TextView) findViewById(R.id.detail_room_date_min);
         img = (ImageView) findViewById(R.id.img);
-        txtType = (TextView) findViewById(R.id.txtType);
+        txtType = (TextView) findViewById(R.id.txtRoomType);
         detailRoomIntro = (TextView) findViewById(R.id.detail_room_intro);
         txtPrice = (TextView) findViewById(R.id.txtPrice);
         detailHouseTitle = (TextView) findViewById(R.id.detail_house_title);

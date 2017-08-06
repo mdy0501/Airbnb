@@ -40,7 +40,7 @@ public class TravelFragment extends Fragment {
     }
 
     private void setViews(View view){
-        txtTitle = (TextView) view.findViewById(R.id.txtTitle);
+        txtTitle = (TextView) view.findViewById(R.id.txtTitle1);
     }
 
     private void setListeners(){

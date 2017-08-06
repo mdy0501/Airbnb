@@ -5,7 +5,6 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
@@ -18,22 +17,22 @@ import com.bumptech.glide.Glide;
 import java.util.List;
 
 /**
- * Created by MDY on 2017-08-02.
+ * Created by MDY on 2017-08-05.
  */
 
-public class RoomsAdapter extends RecyclerView.Adapter<RoomsAdapter.Holder> {
+public class TripAdapter extends RecyclerView.Adapter<TripAdapter.Holder> {
 
     List<RoomsData> data;
     LayoutInflater inflater;
 
-    public RoomsAdapter(Context context, List<RoomsData> data){
+    public TripAdapter(Context context, List<RoomsData> data){
         this.data = data;
         inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
 
     @Override
     public Holder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = inflater.inflate(R.layout.rooms_item, parent, false);
+        View view = inflater.inflate(R.layout.trip_item, parent, false);
         return new Holder(view);
     }
 
@@ -58,7 +57,7 @@ public class RoomsAdapter extends RecyclerView.Adapter<RoomsAdapter.Holder> {
     class Holder extends RecyclerView.ViewHolder{
         TextView txtPrice, txtIntroduce, txtRoomType, txtReview, txtReviewCount;
         ImageView img;
-        ImageButton imgBtnHeart;
+        // ImageButton imgBtnHeart;
         RatingBar ratingBar;
 
         public Holder(View itemView) {
@@ -69,7 +68,7 @@ public class RoomsAdapter extends RecyclerView.Adapter<RoomsAdapter.Holder> {
             txtReview = (TextView) itemView.findViewById(R.id.txtReview);
             txtReviewCount = (TextView) itemView.findViewById(R.id.txtReviewCount);
             img = (ImageView) itemView.findViewById(R.id.img);
-            imgBtnHeart = (ImageButton) itemView.findViewById(R.id.imgBtnHeart);
+            // imgBtnHeart = (ImageButton) itemView.findViewById(R.id.imgBtnHeart);
             ratingBar = (RatingBar) itemView.findViewById(R.id.ratingBar);
         }
 

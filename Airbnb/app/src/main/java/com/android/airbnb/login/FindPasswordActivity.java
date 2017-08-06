@@ -28,8 +28,8 @@ public class FindPasswordActivity extends AppCompatActivity implements View.OnCl
     private void setViews(){
         btnPreviousFindPassword = (Button) findViewById(R.id.btnPreviousFindPassword);
         btnNextFindPassword = (Button) findViewById(R.id.btnNextFindPassword);
-        txtTitle = (TextView) findViewById(R.id.txtTitle);
-        txtDescription = (TextView) findViewById(R.id.txtDescription);
+        txtTitle = (TextView) findViewById(R.id.txtTitle1);
+        txtDescription = (TextView) findViewById(R.id.txtIntroduce);
         txtEmail = (TextView) findViewById(R.id.txtEmail);
         editEmail = (EditText) findViewById(R.id.editEmail);
     }

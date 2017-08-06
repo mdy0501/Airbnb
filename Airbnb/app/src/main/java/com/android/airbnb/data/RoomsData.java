@@ -38,7 +38,7 @@ public class RoomsData
 
     private String accommodates;
 
-    private House_images[] house_images;
+    public House_images[] house_images;
 
     private String longitude;
 

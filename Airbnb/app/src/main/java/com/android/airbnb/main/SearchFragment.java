@@ -54,7 +54,7 @@ public class SearchFragment extends Fragment {
     }
 
     private void setViews(View view){
-        txtTitle = (TextView) view.findViewById(R.id.txtTitle);
+        txtTitle = (TextView) view.findViewById(R.id.txtTitle1);
         searchTabLayout = (TabLayout) view.findViewById(R.id.searchTabLayout);
         main2Activity.getSupportFragmentManager().beginTransaction()
                 .add(R.id.search_container, searchRecommendFragment)
