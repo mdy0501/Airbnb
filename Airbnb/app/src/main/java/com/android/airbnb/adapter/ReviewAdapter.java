@@ -10,7 +10,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.android.airbnb.R;
-import com.android.airbnb.domain.Host;
+import com.android.airbnb.domain.airbnb.Host;
 import com.android.airbnb.util.DateHandler;
 import com.android.airbnb.util.GlideApp;
 

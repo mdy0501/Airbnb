@@ -17,8 +17,8 @@ import android.widget.TextView;
 
 import com.android.airbnb.DetailHouseActivity;
 import com.android.airbnb.R;
-import com.android.airbnb.domain.House;
-import com.android.airbnb.domain.House_images;
+import com.android.airbnb.domain.airbnb.House;
+import com.android.airbnb.domain.airbnb.House_images;
 import com.android.airbnb.util.GlideApp;
 
 import java.util.ArrayList;

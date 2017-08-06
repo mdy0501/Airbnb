@@ -11,8 +11,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.airbnb.R;
-import com.android.airbnb.domain.House;
-import com.android.airbnb.domain.House_images;
+import com.android.airbnb.domain.airbnb.House;
+import com.android.airbnb.domain.airbnb.House_images;
 import com.android.airbnb.util.GlideApp;
 
 import java.util.ArrayList;
@@ -70,12 +70,6 @@ public class BottomSheetAdapter extends RecyclerView.Adapter<BottomSheetAdapter.
                     .centerCrop()
                     .into(holder.listImg3);
         }
-    }
-
-    private void setFirstItem(){
-
-
-
     }
 
     @Override

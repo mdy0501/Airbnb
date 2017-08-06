@@ -9,7 +9,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import com.android.airbnb.R;
-import com.android.airbnb.domain.House_images;
+import com.android.airbnb.domain.airbnb.House_images;
 import com.android.airbnb.util.GlideApp;
 
 /**
