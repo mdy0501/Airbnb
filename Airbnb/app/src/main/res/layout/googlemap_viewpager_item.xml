@@ -107,12 +107,14 @@
 
             <CheckBox
                 android:id="@+id/checkBox"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="40dp"
+                android:gravity="center"
+                android:layout_height="40dp"
                 android:layout_marginEnd="8dp"
                 android:layout_marginRight="8dp"
                 android:layout_marginTop="8dp"
-                android:button="@android:drawable/btn_star_big_off"
+                android:button="@null"
+                android:background="@drawable/icon_wish_empty"
                 android:checked="false"
                 app:layout_constraintRight_toRightOf="@+id/house_img"
                 app:layout_constraintTop_toTopOf="@+id/house_img" />
