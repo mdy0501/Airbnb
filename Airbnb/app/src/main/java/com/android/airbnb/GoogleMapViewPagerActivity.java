@@ -1,12 +1,18 @@
 package com.android.airbnb;
 
 import android.content.Intent;
+import android.content.res.TypedArray;
+import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.AttrRes;
+import android.support.annotation.NonNull;
 import android.support.design.widget.BottomSheetBehavior;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.FragmentActivity;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -93,6 +99,29 @@ public class GoogleMapViewPagerActivity extends FragmentActivity implements OnMa
                 TypedValue.COMPLEX_UNIT_DIP, height, getResources().getDisplayMetrics()));
         behavior.setHideable(true);
         behavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
+        // 구현완료하기
+        behavior.setBottomSheetCallback(new BottomSheetBehavior.BottomSheetCallback() {
+            @Override
+            public void onStateChanged(@NonNull View bottomSheet, int newState) {
+                switch (newState){
+                    case BottomSheetBehavior.STATE_HIDDEN:
+
+                        break;
+
+                    case BottomSheetBehavior.STATE_EXPANDED:
+                        setStatusBarDim(false);
+                        break;
+                    default:
+                        setStatusBarDim(true);
+                        break;
+                }
+            }
+
+            @Override
+            public void onSlide(@NonNull View bottomSheet, float slideOffset) {
+
+            }
+        });
     }
 
     @Override
@@ -100,6 +129,20 @@ public class GoogleMapViewPagerActivity extends FragmentActivity implements OnMa
         Log.e("GoogleMapViewPager", "onMapReady");
         MapsInitializer.initialize(getApplicationContext());
         mMap = googleMap;
+    }
+
+    private int getThemedResId(@AttrRes int attr) {
+        TypedArray a = getTheme().obtainStyledAttributes(new int[]{attr});
+        int resId = a.getResourceId(0, 0);
+        a.recycle();
+        return resId;
+    }
+
+    private void setStatusBarDim(boolean dim) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            getWindow().setStatusBarColor(dim ? Color.TRANSPARENT :
+                    ContextCompat.getColor(this, getThemedResId(R.attr.colorPrimaryDark)));
+        }
     }
 
     private void initView() {
@@ -112,6 +155,7 @@ public class GoogleMapViewPagerActivity extends FragmentActivity implements OnMa
         wishBottomRecycler = (RecyclerView) findViewById(R.id.wishlist_recyclerview);
         btnAddList = (ImageView) findViewById(R.id.wish_bottomsheet_addlist);
         snackbarPlace = (CoordinatorLayout) findViewById(R.id.snackbar_place);
+
     }
 
     private void setAdapter() {
@@ -123,7 +167,6 @@ public class GoogleMapViewPagerActivity extends FragmentActivity implements OnMa
     }
 
     private void setViewPager() {
-
         mapListPager.addOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
             @Override
             public void onPageSelected(int position) {
@@ -211,6 +254,7 @@ public class GoogleMapViewPagerActivity extends FragmentActivity implements OnMa
                 v.getContext().startActivity(intent);
             }
         });
+
     }
 
 
@@ -297,6 +341,7 @@ public class GoogleMapViewPagerActivity extends FragmentActivity implements OnMa
 
     /**
      * 세부 데이터 통신 가능한 상황에 데이터 연결
+     *
      * @param btnIsChecked
      */
     @Override
@@ -310,6 +355,7 @@ public class GoogleMapViewPagerActivity extends FragmentActivity implements OnMa
                     setBottomSheet(300.f);
                 }
             }).show();
+
         } else {
             Snackbar.make(snackbarPlace, "[위시리스트 이름]에 삭제됨.", Snackbar.LENGTH_LONG).setAction("실행취소", new View.OnClickListener() {
                 @Override

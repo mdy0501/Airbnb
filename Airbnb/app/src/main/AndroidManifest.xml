@@ -34,6 +34,7 @@
 
         <activity
             android:name=".GoogleMapViewPagerActivity"
+            android:theme="@style/AppTheme.Translucent"
             android:label="@string/title_activity_google_map_view_pager" />
         <activity
             android:name=".DetailHouseActivity"
