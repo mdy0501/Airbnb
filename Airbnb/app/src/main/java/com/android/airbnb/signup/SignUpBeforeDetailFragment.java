@@ -43,7 +43,7 @@ public class SignUpBeforeDetailFragment extends Fragment implements View.OnClick
 
     private void setViews(View view){
         btnPrevious = (Button) view.findViewById(R.id.btnPreviousLogin);
-        txtTitle = (TextView) view.findViewById(R.id.txtTitle);
+        txtTitle = (TextView) view.findViewById(R.id.txtTitle1);
         txtQuestion1 = (TextView) view.findViewById(R.id.txtQuestion1);
         txtAnswer1 = (TextView) view.findViewById(R.id.txtAnswer1);
     }

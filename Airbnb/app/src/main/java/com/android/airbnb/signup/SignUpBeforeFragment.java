@@ -44,7 +44,7 @@ public class SignUpBeforeFragment extends Fragment implements View.OnClickListen
     private void setViews(View view){
         btnAccept = (Button) view.findViewById(R.id.btnAccept);
         btnRefuse = (Button) view.findViewById(R.id.btnRefuse);
-        txtTitle = (TextView) view.findViewById(R.id.txtTitle);
+        txtTitle = (TextView) view.findViewById(R.id.txtTitle1);
         txtDetail = (TextView) view.findViewById(R.id.txtDetail);
         txtDescription1 = (TextView) view.findViewById(R.id.txtDescription1);
         txtDescription2 = (TextView) view.findViewById(R.id.txtDescription2);
