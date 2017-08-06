@@ -18,8 +18,8 @@ public class House implements Parcelable {
     protected House(Parcel in) {
 
         /* 이 부분 못 읽어오네요.... */
-        amenities = in.createTypedArray(Amenities.CREATOR);
         house_images = in.createTypedArray(House_images.CREATOR);
+        amenities = in.createTypedArray(Amenities.CREATOR);
         // =======================================
         host = in.readParcelable(Host.class.getClassLoader());
         cleaning_fee = in.readString();
@@ -294,10 +294,11 @@ public class House implements Parcelable {
     public void writeToParcel(Parcel dest, int flags) {
 
         /* 쓰기 */
-        dest.writeParcelableArray(amenities, 0);
-        dest.writeParcelableArray(house_images, 0);
+        dest.writeTypedArray(house_images, flags);
+        dest.writeTypedArray(amenities, flags);
 
-        // =============================$
+
+        // =============================
         dest.writeParcelable(host, 0);
         dest.writeString(cleaning_fee);
         dest.writeParcelable(latLng, 0);
