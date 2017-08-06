@@ -18,9 +18,12 @@ import com.android.airbnb.domain.House;
 import com.android.airbnb.domain.House_images;
 import com.android.airbnb.presenter.ITask;
 import com.android.airbnb.util.GlideApp;
+import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.MapsInitializer;
 import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.Marker;
+import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.util.List;
 
@@ -67,7 +70,6 @@ public class DetailHouseActivity extends AppCompatActivity implements ITask, OnM
     public void setDetailHouseTitle(TextView detailHouseTitle) {
         this.detailHouseTitle = detailHouseTitle;
     }
-
 
     public void setDetailHostNameTxt(TextView detailHostNameTxt) {
         this.detailHostNameTxt = detailHostNameTxt;
@@ -116,17 +118,19 @@ public class DetailHouseActivity extends AppCompatActivity implements ITask, OnM
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail_house);
 
+        SupportMapFragment mapFragment =
+                (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.detail_house_mapFragment);
+
         getExIntent();
         initView();
         setData(this.house);
+        mapFragment.getMapAsync(this);
         setViewPager();
         setPagerIndicator();
         setOnClick();
-
     }
 
-
-    /* 이 부분이 parcelable로 넘겨 받음 */
+    /* 이 부분이 parcelable로 넘겨 받음 == 아직 이미지가 넘어오지 않음 */
     private void getExIntent() {
         Intent intent = getIntent();
         house = intent.getParcelableExtra(MapPagerAdapter.HOUSE_OBJ);
@@ -134,8 +138,6 @@ public class DetailHouseActivity extends AppCompatActivity implements ITask, OnM
 
         Log.e("Detail", house.getHouse_images().toString());
         Log.e("Detail", house.getHouse_images().length + "");
-
-
     }
 
     private void initView() {
@@ -209,8 +211,6 @@ public class DetailHouseActivity extends AppCompatActivity implements ITask, OnM
     @Override
     public void doOnHouseTask(House house) {
         this.house = house;
-
-
     }
 
     @Override
@@ -220,8 +220,12 @@ public class DetailHouseActivity extends AppCompatActivity implements ITask, OnM
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
+        Log.i("Detail", house.getLatLng().toString());
         mMap = googleMap;
-        MapsInitializer.initialize(getApplicationContext());
+        Marker marker = googleMap.addMarker(new MarkerOptions().position(house.getLatLng()).title(house.getTitle()));
+        mMap.moveCamera(CameraUpdateFactory.newLatLng(house.getLatLng()));
+        mMap.animateCamera(CameraUpdateFactory.zoomTo(12));
+        marker.showInfoWindow();
     }
 }
 

@@ -2,6 +2,7 @@ package com.android.airbnb.adapter;
 
 import android.content.Context;
 import android.content.Intent;
+import android.support.design.widget.CoordinatorLayout;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
@@ -9,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
@@ -35,16 +37,28 @@ public class MapPagerAdapter extends PagerAdapter {
     private ImageView houseImg;
     private RatingBar ratingBar;
     private TextView houseReviewCount;
-    private CheckBox checkBox;
+    private CheckBox btnWish;
     public static final String HOUSE_OBJ = "house obj";
     public static final String HOUSE_IMG = "house img";
+    View view = null;
+    private int currentPostition = 0;
+    public OnMapPagerListener mPagerListner;
+    private CoordinatorLayout snackPlace;
 
-    public MapPagerAdapter(List<House> houseList, Context context) {
-        this.houseList = houseList;
-        this.mContext = context;
+    public void setSnackPlace(CoordinatorLayout snackPlace) {
+        this.snackPlace = snackPlace;
     }
 
-    View view = null;
+
+    public MapPagerAdapter(List<House> houseList, OnMapPagerListener mapPagerListener, Context context) {
+        this.houseList = houseList;
+        this.mContext = context;
+        this.mPagerListner = mapPagerListener;
+    }
+
+    public void setCurrentPostition(int currentPostition) {
+        this.currentPostition = currentPostition;
+    }
 
     @Override
     public Object instantiateItem(ViewGroup parent, int position) {
@@ -57,28 +71,41 @@ public class MapPagerAdapter extends PagerAdapter {
     }
 
     private void setOnClick() {
+
         view.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(mContext, DetailHouseActivity.class);
-                /* index 값 같이 넘기기 */
+                /* House index 값 설정 다시 하기 넘기기 */
+                House house = houseList.get(currentPostition);
                 intent.putExtra(HOUSE_OBJ, house);
                 v.getContext().startActivity(intent);
             }
         });
+
+        btnWish.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                setBtnWish(buttonView, R.drawable.icon_wish_full, true);
+                mPagerListner.btnWishClicked(isChecked);
+            }
+        });
     }
 
-    House house;
+    private void setBtnWish(CompoundButton buttonView, int resId, boolean isChecked) {
+        buttonView.setBackgroundResource(resId);
+        buttonView.setChecked(isChecked);
+
+    }
 
     private void connectDate(int position) {
-        house = houseList.get(position);
+        House house = houseList.get(position);
         Log.e("MapAdapter :: house", house.getTitle());
         House_images house_images[] = house.getHouse_images();
         housePrice.setText(house.getPrice_per_day());
         houseTitle.setText(house.getTitle());
         // dummy, 추후 수정 요망
         ratingBar.setRating(3.5f);
-        checkBox.setChecked(true);
         houseReviewCount.setText("123");
 
         /* house_images.length 체크 */
@@ -109,7 +136,8 @@ public class MapPagerAdapter extends PagerAdapter {
         houseImg = (ImageView) view.findViewById(R.id.house_img);
         ratingBar = (RatingBar) view.findViewById(R.id.ratingBar);
         houseReviewCount = (TextView) view.findViewById(R.id.house_review_count);
-        checkBox = (CheckBox) view.findViewById(R.id.checkBox);
+        btnWish = (CheckBox) view.findViewById(R.id.checkBox);
+        snackPlace = (CoordinatorLayout) view.findViewById(R.id.snackbar_place);
     }
 
     @Override
@@ -117,4 +145,7 @@ public class MapPagerAdapter extends PagerAdapter {
         return (0.9f);
     }
 
+    public interface OnMapPagerListener {
+        public void btnWishClicked(boolean btnisChecked);
+    }
 }

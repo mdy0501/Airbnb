@@ -3,12 +3,6 @@
     package="com.android.airbnb">
 
     <uses-permission android:name="android.permission.INTERNET" />
-
-    <!--
-         The ACCESS_COARSE/FINE_LOCATION permissions are not required to use
-         Google Maps Android API v2, but you must specify either coarse or fine
-         location permissions for the 'MyLocation' functionality. 
-    -->
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
 
     <application
@@ -50,8 +44,12 @@
         <activity android:name=".signup.SignUpActivity" />
         <activity android:name=".WelcomeActivity" />
         <activity android:name=".login.FindPasswordActivity" />
-        <activity android:name=".ReviewActivity"></activity>
-        <activity android:name=".main.Main2Activity"></activity>
+        <activity android:name=".ReviewActivity" />
+        <activity android:name=".main.Main2Activity" />
+        <activity
+            android:name=".MakeWishListActivity"
+            android:theme="@style/NoActioinBarTheme">
+        </activity>
     </application>
 
 </manifest>

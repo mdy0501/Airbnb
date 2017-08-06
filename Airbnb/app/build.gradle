@@ -25,9 +25,6 @@ dependencies {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
 
-    // 준희 라이브러리
-
-    // 동연 라이브러리
     compile 'com.squareup.retrofit2:retrofit:2.3.0'
     compile 'com.squareup.retrofit2:retrofit:2.3.0'
     compile 'com.android.support:appcompat-v7:25.3.1'
@@ -43,6 +40,7 @@ dependencies {
     compile 'com.google.code.gson:gson:2.8.+'
     compile 'com.squareup.retrofit2:converter-gson:2.3.0'
     compile 'com.squareup.okhttp3:okhttp:3.2.0'
+    compile 'com.baoyz.pullrefreshlayout:library:1.2.0'
     compile 'jp.wasabeef:glide-transformations:2.0.2'
     compile 'com.victor:lib:1.0.4'
     testCompile 'junit:junit:4.12'
