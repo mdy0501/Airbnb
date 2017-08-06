@@ -25,8 +25,8 @@ import android.widget.Toast;
 
 import com.android.airbnb.adapter.BottomSheetAdapter;
 import com.android.airbnb.adapter.MapPagerAdapter;
-import com.android.airbnb.domain.Host;
-import com.android.airbnb.domain.House;
+import com.android.airbnb.domain.airbnb.Host;
+import com.android.airbnb.domain.airbnb.House;
 import com.android.airbnb.presenter.ITask;
 import com.android.airbnb.util.Remote.Loader;
 import com.google.android.gms.maps.CameraUpdateFactory;

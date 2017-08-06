@@ -1,7 +1,7 @@
 package com.android.airbnb.util.Remote;
 
-import com.android.airbnb.domain.Host;
-import com.android.airbnb.domain.House;
+import com.android.airbnb.domain.airbnb.Host;
+import com.android.airbnb.domain.airbnb.House;
 import com.android.airbnb.presenter.ITask;
 
 import java.util.List;

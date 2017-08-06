@@ -9,7 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.android.airbnb.domain.House;
+import com.android.airbnb.domain.airbnb.House;
 
 import java.util.List;
 

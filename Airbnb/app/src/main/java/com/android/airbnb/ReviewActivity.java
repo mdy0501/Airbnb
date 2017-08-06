@@ -8,8 +8,8 @@ import android.widget.RatingBar;
 import android.widget.TextView;
 
 import com.android.airbnb.adapter.ReviewAdapter;
-import com.android.airbnb.domain.Host;
-import com.android.airbnb.domain.House;
+import com.android.airbnb.domain.airbnb.Host;
+import com.android.airbnb.domain.airbnb.House;
 import com.android.airbnb.presenter.ITask;
 import com.android.airbnb.util.Remote.Loader;
 

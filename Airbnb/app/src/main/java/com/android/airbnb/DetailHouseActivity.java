@@ -5,18 +5,24 @@ import android.os.Bundle;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
 import com.android.airbnb.adapter.DetailImgPager;
 import com.android.airbnb.adapter.MapPagerAdapter;
-import com.android.airbnb.domain.Host;
-import com.android.airbnb.domain.House;
-import com.android.airbnb.domain.House_images;
+import com.android.airbnb.domain.airbnb.Amenities;
+import com.android.airbnb.domain.airbnb.Host;
+import com.android.airbnb.domain.airbnb.House;
+import com.android.airbnb.domain.airbnb.House_images;
 import com.android.airbnb.presenter.ITask;
+import com.android.airbnb.util.Const;
 import com.android.airbnb.util.GlideApp;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -108,10 +114,13 @@ public class DetailHouseActivity extends AppCompatActivity implements ITask, OnM
     private GoogleMap mMap;
     private TextView housePricePerDay;
     public House_images[] houseImages;
+    private DetailAmenitiesAdapter amenitiesAdapter;
+    private RecyclerView amenitiesRecycler;
 
     ViewPager viewPager;
     CircleIndicator indicator;
     PagerAdapter mAdapter;
+    Amenities[] amenities;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -125,6 +134,7 @@ public class DetailHouseActivity extends AppCompatActivity implements ITask, OnM
         initView();
         setData(this.house);
         mapFragment.getMapAsync(this);
+        setAmenitiesRecycler();
         setViewPager();
         setPagerIndicator();
         setOnClick();
@@ -135,9 +145,15 @@ public class DetailHouseActivity extends AppCompatActivity implements ITask, OnM
         Intent intent = getIntent();
         house = intent.getParcelableExtra(MapPagerAdapter.HOUSE_OBJ);
         houseImages = house.getHouse_images();
+        amenities = house.getAmenities();
 
-        Log.e("Detail", house.getHouse_images().toString());
-        Log.e("Detail", house.getHouse_images().length + "");
+        // 확인 후, 반드시 지울 로그
+        for(int i=0; i <amenities.length; i++){
+            Log.e("Detail", "amenities name ::" + amenities[i].getName());
+        }
+
+        Log.e("Detail", "image size :: " + house.getHouse_images().length);
+        Log.e("Detail", "amenities size :: " + house.getAmenities().length);
     }
 
     private void initView() {
@@ -155,6 +171,14 @@ public class DetailHouseActivity extends AppCompatActivity implements ITask, OnM
         detailPagerIndicator = (CircleIndicator) findViewById(R.id.detail_pagerIndicator);
         ratingBar2 = (RatingBar) findViewById(R.id.ratingBar2);
         housePricePerDay = (TextView) findViewById(R.id.house_price_per_day);
+        amenitiesRecycler = (RecyclerView) findViewById(R.id.amenitiesRecycler);
+    }
+
+    private void setAmenitiesRecycler() {
+        Log.e("Detail", "recycler amen size :: " + amenities.length);
+        amenitiesAdapter = new DetailAmenitiesAdapter(this.amenities);
+        amenitiesRecycler.setAdapter(amenitiesAdapter);
+        amenitiesRecycler.setLayoutManager(new GridLayoutManager(this, 4));
     }
 
     private void setData(House house) {
@@ -183,7 +207,7 @@ public class DetailHouseActivity extends AppCompatActivity implements ITask, OnM
 
     private void setViewPager() {
         viewPager = (ViewPager) findViewById(R.id.detail_room_viewPager);
-        Log.e("Detail", "imgs size === 222 :  " + house.getHouse_images().length);
+        Log.e("Detail", "imgs size === :  " + house.getHouse_images().length);
         mAdapter = new DetailImgPager(house.getHouse_images(), this);
         viewPager.setAdapter(mAdapter);
     }
@@ -226,6 +250,61 @@ public class DetailHouseActivity extends AppCompatActivity implements ITask, OnM
         mMap.moveCamera(CameraUpdateFactory.newLatLng(house.getLatLng()));
         mMap.animateCamera(CameraUpdateFactory.zoomTo(12));
         marker.showInfoWindow();
+    }
+
+    /* 재사용하지 않는 어댑터 - 이너 클래스로 작성 */
+    class DetailAmenitiesAdapter extends RecyclerView.Adapter<DetailAmenitiesAdapter.Holder> {
+
+        Amenities[] amenities;
+
+        public DetailAmenitiesAdapter(Amenities[] amenities) {
+            Log.e("adapter", "amenities" + amenities.length);
+            this.amenities = amenities;
+        }
+
+        @Override
+        public Holder onCreateViewHolder(ViewGroup parent, int viewType) {
+            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.detail_amenities_item, parent, false);
+            return new Holder(view);
+        }
+
+        @Override
+        public void onBindViewHolder(Holder holder, int position) {
+            Const.Amenities.setAmenities();
+            Log.e("amen", "adapter :: amen name" + position + ", " + amenities[position].getName());
+            holder.setAmenityName(amenities[position].getName());
+            holder.setAmenityImg(Const.Amenities.getAmenityImg(amenities[position].getName()));
+        }
+
+        @Override
+        public int getItemCount() {
+            return amenities.length;
+        }
+
+        class Holder extends RecyclerView.ViewHolder {
+
+            private ImageView amenityImg;
+            private TextView amenityName;
+
+            // toolbug 발견
+            public Holder(View itemView) {
+                super(itemView);
+                amenityImg = (ImageView) itemView.findViewById(R.id.amenity_img);
+                amenityName = (TextView) itemView.findViewById(R.id.amenity_name);
+            }
+
+            public void setAmenityImg(int resId) {
+                GlideApp
+                        .with(getBaseContext())
+                        .load(resId)
+                        .centerCrop()
+                        .into(amenityImg);
+            }
+
+            public void setAmenityName(String name) {
+                this.amenityName.setText(name);
+            }
+        }
     }
 }
 
