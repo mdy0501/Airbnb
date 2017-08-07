@@ -2,10 +2,11 @@ package com.android.airbnb;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -21,6 +22,8 @@ import com.android.airbnb.domain.airbnb.Amenities;
 import com.android.airbnb.domain.airbnb.Host;
 import com.android.airbnb.domain.airbnb.House;
 import com.android.airbnb.domain.airbnb.House_images;
+import com.android.airbnb.papago.Translator;
+import com.android.airbnb.papago.domain.Data;
 import com.android.airbnb.presenter.ITask;
 import com.android.airbnb.util.Const;
 import com.android.airbnb.util.GlideApp;
@@ -30,12 +33,18 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.gson.Gson;
 
 import java.util.List;
 
 import me.relex.circleindicator.CircleIndicator;
 
-public class DetailHouseActivity extends AppCompatActivity implements ITask, OnMapReadyCallback {
+public class DetailHouseActivity extends AppCompatActivity implements ITask, OnMapReadyCallback, Translator.IPapago {
+
+    private TextView detailGuestCountTxt;
+    private TextView detailRoomStyleTxt;
+    private TextView detailBedCountTxt;
+    private TextView detailBathroomCountTxt;
 
     public void setHousePricePerDay(TextView housePricePerDay) {
         this.housePricePerDay = housePricePerDay;
@@ -116,6 +125,7 @@ public class DetailHouseActivity extends AppCompatActivity implements ITask, OnM
     public House_images[] houseImages;
     private DetailAmenitiesAdapter amenitiesAdapter;
     private RecyclerView amenitiesRecycler;
+    private TextView btnTranslate;
 
     ViewPager viewPager;
     CircleIndicator indicator;
@@ -134,6 +144,7 @@ public class DetailHouseActivity extends AppCompatActivity implements ITask, OnM
         initView();
         setData(this.house);
         mapFragment.getMapAsync(this);
+        setRoomPager();
         setAmenitiesRecycler();
         setViewPager();
         setPagerIndicator();
@@ -146,20 +157,13 @@ public class DetailHouseActivity extends AppCompatActivity implements ITask, OnM
         house = intent.getParcelableExtra(MapPagerAdapter.HOUSE_OBJ);
         houseImages = house.getHouse_images();
         amenities = house.getAmenities();
-
-        // 확인 후, 반드시 지울 로그
-        for(int i=0; i <amenities.length; i++){
-            Log.e("Detail", "amenities name ::" + amenities[i].getName());
-        }
-
-        Log.e("Detail", "image size :: " + house.getHouse_images().length);
-        Log.e("Detail", "amenities size :: " + house.getAmenities().length);
     }
 
     private void initView() {
+        btnTranslate = (TextView) findViewById(R.id.btnTranslate);
+        btnTranslate.setClickable(true);
         detailHostImg = (ImageView) findViewById(R.id.detail_host_img);
         detailHostImg.setClickable(true);
-        detailRoomDateMin = (TextView) findViewById(R.id.detail_room_date_min);
         img = (ImageView) findViewById(R.id.img);
         txtType = (TextView) findViewById(R.id.txtRoomType);
         detailRoomIntro = (TextView) findViewById(R.id.detail_room_intro);
@@ -172,22 +176,34 @@ public class DetailHouseActivity extends AppCompatActivity implements ITask, OnM
         ratingBar2 = (RatingBar) findViewById(R.id.ratingBar2);
         housePricePerDay = (TextView) findViewById(R.id.house_price_per_day);
         amenitiesRecycler = (RecyclerView) findViewById(R.id.amenitiesRecycler);
+        detailGuestCountTxt = (TextView) findViewById(R.id.detail_guest_count_txt);
+        detailRoomStyleTxt = (TextView) findViewById(R.id.detail_room_style_txt);
+        detailBedCountTxt = (TextView) findViewById(R.id.detail_bed_count_txt);
+        detailBathroomCountTxt = (TextView) findViewById(R.id.detail_bathroom_count_txt);
+    }
+
+    private void setRoomPager() {
+        DetailImgPager imgPager = new DetailImgPager(houseImages, this);
+        detailRoomViewPager.setAdapter(imgPager);
     }
 
     private void setAmenitiesRecycler() {
         Log.e("Detail", "recycler amen size :: " + amenities.length);
         amenitiesAdapter = new DetailAmenitiesAdapter(this.amenities);
         amenitiesRecycler.setAdapter(amenitiesAdapter);
-        amenitiesRecycler.setLayoutManager(new GridLayoutManager(this, 4));
+        amenitiesRecycler.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
     }
 
     private void setData(House house) {
         detailHouseTitle.setText(house.getTitle());
-        txtPrice.setText(house.getPrice_per_day());
         detailHostNameTxt.setText(house.getHost().getUsername());
-        detailRoomIntro.setText(house.getIntroduce());
+        detailRoomIntro.setText("  " + house.getIntroduce());
         detailRoomtypeTxt.setText(house.getRoom_type());
         housePricePerDay.setText("₩" + house.getPrice_per_day() + "/1박");
+        detailRoomStyleTxt.setText("방 " + house.getBedrooms() + "개");
+        detailBathroomCountTxt.setText("욕실 " + house.getBathrooms()+"개");
+        detailGuestCountTxt.setText("게스트 " + house.getAccommodates()+"명");
+        detailBedCountTxt.setText("침대 "+ house.getBeds() + "개");
 
         GlideApp.with(this)
                 .load(house.getHost().getImg_profile())
@@ -195,7 +211,6 @@ public class DetailHouseActivity extends AppCompatActivity implements ITask, OnM
                 .centerCrop()
                 .circleCrop()
                 .into(detailHostImg);
-
     }
 
     // 외부 라이브러리를 사용해 완성도를 viewpager indicator를 viewpager와 연결하였다.
@@ -212,6 +227,8 @@ public class DetailHouseActivity extends AppCompatActivity implements ITask, OnM
         viewPager.setAdapter(mAdapter);
     }
 
+    Handler mHandler = null;
+
     private void setOnClick() {
         detailHostImg.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -220,16 +237,38 @@ public class DetailHouseActivity extends AppCompatActivity implements ITask, OnM
                 startActivity(intent);
             }
         });
+
+        btnTranslate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mHandler = new Handler();
+
+                new Thread() {
+                    @Override
+                    public void run() {
+                        super.run();
+                        Log.e("detail", "========= doTranslate ======== ");
+                        Translator.doTranslate(house.getIntroduce(), DetailHouseActivity.this);
+
+                        mHandler.post(new Runnable() {
+                            @Override
+                            public void run() {
+                                Log.e("thread", "thread txt :: " + translatedTxt);
+                                detailRoomIntro.setText(house.getIntroduce() + "\n === 한국어 번역 === \n  " + translatedTxt);
+                            }
+                        });
+                    }
+                }.start();
+            }
+        });
     }
 
     @Override
     public void doHostListTask(List<Host> hostList) {
-
     }
 
     @Override
     public void doHouseListTask(List<House> houseList) {
-
     }
 
     @Override
@@ -252,6 +291,17 @@ public class DetailHouseActivity extends AppCompatActivity implements ITask, OnM
         marker.showInfoWindow();
     }
 
+    String translatedTxt = "";
+
+    @Override
+    public void getResult(String jsonString) {
+        Gson gson = new Gson();
+        Log.e("detail", "jsongString :: " + jsonString);
+        Data data = gson.fromJson(jsonString, Data.class);
+        translatedTxt = data.getMessage().getResult().getTranslatedText();
+        Log.e("detail", "txt // " + translatedTxt);
+    }
+
     /* 재사용하지 않는 어댑터 - 이너 클래스로 작성 */
     class DetailAmenitiesAdapter extends RecyclerView.Adapter<DetailAmenitiesAdapter.Holder> {
 
@@ -272,7 +322,6 @@ public class DetailHouseActivity extends AppCompatActivity implements ITask, OnM
         public void onBindViewHolder(Holder holder, int position) {
             Const.Amenities.setAmenities();
             Log.e("amen", "adapter :: amen name" + position + ", " + amenities[position].getName());
-            holder.setAmenityName(amenities[position].getName());
             holder.setAmenityImg(Const.Amenities.getAmenityImg(amenities[position].getName()));
         }
 
@@ -284,13 +333,19 @@ public class DetailHouseActivity extends AppCompatActivity implements ITask, OnM
         class Holder extends RecyclerView.ViewHolder {
 
             private ImageView amenityImg;
-            private TextView amenityName;
 
             // toolbug 발견
             public Holder(View itemView) {
                 super(itemView);
                 amenityImg = (ImageView) itemView.findViewById(R.id.amenity_img);
-                amenityName = (TextView) itemView.findViewById(R.id.amenity_name);
+                itemView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        /* 액티비티 만들기 */
+                        Intent intent = new Intent();
+
+                    }
+                });
             }
 
             public void setAmenityImg(int resId) {
@@ -299,10 +354,6 @@ public class DetailHouseActivity extends AppCompatActivity implements ITask, OnM
                         .load(resId)
                         .centerCrop()
                         .into(amenityImg);
-            }
-
-            public void setAmenityName(String name) {
-                this.amenityName.setText(name);
             }
         }
     }
