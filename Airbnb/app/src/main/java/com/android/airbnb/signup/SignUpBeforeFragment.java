@@ -2,6 +2,7 @@ package com.android.airbnb.signup;
 
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -10,10 +11,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.android.airbnb.R;
 import com.android.airbnb.data.ApiService;
 import com.android.airbnb.data.SignUpData;
+import com.android.airbnb.main.Main2Activity;
 
 import java.util.List;
 
@@ -100,6 +103,10 @@ public class SignUpBeforeFragment extends Fragment implements View.OnClickListen
                 Log.e("==============" , "데이터 전송");
                 // response.toString() 을 로그에 찍어보면 response 결과를 바로 로그창에서 볼 수 있음
                 Log.e("================", response.toString());
+                Toast.makeText(signUpActivity.getBaseContext(), "회원가입이 완료되었습니다.\nMain 화면으로 이동합니다.", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(signUpActivity.getBaseContext(), Main2Activity.class);
+                startActivity(intent);
+                signUpActivity.finish();
             }
 
             @Override

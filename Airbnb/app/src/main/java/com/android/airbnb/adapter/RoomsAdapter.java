@@ -25,6 +25,7 @@ public class RoomsAdapter extends RecyclerView.Adapter<RoomsAdapter.Holder> {
 
     List<RoomsData> data;
     LayoutInflater inflater;
+    int count = 0;
 
     public RoomsAdapter(Context context, List<RoomsData> data){
         this.data = data;
@@ -71,6 +72,7 @@ public class RoomsAdapter extends RecyclerView.Adapter<RoomsAdapter.Holder> {
             img = (ImageView) itemView.findViewById(R.id.img);
             imgBtnHeart = (ImageButton) itemView.findViewById(R.id.imgBtnHeart);
             ratingBar = (RatingBar) itemView.findViewById(R.id.ratingBar);
+
         }
 
         private void setPrice(String price){
