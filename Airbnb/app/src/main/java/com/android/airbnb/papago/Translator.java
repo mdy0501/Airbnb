@@ -48,7 +48,6 @@ public class Translator {
                 response.append(resultString);
             }
             br.close();
-            System.out.println(response.toString());
             Log.e("Translator", response.toString());
             iPapago.getResult(response.toString());
 
