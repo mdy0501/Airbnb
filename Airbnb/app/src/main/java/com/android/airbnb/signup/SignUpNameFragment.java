@@ -63,6 +63,8 @@ public class SignUpNameFragment extends Fragment implements View.OnClickListener
                 signUpActivity.onBackPressed();
                 break;
             case R.id.btnNextName : // move NextStep
+                signUpActivity.signUpData.setFirst_name(editFirstName.getText().toString());
+                signUpActivity.signUpData.setLast_name(editLastName.getText().toString());
                 goSignUpEmailFragment();
                 break;
         }

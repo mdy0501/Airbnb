@@ -4,12 +4,14 @@ package com.android.airbnb.signup;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Patterns;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 import android.widget.ToggleButton;
 
 import com.android.airbnb.R;
@@ -69,8 +71,20 @@ public class SignUpEmailFragment extends Fragment implements View.OnClickListene
                 signUpActivity.onBackPressed();
                 break;
             case R.id.btnNextEmail :
-                goSignUpPasswordFragment();
+                confirmEmail();
                 break;
+        }
+    }
+
+    // Email 형식 유효성 검사
+    private void confirmEmail(){
+        String email = editEmail.getText().toString();
+        boolean emailValidate = Patterns.EMAIL_ADDRESS.matcher(email).matches();
+        if(emailValidate == true){
+            signUpActivity.signUpData.setEmail(editEmail.getText().toString());
+            goSignUpPasswordFragment();
+        } else {
+            Toast.makeText(signUpActivity.getBaseContext(), "이메일 형식에 맞지 않습니다.", Toast.LENGTH_SHORT).show();
         }
     }
 

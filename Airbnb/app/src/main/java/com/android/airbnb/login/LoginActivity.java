@@ -33,10 +33,10 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         txtFindPassword = (TextView) findViewById(R.id.txtFindPassword);
         txtLogin = (TextView) findViewById(R.id.txtLogin);
         txtEmail = (TextView) findViewById(R.id.txtEmail);
-        txtPassword = (TextView) findViewById(R.id.txtPassword);
+        txtPassword = (TextView) findViewById(R.id.txtPassword1);
         txtIndicate = (TextView) findViewById(R.id.txtIndicate);
         editEmail = (EditText) findViewById(R.id.editEmail);
-        editPassword = (EditText) findViewById(R.id.editPassword);
+        editPassword = (EditText) findViewById(R.id.editPassword1);
     }
 
     private void setListeners(){
