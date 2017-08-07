@@ -26,6 +26,8 @@ dependencies {
     })
 
     compile 'com.squareup.retrofit2:retrofit:2.3.0'
+
+    // 지도 유틸 
     compile 'com.squareup.retrofit2:retrofit:2.3.0'
     compile 'com.android.support:appcompat-v7:25.3.1'
     compile 'com.android.support.constraint:constraint-layout:1.0.2'
@@ -43,12 +45,11 @@ dependencies {
     compile 'com.baoyz.pullrefreshlayout:library:1.2.0'
     compile 'jp.wasabeef:glide-transformations:2.0.2'
     compile 'com.victor:lib:1.0.4'
+    compile 'com.google.maps.android:android-maps-utils:0.4.+'
     testCompile 'junit:junit:4.12'
     annotationProcessor 'com.github.bumptech.glide:compiler:4.0.0'
-
-    // 지도 유틸 
-    compile 'com.google.maps.android:android-maps-utils:0.4+'
 }
+
 
 
 
