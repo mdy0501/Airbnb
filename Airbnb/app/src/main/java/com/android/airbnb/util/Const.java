@@ -13,14 +13,15 @@ public class Const {
 
     public static class Amenities {
 
+        // Map 형태의 Collection Framework를 사용하여 이미지를 쉽게 꺼낼 수 있게 코드를 작성하였다.
         public static Map<String, Integer> amenitiesMap = new HashMap<>();
 
+        // 서버에서 넘겨 받은 amenities의 String을 key로 사용한다.
         public static int getAmenityImg(String key) {
             return amenitiesMap.get(key);
         }
 
         public static void setAmenities() {
-
             amenitiesMap.put("Pets_allowed", R.drawable.ic_pets_allowed);
             amenitiesMap.put("Elevator", R.drawable.ic_elevator);
             amenitiesMap.put("Gym", R.drawable.ic_gym);
@@ -37,10 +38,10 @@ public class Const {
             amenitiesMap.put("Dryer", R.drawable.ic_dryer);
             amenitiesMap.put("Free_parking", R.drawable.ic_free_parking);
             amenitiesMap.put("Cable_TV", R.drawable.ic_cable_tv);
-            amenitiesMap.put("Hanger", R.drawable.ic_hanger);
+            amenitiesMap.put("Hangers", R.drawable.ic_hanger);
             amenitiesMap.put("Washer", R.drawable.ic_washer);
             amenitiesMap.put("Shampoo", R.drawable.ic_shampoo);
-            amenitiesMap.put("Essential", R.drawable.airplane);
+            amenitiesMap.put("Essentials", R.drawable.airplane);
             amenitiesMap.put("Heating", R.drawable.ic_heating);
             amenitiesMap.put("TV", R.drawable.ic_tv);
             amenitiesMap.put("Air_conditioning", R.drawable.ic_air_conditioning);
