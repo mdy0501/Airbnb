@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 
 import com.android.airbnb.R;
+import com.android.airbnb.data.SignUpData;
 
 public class SignUpActivity extends AppCompatActivity {
 
@@ -14,7 +15,7 @@ public class SignUpActivity extends AppCompatActivity {
     SignUpBeforeFragment signUpBeforeFragment;
     SignUpBeforeDetailFragment signUpBeforeDetailFragment;
 
-
+    public SignUpData signUpData = new SignUpData();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -22,6 +23,8 @@ public class SignUpActivity extends AppCompatActivity {
         setContentView(R.layout.activity_sign_up);
         setFragments();
         addFirstFragment();
+
+
     }
 
     private void addFirstFragment(){

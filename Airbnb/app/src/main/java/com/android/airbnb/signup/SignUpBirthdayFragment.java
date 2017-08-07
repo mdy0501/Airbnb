@@ -70,7 +70,7 @@ public class SignUpBirthdayFragment extends Fragment implements View.OnClickList
                 goSignUpBeforeFragment();
                 break;
             case R.id.txtBirthdaySetting :
-                DatePickerDialog dialog = new DatePickerDialog(getActivity(), dateSetListener, 1989, 5, 1);
+                DatePickerDialog dialog = new DatePickerDialog(getActivity(), dateSetListener, 1989, 4, 1);
                 dialog.show();
                 break;
         }
@@ -81,7 +81,9 @@ public class SignUpBirthdayFragment extends Fragment implements View.OnClickList
         @Override
         public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
             int realMonth = month+1;
-            txtBirthdaySetting.setText(realMonth + " / " + dayOfMonth + " / " + year);
+            String theDay = String.format("%d-%02d-%02d", year, realMonth, dayOfMonth);
+            txtBirthdaySetting.setText(theDay);
+            signUpActivity.signUpData.setBirthday(theDay);
         }
     };
 
