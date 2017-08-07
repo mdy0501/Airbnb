@@ -37,6 +37,7 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.maps.android.clustering.ClusterManager;
 import com.victor.loading.rotate.RotateLoading;
 
 import java.util.ArrayList;
@@ -47,6 +48,7 @@ public class GoogleMapViewPagerActivity extends FragmentActivity implements OnMa
 
     private Marker currentMarker = null;
     private GoogleMap mMap;
+
     /* data setting */
     private List<House> houseList;
     private List<CameraPosition> cameraPositionList;
@@ -60,14 +62,16 @@ public class GoogleMapViewPagerActivity extends FragmentActivity implements OnMa
     private RotateLoading progress;
     private MapPagerAdapter adapter;
 
-
-    // bottom sheet
+    /* bottom sheet settings */
     private LinearLayout llBottomSheet;
     private BottomSheetBehavior behavior;
     private RecyclerView wishBottomRecycler;
     private BottomSheetAdapter bottomSheetAdapter;
     private ImageView btnAddList;
     private CoordinatorLayout snackbarPlace;
+
+    /* google map utils settings */
+    private ClusterManager<House> mClusterManager;
 
     public static final float BOTTOM_UP = 300.f;
     public static final float BOTTON_DOWN = 0;
@@ -91,7 +95,6 @@ public class GoogleMapViewPagerActivity extends FragmentActivity implements OnMa
         cameraPositionList = new ArrayList<>();
         markerOptList = new ArrayList<>();
         markerList = new ArrayList<>();
-
     }
 
     private void setBottomSheet(float height) {
@@ -105,12 +108,12 @@ public class GoogleMapViewPagerActivity extends FragmentActivity implements OnMa
             public void onStateChanged(@NonNull View bottomSheet, int newState) {
                 switch (newState){
                     case BottomSheetBehavior.STATE_HIDDEN:
-
                         break;
 
                     case BottomSheetBehavior.STATE_EXPANDED:
                         setStatusBarDim(false);
                         break;
+
                     default:
                         setStatusBarDim(true);
                         break;
@@ -122,6 +125,20 @@ public class GoogleMapViewPagerActivity extends FragmentActivity implements OnMa
 
             }
         });
+    }
+    /* clusterManager 다듬기 */
+    private void setClusterManager(){
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(houseList.get(0).getLatLng(), 10));
+        mClusterManager = new ClusterManager<House>(this, mMap);
+        mMap.setOnCameraIdleListener(mClusterManager);
+        mMap.setOnMarkerClickListener(mClusterManager);
+        addItems();
+    }
+
+    private void addItems(){
+        for (House house : houseList){
+            mClusterManager.addItem(house);
+        }
     }
 
     @Override
@@ -179,51 +196,7 @@ public class GoogleMapViewPagerActivity extends FragmentActivity implements OnMa
         bottomSheetAdapter = new BottomSheetAdapter(houseList, this);
         wishBottomRecycler.setAdapter(bottomSheetAdapter);
         wishBottomRecycler.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
-
-
     }
-
-//    private Bitmap writeTextOnDrawable(int drawableId, String text) {
-//        Bitmap bm = BitmapFactory.decodeResource(getResources(), drawableId)
-//                .copy(Bitmap.Config.ARGB_8888, true);
-//
-//        Typeface tf = Typeface.create("Helvetica", Typeface.BOLD);
-//
-//        Paint paint = new Paint();
-//        paint.setStyle(Paint.Style.FILL);
-//        paint.setColor(Color.BLACK);
-//        paint.setTypeface(tf);
-//        paint.setTextAlign(Paint.Align.CENTER);
-//        paint.setTextSize(convertToPixels(this, 11));
-//
-//        Rect textRect = new Rect();
-//        paint.getTextBounds(text, 0, text.length(), textRect);
-//
-//        Canvas canvas = new Canvas(bm);
-//
-//        //If the text is bigger than the canvas , reduce the font size
-//        if(textRect.width() >= (canvas.getWidth() - 4))     //the padding on either sides is considered as 4, so as to appropriately fit in the text
-//            paint.setTextSize(convertToPixels(this, 7));        //Scaling needs to be used for different dpi's
-//
-//        //Calculate the positions
-//        int xPos = (canvas.getWidth() / 2) - 2;     //-2 is for regulating the x position offset
-//
-//        //"- ((paint.descent() + paint.ascent()) / 2)" is the distance from the baseline to the center.
-//        int yPos = (int) ((canvas.getHeight() / 2) - ((paint.descent() + paint.ascent()) / 2)) ;
-//
-//        canvas.drawText(text, xPos, yPos, paint);
-//        return  bm;
-//    }
-
-
-//    public static int convertToPixels(Context context, int nDP)
-//    {
-//        final float conversionScale = context.getResources().getDisplayMetrics().density;
-//
-//        return (int) ((nDP * conversionScale) + 0.5f) ;
-//
-//    }
-
 
     public void setMarkerOpt(/* GoogleMap googleMap, */int position) {
         MarkerOptions markerOptions = new MarkerOptions()
@@ -231,7 +204,6 @@ public class GoogleMapViewPagerActivity extends FragmentActivity implements OnMa
                 .title("₩" + houseList.get(position).getPrice_per_day());
         markerOptList.add(markerOptions);
     }
-
 
     @Override
     public void doHostListTask(List<Host> hostList) {
@@ -254,19 +226,15 @@ public class GoogleMapViewPagerActivity extends FragmentActivity implements OnMa
                 v.getContext().startActivity(intent);
             }
         });
-
     }
-
 
     /* marker 온클릭 셋팅 */
     // 시간적 여유 -> Lambda로 변환
     public void setMarkerOnClick() {
-
         mMap.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
             @Override
             public void onInfoWindowClick(Marker marker) {
                 Toast.makeText(GoogleMapViewPagerActivity.this, "Lat/Lon ::  " + marker.getPosition(), Toast.LENGTH_SHORT).show();
-
             }
         });
 
@@ -295,7 +263,7 @@ public class GoogleMapViewPagerActivity extends FragmentActivity implements OnMa
         setMarkerOnClick();
         setViewPager();
         initMap();
-
+        setClusterManager();
     }
 
     @Override
@@ -370,7 +338,5 @@ public class GoogleMapViewPagerActivity extends FragmentActivity implements OnMa
             }).show();
 
         }
-
-
     }
 }

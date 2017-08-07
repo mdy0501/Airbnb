@@ -4,12 +4,13 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 import com.google.android.gms.maps.model.LatLng;
+import com.google.maps.android.clustering.ClusterItem;
 
 /**
  * Created by JunHee on 2017. 8. 2..
  */
 
-public class House implements Parcelable {
+public class House implements Parcelable, ClusterItem {
 
     private Host host;
     private String cleaning_fee;
@@ -318,6 +319,11 @@ public class House implements Parcelable {
         dest.writeString(price_per_day);
         dest.writeString(pk);
         dest.writeString(space_info);
+    }
+
+    @Override
+    public LatLng getPosition() {
+        return this.latLng;
     }
 }
 
