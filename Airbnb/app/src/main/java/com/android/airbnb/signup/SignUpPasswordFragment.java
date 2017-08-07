@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.android.airbnb.R;
 
@@ -20,8 +21,8 @@ public class SignUpPasswordFragment extends Fragment implements View.OnClickList
 
     private SignUpActivity signUpActivity;
     private Button btnPreviousPassword, btnNextPassword;
-    private TextView txtTitle, txtDescription, txtPassword, txtIndicate;
-    private EditText editPassword;
+    private TextView txtTitle, txtDescription, txtPassword1, txtPassword2, txtIndicate;
+    private EditText editPassword1, editPassword2;
 
 
     public SignUpPasswordFragment() {
@@ -48,9 +49,11 @@ public class SignUpPasswordFragment extends Fragment implements View.OnClickList
         btnNextPassword = (Button) view.findViewById(R.id.btnNextPassword);
         txtTitle = (TextView) view.findViewById(R.id.txtTitle1);
         txtDescription = (TextView) view.findViewById(R.id.txtIntroduce);
-        txtPassword = (TextView) view.findViewById(R.id.txtPassword);
+        txtPassword1 = (TextView) view.findViewById(R.id.txtPassword1);
+        txtPassword2 = (TextView) view.findViewById(R.id.txtPassword2);
         txtIndicate = (TextView) view.findViewById(R.id.txtIndicate);
-        editPassword = (EditText) view.findViewById(R.id.editPassword);
+        editPassword1 = (EditText) view.findViewById(R.id.editPassword1);
+        editPassword2 = (EditText) view.findViewById(R.id.editPassword2);
     }
 
     private void setListeners(){
@@ -64,9 +67,14 @@ public class SignUpPasswordFragment extends Fragment implements View.OnClickList
             case R.id.btnPreviousPassword :
                 signUpActivity.onBackPressed();
                 break;
-
             case R.id.btnNextPassword :
-                goSignUpBirthdayFragment();
+                if( (editPassword1.getText().toString()).equals(editPassword2.getText().toString())) {
+                    signUpActivity.signUpData.setPassword1(editPassword1.getText().toString());
+                    signUpActivity.signUpData.setPasswrod2(editPassword2.getText().toString());
+                    goSignUpBirthdayFragment();
+                } else {
+                    Toast.makeText(signUpActivity.getBaseContext(), "비밀번호를 확인해주세요.", Toast.LENGTH_SHORT).show();
+                }
                 break;
         }
     }
