@@ -45,6 +45,9 @@ dependencies {
     compile 'com.victor:lib:1.0.4'
     testCompile 'junit:junit:4.12'
     annotationProcessor 'com.github.bumptech.glide:compiler:4.0.0'
+
+    // 지도 유틸 
+    compile 'com.google.maps.android:android-maps-utils:0.4+'
 }
 
 

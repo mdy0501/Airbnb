@@ -3,6 +3,7 @@ package com.android.airbnb.adapter;
 import android.content.Context;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,6 +23,7 @@ public class DetailImgPager extends PagerAdapter {
     private Context mContext;
 
     public DetailImgPager(House_images[] imgUrl, Context mContext) {
+        Log.e("imgpager", "img size" + imgUrl.length);
         this.mContext = mContext;
         this.mimgUrl = imgUrl;
     }
@@ -30,12 +32,11 @@ public class DetailImgPager extends PagerAdapter {
     public Object instantiateItem(ViewGroup container, int position) {
 
         LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-
         View viewItem = inflater.inflate(R.layout.detail_house_fragment, container, false);
         ImageView imageView = (ImageView) viewItem.findViewById(R.id.detail_viewpager_img);
         GlideApp
                 .with(mContext)
-                .load(mimgUrl.length > 0 ? mimgUrl[position] : null)
+                .load(mimgUrl.length > 0 ? mimgUrl[position].getImage() : null)
                 .fallback(R.mipmap.dummy_room)
                 .into(imageView);
         ((ViewPager) container).addView(viewItem);
