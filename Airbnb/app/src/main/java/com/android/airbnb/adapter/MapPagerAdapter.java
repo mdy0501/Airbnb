@@ -86,8 +86,15 @@ public class MapPagerAdapter extends PagerAdapter {
         btnWish.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                setBtnWish(buttonView, R.drawable.icon_wish_full, true);
-                mPagerListner.btnWishClicked(isChecked);
+                // 실제
+                if (isChecked) {
+                    setBtnWish(buttonView, R.drawable.icon_wish_full, true);
+                    mPagerListner.btnWishClicked(isChecked);
+
+                } else {
+                    setBtnWish(buttonView, R.drawable.icon_wish_empty, false);
+                    mPagerListner.btnWishClicked(isChecked);
+                }
             }
         });
     }
