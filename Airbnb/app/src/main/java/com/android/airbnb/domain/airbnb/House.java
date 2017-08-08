@@ -4,17 +4,31 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 import com.google.android.gms.maps.model.LatLng;
-import com.google.maps.android.clustering.ClusterItem;
+import com.google.android.gms.maps.model.Marker;
 
 /**
  * Created by JunHee on 2017. 8. 2..
  */
 
-public class House implements Parcelable, ClusterItem {
+public class House implements Parcelable {
 
     private Host host;
+
+    public void setMarker(Marker marker) {
+        this.marker = marker;
+    }
+
+    public Marker getMarker() {
+        return this.marker;
+    }
+
+    private Marker marker;
     private String cleaning_fee;
     private Amenities[] amenities;
+
+    public House(){
+
+    }
 
     protected House(Parcel in) {
 
@@ -65,7 +79,7 @@ public class House implements Parcelable, ClusterItem {
         this.latLng = latLng;
     }
 
-    private LatLng latLng;
+    public LatLng latLng;
 
     private String modified_date;
 
@@ -319,11 +333,6 @@ public class House implements Parcelable, ClusterItem {
         dest.writeString(price_per_day);
         dest.writeString(pk);
         dest.writeString(space_info);
-    }
-
-    @Override
-    public LatLng getPosition() {
-        return this.latLng;
     }
 }
 
