@@ -1,58 +1,52 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="match_parent"
     android:background="@color/white">
 
     <ImageView
         android:id="@+id/img"
-        android:layout_width="370dp"
+        android:layout_width="0dp"
         android:layout_height="250dp"
         android:scaleType="centerCrop"
-        app:layout_constraintHorizontal_bias="0.501"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@android:drawable/ic_menu_gallery"
-        android:layout_centerVertical="true"
-        android:layout_centerHorizontal="true" />
+        android:layout_marginRight="0dp"
+        app:layout_constraintRight_toRightOf="parent"
+        android:layout_marginLeft="0dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginTop="0dp" />
 
     <TextView
         android:id="@+id/txtPrice"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/img"
-        android:layout_alignStart="@+id/img"
-        android:layout_below="@+id/img"
-        android:layout_marginTop="12dp"
         android:text="Price"
         android:textColor="@android:color/black"
         android:textSize="18sp"
         android:textStyle="bold"
+        android:layout_marginLeft="8dp"
         app:layout_constraintLeft_toLeftOf="parent"
+        android:layout_marginTop="8dp"
         app:layout_constraintTop_toBottomOf="@+id/img" />
 
     <TextView
         android:id="@+id/txtIntroduce"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_alignBaseline="@+id/txtPrice"
-        android:layout_alignBottom="@+id/txtPrice"
-        android:layout_marginLeft="15dp"
-        android:layout_marginStart="15dp"
-        android:layout_toEndOf="@+id/txtPrice"
-        android:layout_toRightOf="@+id/txtPrice"
         android:ellipsize="end"
         android:maxLines="1"
         android:text="Introduce"
         android:textColor="@android:color/black"
         android:textSize="18sp"
         android:textStyle="bold"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintLeft_toRightOf="@+id/txtPrice"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/txtPrice" />
+        android:layout_marginLeft="24dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintTop_toBottomOf="@+id/img"
+        android:layout_marginRight="8dp"
+        app:layout_constraintRight_toRightOf="parent" />
 
-</RelativeLayout>
+</android.support.constraint.ConstraintLayout>
