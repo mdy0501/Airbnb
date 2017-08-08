@@ -48,6 +48,7 @@
         <activity
             android:name=".MakeWishListActivity"
             android:theme="@style/NoActioinBarTheme"></activity>
+        <activity android:name=".main.SettingActivity"></activity>
     </application>
 
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />

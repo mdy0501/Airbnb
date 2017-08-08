@@ -2,6 +2,7 @@ package com.android.airbnb.signup;
 
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -10,10 +11,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.android.airbnb.R;
 import com.android.airbnb.data.ApiService;
 import com.android.airbnb.data.SignUpData;
+import com.android.airbnb.main.Main2Activity;
 
 import java.util.List;
 
@@ -80,6 +83,8 @@ public class SignUpBeforeFragment extends Fragment implements View.OnClickListen
                 .build();
         apiService = retrofit.create(ApiService.class);
 
+//        SignUpData signUpData = new SignUpData("test555@hanmail.net", "12345678", "12345678", "dongyeon", "min", "1989-05-01", true);
+
         /* RequestBody 객체에 실어보내야 함, sign-up 정보 post 시 JSON 객체로 통신하지 않고 text/plain으로 구성되어 있는 form-data로 통신 */
         // json 객체로 통신 시도하면 400 error와 함께 bad request error가 뜸 -> 조사해본 결과 보통 syntax error 때문에 발생한다고 함
         RequestBody email = RequestBody.create(MediaType.parse("text/plain"), signUpActivity.signUpData.getEmail());
@@ -98,6 +103,10 @@ public class SignUpBeforeFragment extends Fragment implements View.OnClickListen
                 Log.e("==============" , "데이터 전송");
                 // response.toString() 을 로그에 찍어보면 response 결과를 바로 로그창에서 볼 수 있음
                 Log.e("================", response.toString());
+                Toast.makeText(signUpActivity.getBaseContext(), "회원가입이 완료되었습니다.\nMain 화면으로 이동합니다.", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(signUpActivity.getBaseContext(), Main2Activity.class);
+                startActivity(intent);
+                signUpActivity.finish();
             }
 
             @Override
@@ -106,32 +115,6 @@ public class SignUpBeforeFragment extends Fragment implements View.OnClickListen
 
             }
         });
-
-
-        /*Call<List<SignUpData>> postSignUp = apiService.postSignUpData(signUpActivity.signUpData);
-        postSignUp.enqueue(new Callback<List<SignUpData>>() {
-               @Override
-               public void onResponse(Call<List<SignUpData>> call, Response<List<SignUpData>> response) {
-                   Log.e("==============" , "데이터 전송");
-               }
-               @Override
-               public void onFailure(Call<List<SignUpData>> call, Throwable t) {
-               }
-           });*/
-
-        /*postSignUp.enqueue(new Callback<SignUpData>() {
-            @Override
-            public void onResponse(Call<SignUpData> call, Response<SignUpData> response) {
-                try {
-                    Log.e("==============" , "데이터 전송");
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-            @Override
-            public void onFailure(Call<SignUpData> call, Throwable t) {
-            }
-        });*/
     }
 
     @Override

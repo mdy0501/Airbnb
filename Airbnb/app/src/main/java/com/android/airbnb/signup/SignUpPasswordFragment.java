@@ -4,10 +4,13 @@ package com.android.airbnb.signup;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.text.InputType;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -23,6 +26,7 @@ public class SignUpPasswordFragment extends Fragment implements View.OnClickList
     private Button btnPreviousPassword, btnNextPassword;
     private TextView txtTitle, txtDescription, txtPassword1, txtPassword2, txtIndicate;
     private EditText editPassword1, editPassword2;
+    private CheckBox checkIndicate;
 
 
     public SignUpPasswordFragment() {
@@ -51,15 +55,36 @@ public class SignUpPasswordFragment extends Fragment implements View.OnClickList
         txtDescription = (TextView) view.findViewById(R.id.txtIntroduce);
         txtPassword1 = (TextView) view.findViewById(R.id.txtPassword1);
         txtPassword2 = (TextView) view.findViewById(R.id.txtPassword2);
-        txtIndicate = (TextView) view.findViewById(R.id.txtIndicate);
         editPassword1 = (EditText) view.findViewById(R.id.editPassword1);
         editPassword2 = (EditText) view.findViewById(R.id.editPassword2);
+        checkIndicate = (CheckBox) view.findViewById(R.id.checkIndicate);
     }
 
     private void setListeners(){
         btnPreviousPassword.setOnClickListener(this);
         btnNextPassword.setOnClickListener(this);
+        indicatePassword();
     }
+
+
+    // Password 표시하기
+    private void indicatePassword(){
+        checkIndicate.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if(isChecked == true) {
+                    editPassword1.setInputType(InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD);
+                    editPassword2.setInputType(InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD);
+//                    editPassword.setTransformationMethod(PasswordTransformationMethod.getInstance());
+                } else if (isChecked == false){
+//                    editPassword.setTransformationMethod(Text);
+                    editPassword1.setInputType(InputType.TYPE_TEXT_VARIATION_PASSWORD | InputType.TYPE_CLASS_TEXT);
+                    editPassword2.setInputType(InputType.TYPE_TEXT_VARIATION_PASSWORD | InputType.TYPE_CLASS_TEXT);
+                }
+            }
+        });
+    }
+
 
     @Override
     public void onClick(View v) {
