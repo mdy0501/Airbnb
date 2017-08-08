@@ -34,27 +34,27 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapsInitializer;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
-import com.google.android.gms.maps.model.CameraPosition;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
-import com.google.maps.android.clustering.ClusterManager;
+import com.google.maps.android.ui.IconGenerator;
 import com.victor.loading.rotate.RotateLoading;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 
 public class GoogleMapViewPagerActivity extends FragmentActivity implements OnMapReadyCallback, ITask, MapPagerAdapter.OnMapPagerListener {
 
-    private Marker currentMarker = null;
     private GoogleMap mMap;
 
     /* data setting */
     private List<House> houseList;
-    private List<CameraPosition> cameraPositionList;
     private List<MarkerOptions> markerOptList;
     private List<Marker> markerList;
-    private Marker marker;
+    private Marker currentMarker;
 
     private FloatingActionButton fabMap;
     private SupportMapFragment mapFragment;
@@ -71,8 +71,6 @@ public class GoogleMapViewPagerActivity extends FragmentActivity implements OnMa
     private CoordinatorLayout snackbarPlace;
 
     /* google map utils settings */
-    private ClusterManager<House> mClusterManager;
-
     public static final float BOTTOM_UP = 300.f;
     public static final float BOTTON_DOWN = 0;
 
@@ -92,7 +90,6 @@ public class GoogleMapViewPagerActivity extends FragmentActivity implements OnMa
     }
 
     private void initArrayList() {
-        cameraPositionList = new ArrayList<>();
         markerOptList = new ArrayList<>();
         markerList = new ArrayList<>();
     }
@@ -106,7 +103,7 @@ public class GoogleMapViewPagerActivity extends FragmentActivity implements OnMa
         behavior.setBottomSheetCallback(new BottomSheetBehavior.BottomSheetCallback() {
             @Override
             public void onStateChanged(@NonNull View bottomSheet, int newState) {
-                switch (newState){
+                switch (newState) {
                     case BottomSheetBehavior.STATE_HIDDEN:
                         break;
 
@@ -125,20 +122,6 @@ public class GoogleMapViewPagerActivity extends FragmentActivity implements OnMa
 
             }
         });
-    }
-    /* clusterManager 다듬기 */
-    private void setClusterManager(){
-        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(houseList.get(0).getLatLng(), 10));
-        mClusterManager = new ClusterManager<House>(this, mMap);
-        mMap.setOnCameraIdleListener(mClusterManager);
-        mMap.setOnMarkerClickListener(mClusterManager);
-        addItems();
-    }
-
-    private void addItems(){
-        for (House house : houseList){
-            mClusterManager.addItem(house);
-        }
     }
 
     @Override
@@ -189,6 +172,8 @@ public class GoogleMapViewPagerActivity extends FragmentActivity implements OnMa
             public void onPageSelected(int position) {
                 Log.e("map", "onPageSelected pos :: " + position);
                 adapter.setCurrentPostition(position);
+                // ... ?
+                setMarkerChanged(markerList.get(position));
                 mMap.moveCamera(CameraUpdateFactory.newLatLng(houseList.get(position).getLatLng()));
                 mMap.animateCamera(CameraUpdateFactory.zoomTo(15));
             }
@@ -196,13 +181,6 @@ public class GoogleMapViewPagerActivity extends FragmentActivity implements OnMa
         bottomSheetAdapter = new BottomSheetAdapter(houseList, this);
         wishBottomRecycler.setAdapter(bottomSheetAdapter);
         wishBottomRecycler.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
-    }
-
-    public void setMarkerOpt(/* GoogleMap googleMap, */int position) {
-        MarkerOptions markerOptions = new MarkerOptions()
-                .position(houseList.get(position).getLatLng())
-                .title("₩" + houseList.get(position).getPrice_per_day());
-        markerOptList.add(markerOptions);
     }
 
     @Override
@@ -228,31 +206,58 @@ public class GoogleMapViewPagerActivity extends FragmentActivity implements OnMa
         });
     }
 
-    /* marker 온클릭 셋팅 */
+    public String selectedMarkerID = "";
+
+    public Map<String, Marker> markerMap = new HashMap<>();
+
+    private void setMarkerIcon(Marker marker, int styleId, int color) {
+        House house = (House) marker.getTag();
+        IconGenerator iconGenerator = new IconGenerator(getApplicationContext());
+        iconGenerator.setTextAppearance(styleId);
+        iconGenerator.setColor(color);
+        marker.setIcon(BitmapDescriptorFactory.fromBitmap(iconGenerator.makeIcon("₩" + house.getPrice_per_day())));
+    }
+
+    /* IconGenerator 객체 사용 */
+    private IconGenerator iconGenerator;
+
+    public MarkerOptions getMarkerOpt(int position) {
+        iconGenerator = new IconGenerator(GoogleMapViewPagerActivity.this);
+        // style 추가해서 커스텀하기
+        iconGenerator.setTextAppearance(R.style.iconGenTxt_default);
+        MarkerOptions markerOptions = new MarkerOptions()
+                .position(houseList.get(position).getLatLng())
+                .icon(BitmapDescriptorFactory.fromBitmap(iconGenerator.makeIcon("₩" + houseList.get(position).getTitle())))
+                .anchor(iconGenerator.getAnchorU(), iconGenerator.getAnchorV());
+        markerOptList.add(markerOptions);
+        return markerOptions;
+    }
+
+    private void setMarkerChanged(Marker marker) {
+        if (selectedMarkerID != "") {
+            Marker exMarker = markerMap.get(selectedMarkerID);
+            setMarkerIcon(exMarker, R.style.iconGenTxt_default, Color.parseColor("#ffffff"));
+            // code 정리하기
+        }
+        setMarkerIcon(marker, R.style.iconGenTxt_clicked, Color.parseColor("#00A599"));
+        selectedMarkerID = marker.getId();
+        mapListPager.setCurrentItem(markerList.indexOf(marker));
+    }
+
+    /* currentMarker 온클릭 셋팅 */
     // 시간적 여유 -> Lambda로 변환
     public void setMarkerOnClick() {
-        mMap.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
-            @Override
-            public void onInfoWindowClick(Marker marker) {
-                Toast.makeText(GoogleMapViewPagerActivity.this, "Lat/Lon ::  " + marker.getPosition(), Toast.LENGTH_SHORT).show();
-            }
-        });
-
         mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
             @Override
             public boolean onMarkerClick(Marker marker) {
-                int position = 0;
-                for (int i = 0; i < houseList.size(); i++) {
-                    if (marker.getPosition().equals(houseList.get(i).getLatLng())) {
-                        position = i;
-                    }
-                }
-                mapListPager.setCurrentItem(position);
+                setMarkerChanged(marker);
                 return false;
             }
         });
     }
 
+    // 1. houselist response 받아온다.
+    // 셋팅할 것들 셋팅한다.
     @Override
     public void doHouseListTask(List<House> houseList) {
         this.houseList = houseList;
@@ -263,7 +268,6 @@ public class GoogleMapViewPagerActivity extends FragmentActivity implements OnMa
         setMarkerOnClick();
         setViewPager();
         initMap();
-        setClusterManager();
     }
 
     @Override
@@ -277,6 +281,7 @@ public class GoogleMapViewPagerActivity extends FragmentActivity implements OnMa
     }
 
     private void initMap() {
+        /* 바꿈 */
         mMap.moveCamera(CameraUpdateFactory
                 .newLatLng(houseList.get(0).getLatLng()));
         mMap.animateCamera(CameraUpdateFactory.zoomTo(15));
@@ -287,19 +292,23 @@ public class GoogleMapViewPagerActivity extends FragmentActivity implements OnMa
         new Thread(new Runnable() {
             @Override
             public void run() {
+                // 하우스리스트 받아온 상황
+                // 셋포지션하려고 비동기처리
+                //
                 for (int i = 0; i < houseList.size(); i++) {
-                    setMarkerOpt(i);
+                    getMarkerOpt(i);
                 }
 
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        for (int i = 0; i < markerOptList.size(); i++) {
-                            marker = mMap.addMarker(markerOptList.get(i));
+                        for (int i = 0; i < houseList.size(); i++) {
+                            Marker marker = googleMap.addMarker(markerOptList.get(i));
+                            marker.setTag(houseList.get(i));
+                            houseList.get(i).setMarker(marker);
                             markerList.add(marker);
-                            marker.showInfoWindow();
+                            markerMap.put(marker.getId(), marker);
                             progress.stop();
-
                         }
                     }
                 });
@@ -336,7 +345,6 @@ public class GoogleMapViewPagerActivity extends FragmentActivity implements OnMa
                     }).show();
                 }
             }).show();
-
         }
     }
 }
