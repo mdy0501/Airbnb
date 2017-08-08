@@ -17,7 +17,10 @@ import com.android.airbnb.R;
 import com.android.airbnb.WelcomeActivity;
 import com.android.airbnb.data.ApiService;
 import com.android.airbnb.data.LoginData;
+import com.android.airbnb.data.LoginResult;
 
+import okhttp3.MediaType;
+import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -92,15 +95,23 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         loginData.setEmail(editEmail.getText().toString());
         loginData.setPassword(editPassword.getText().toString());
 
-        Call<LoginData> postLoginData = apiService.postLoginData(loginData);
-        postLoginData.enqueue(new Callback<LoginData>() {
+        RequestBody email = RequestBody.create(MediaType.parse("text/plain"), loginData.getEmail());
+        RequestBody password = RequestBody.create(MediaType.parse("text/plain"), loginData.getPassword());
+
+        loginData.setEmail(editEmail.getText().toString());
+        loginData.setPassword(editPassword.getText().toString());
+
+        Call<LoginResult> postLoginData = apiService.postLoginData(email, password);
+        postLoginData.enqueue(new Callback<LoginResult>() {
             @Override
-            public void onResponse(Call<LoginData> call, Response<LoginData> response) {
-                Log.e("===============", "데이터 전송");
+            public void onResponse(Call<LoginResult> call, Response<LoginResult> response) {
+                Log.e("===============", "로그인 데이터 전송");
+                Log.e("===============", "Response" + response.body().token);
+
             }
 
             @Override
-            public void onFailure(Call<LoginData> call, Throwable t) {
+            public void onFailure(Call<LoginResult> call, Throwable t) {
 
             }
         });

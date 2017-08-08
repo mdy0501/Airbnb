@@ -10,7 +10,7 @@
     <ImageView
         android:id="@+id/img"
         android:layout_width="0dp"
-        android:layout_height="200dp"
+        android:layout_height="120dp"
         android:layout_marginEnd="16dp"
         android:layout_marginLeft="0dp"
         android:layout_marginRight="0dp"
