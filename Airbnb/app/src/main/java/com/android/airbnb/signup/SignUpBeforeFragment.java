@@ -115,36 +115,6 @@ public class SignUpBeforeFragment extends Fragment implements View.OnClickListen
 
             }
         });
-
-
-        /*Call<List<SignUpData>> postSignUp = apiService.postSignUpData(signUpActivity.signUpData);
-        postSignUp.enqueue(new Callback<List<SignUpData>>() {
-               @Override
-               public void onResponse(Call<List<SignUpData>> call, Response<List<SignUpData>> response) {
-                   Log.e("==============" , "데이터 전송");
-               }
-
-               @Override
-               public void onFailure(Call<List<SignUpData>> call, Throwable t) {
-
-               }
-           });*/
-
-        /*postSignUp.enqueue(new Callback<SignUpData>() {
-            @Override
-            public void onResponse(Call<SignUpData> call, Response<SignUpData> response) {
-                try {
-                    Log.e("==============" , "데이터 전송");
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-
-            @Override
-            public void onFailure(Call<SignUpData> call, Throwable t) {
-
-            }
-        });*/
     }
 
     @Override

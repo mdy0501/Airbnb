@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.ImageView;
+
 import android.widget.RatingBar;
 import android.widget.TextView;
 
@@ -108,16 +109,16 @@ public class MapPagerAdapter extends PagerAdapter {
         House house = houseList.get(position);
         Log.e("MapAdapter :: house", house.getTitle());
         House_images house_images[] = house.getHouse_images();
-        housePrice.setText(house.getPrice_per_day());
+        housePrice.setText("₩" + house.getPrice_per_day());
         houseTitle.setText(house.getTitle());
         // dummy, 추후 수정 요망
-        ratingBar.setRating(3.5f);
-        houseReviewCount.setText("123");
+        ratingBar.setRating(/* 하우스 별점 넣기 */ 3.5f);
+        houseReviewCount.setText(/* 리뷰 카운트 넣기*/ "123");
 
         /* house_images.length 체크 */
         GlideApp.with(mContext)
                 .load(house_images.length > 0 ? house_images[0].getImage() : null)
-                .placeholder(R.mipmap.dummy_host_img)
+                .placeholder(R.mipmap.ic_launcher)
                 .into(houseImg);
     }
 
