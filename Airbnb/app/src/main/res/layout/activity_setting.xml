@@ -8,16 +8,22 @@
     tools:context="com.android.airbnb.main.SettingActivity">
 
     <ScrollView
-        android:layout_width="395dp"
-        android:layout_height="643dp"
-        tools:layout_editor_absoluteX="8dp"
-        tools:layout_editor_absoluteY="8dp">
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginBottom="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical" >
+            android:orientation="vertical">
 
             <android.support.constraint.ConstraintLayout
                 android:layout_width="match_parent"
@@ -137,7 +143,6 @@
             </android.support.constraint.ConstraintLayout>
 
 
-
             <android.support.constraint.ConstraintLayout
                 android:id="@+id/layoutInformation"
                 android:layout_width="match_parent"
@@ -159,7 +164,6 @@
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
             </android.support.constraint.ConstraintLayout>
-
 
 
             <android.support.constraint.ConstraintLayout
@@ -185,7 +189,6 @@
             </android.support.constraint.ConstraintLayout>
 
 
-
             <android.support.constraint.ConstraintLayout
                 android:id="@+id/layoutMultipleAccounts"
                 android:layout_width="match_parent"
@@ -209,7 +212,6 @@
             </android.support.constraint.ConstraintLayout>
 
 
-
             <android.support.constraint.ConstraintLayout
                 android:id="@+id/layoutSendFeedback"
                 android:layout_width="match_parent"
@@ -231,7 +233,6 @@
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
             </android.support.constraint.ConstraintLayout>
-
 
 
             <android.support.constraint.ConstraintLayout
