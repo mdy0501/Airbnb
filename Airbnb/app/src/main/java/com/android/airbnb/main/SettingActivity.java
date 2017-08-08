@@ -83,7 +83,7 @@ public class SettingActivity extends AppCompatActivity implements View.OnClickLi
 
         Log.e("========", "로그 확인 1");
 
-        Call<ResponseBody> getLogout = apiService.getLogout("Token 8952d604a52f079a7a11d06c06ee78e86e27581b");
+        Call<ResponseBody> getLogout = apiService.getLogout("Token 01f2768f0806f501eed7d0d81d83331b2d3c4480");
         getLogout.enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
