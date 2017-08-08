@@ -12,7 +12,7 @@ import android.widget.TextView;
 import com.android.airbnb.R;
 import com.android.airbnb.data.House_images;
 import com.android.airbnb.data.RoomsData;
-import com.bumptech.glide.Glide;
+import com.android.airbnb.util.GlideApp;
 
 import java.util.List;
 
@@ -44,8 +44,12 @@ public class TripAdapter extends RecyclerView.Adapter<TripAdapter.Holder> {
         holder.setRoomType(roomsData.getRoom_type());
 
         House_images[] images = roomsData.getHouse_images();
-        Glide.with(inflater.getContext())
+
+        GlideApp
+                .with(inflater.getContext())
                 .load(images.length > 0 ? images[0].getImage() : null)
+                .centerCrop()
+                .fallback(R.drawable.question_mark)
                 .into(holder.img);
     }
 
