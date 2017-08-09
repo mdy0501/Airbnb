@@ -15,8 +15,9 @@ import android.widget.Toast;
 
 import com.android.airbnb.R;
 import com.android.airbnb.data.ApiService;
-import com.android.airbnb.data.SignUpData;
-import com.android.airbnb.main.Main2Activity;
+import com.android.airbnb.domain.airbnb.SignUpData;
+import com.android.airbnb.main.GuestMainActivity;
+import com.android.airbnb.util.Remote.IServerApi;
 
 import java.util.List;
 
@@ -33,7 +34,7 @@ import retrofit2.Retrofit;
 public class SignUpBeforeFragment extends Fragment implements View.OnClickListener{
 
     Retrofit retrofit;
-    ApiService apiService;
+    IServerApi iServerApi;
     private List<SignUpData> dataList;
 
     private SignUpActivity signUpActivity;
@@ -80,7 +81,7 @@ public class SignUpBeforeFragment extends Fragment implements View.OnClickListen
                 .baseUrl(ApiService.API_URL)
                 //.addConverterFactory(GsonConverterFactory.create())
                 .build();
-        apiService = retrofit.create(ApiService.class);
+        iServerApi = retrofit.create(IServerApi.class);
 
 //        SignUpData signUpData = new SignUpData("test555@hanmail.net", "12345678", "12345678", "dongyeon", "min", "1989-05-01", true);
 
@@ -95,7 +96,7 @@ public class SignUpBeforeFragment extends Fragment implements View.OnClickListen
         RequestBody agreement = RequestBody.create(MediaType.parse("text/plain"), signUpActivity.signUpData.getAgreement() + "");
 
         /* apiService interface 또한 Request 인자를 parameter로 받도록 수정 */
-        Call<SignUpData> postSignUp = apiService.postSignUpData(email, password1, password2, firstName, lastName, brithday, agreement);
+        Call<SignUpData> postSignUp = iServerApi.postSignUpData(email, password1, password2, firstName, lastName, brithday, agreement);
         postSignUp.enqueue(new Callback<SignUpData>() {
             @Override
             public void onResponse(Call<SignUpData> call, Response<SignUpData> response) {
@@ -103,7 +104,7 @@ public class SignUpBeforeFragment extends Fragment implements View.OnClickListen
                 // response.toString() 을 로그에 찍어보면 response 결과를 바로 로그창에서 볼 수 있음
                 Log.e("================", response.toString());
                 Toast.makeText(signUpActivity.getBaseContext(), "회원가입이 완료되었습니다.\nMain 화면으로 이동합니다.", Toast.LENGTH_SHORT).show();
-                Intent intent = new Intent(signUpActivity.getBaseContext(), Main2Activity.class);
+                Intent intent = new Intent(signUpActivity.getBaseContext(), GuestMainActivity.class);
                 startActivity(intent);
                 signUpActivity.finish();
             }

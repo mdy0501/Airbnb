@@ -15,6 +15,7 @@ import android.widget.Toast;
 import com.android.airbnb.R;
 import com.android.airbnb.WelcomeActivity;
 import com.android.airbnb.data.ApiService;
+import com.android.airbnb.util.Remote.IServerApi;
 
 import okhttp3.ResponseBody;
 import retrofit2.Call;
@@ -26,7 +27,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class SettingActivity extends AppCompatActivity implements View.OnClickListener{
 
     Retrofit retrofit;
-    ApiService apiService;
+    IServerApi iServerApi;
 
     private ConstraintLayout layoutNotice, layoutReceivePayment, layoutCurrency, layoutInformation, layoutAdvancedSettings, layoutMultipleAccounts, layoutSendFeedback, layoutLogout;
     private TextView txtTitle, txtNotice, txtReceivePayment, txtCurrency, txtCurrencyDetail, txtInformation, txtAdvancedSettings, txtMultipleAccounts, txtSendFeedback, txtLogout;
@@ -79,11 +80,11 @@ public class SettingActivity extends AppCompatActivity implements View.OnClickLi
                 .baseUrl(ApiService.API_URL)
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
-        apiService = retrofit.create(ApiService.class);
+        iServerApi = retrofit.create(IServerApi.class);
 
         Log.e("========", "로그 확인 1");
 
-        Call<ResponseBody> getLogout = apiService.getLogout("Token 01f2768f0806f501eed7d0d81d83331b2d3c4480");
+        Call<ResponseBody> getLogout = iServerApi.getLogout("Token 01f2768f0806f501eed7d0d81d83331b2d3c4480");
         getLogout.enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
@@ -173,4 +174,5 @@ public class SettingActivity extends AppCompatActivity implements View.OnClickLi
         }
 
     }
+
 }

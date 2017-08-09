@@ -11,8 +11,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.android.airbnb.R;
-import com.android.airbnb.data.House_images;
-import com.android.airbnb.data.RoomsData;
+import com.android.airbnb.domain.airbnb.House;
+import com.android.airbnb.domain.airbnb.House_images;
 import com.android.airbnb.util.GlideApp;
 
 import java.util.List;
@@ -23,10 +23,10 @@ import java.util.List;
 
 public class PlaceFirstAdapter extends PagerAdapter {
 
-    List<RoomsData> data;
+    List<House> data;
     LayoutInflater inflater;
 
-    public PlaceFirstAdapter(Context context, List<RoomsData> data){
+    public PlaceFirstAdapter(Context context, List<House> data){
         this.data = data;
         inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
@@ -44,16 +44,17 @@ public class PlaceFirstAdapter extends PagerAdapter {
     @Override
     public Object instantiateItem(ViewGroup container, int position) {
         View view = inflater.inflate(R.layout.place_item, container,false);
-        RoomsData roomsData = data.get(position);
+        House house = data.get(position);
 
         ImageView img = (ImageView) view.findViewById(R.id.img);
         TextView txtPrice = (TextView) view.findViewById(R.id.txtPrice);
-        TextView txtIntroduce = (TextView) view.findViewById(R.id.txtIntroduce);
+        TextView txtTitle = (TextView) view.findViewById(R.id.txtTitle);
 
-        txtPrice.setText(roomsData.getPrice_per_day() + " 원");
-        txtIntroduce.setText(roomsData.getIntroduce());
+        txtPrice.setText(house.getPrice_per_day() + " 원");
+        txtTitle.setText(house.getTitle());
 
-        House_images[] images = roomsData.getHouse_images();
+
+        House_images[] images = house.getHouse_images();
         if(images.length > 0){
             Log.e("image",images[0].getImage());
         }
