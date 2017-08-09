@@ -28,7 +28,6 @@ import com.android.airbnb.adapter.MapPagerAdapter;
 import com.android.airbnb.domain.airbnb.Host;
 import com.android.airbnb.domain.airbnb.House;
 import com.android.airbnb.presenter.ITask;
-import com.android.airbnb.util.Remote.Loader;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapsInitializer;
@@ -82,11 +81,29 @@ public class GoogleMapViewPagerActivity extends FragmentActivity implements OnMa
                 .findFragmentById(R.id.detail_house_mapFragment);
         mapFragment.getMapAsync(GoogleMapViewPagerActivity.this);
         initView();
+        progress.start();
         initArrayList();
+        // ==== 수정 코드 ==== //
+        getExIntent();
+        // ====
+        // ======= 수정 //
+        setAdapter();
+        /* Async 처리 */
+
+        setViewPager();
         setBtnOnClick();
         setBottomSheet(0);
-        progress.start();
-        Loader.getHouseList(this);
+//        initMap();
+
+//        Loader.getHouseList(this);
+    }
+
+    private void getExIntent(){
+        Intent intent = getIntent();
+        houseList = intent.getParcelableArrayListExtra("roomsHouseList");
+        Log.e("MapActivity", "houseLIst :: " + houseList.size());
+
+
     }
 
     private void initArrayList() {
@@ -129,6 +146,10 @@ public class GoogleMapViewPagerActivity extends FragmentActivity implements OnMa
         Log.e("GoogleMapViewPager", "onMapReady");
         MapsInitializer.initialize(getApplicationContext());
         mMap = googleMap;
+        setMarkers(mMap);
+        setMarkerOnClick();
+        initMap();
+
     }
 
     private int getThemedResId(@AttrRes int attr) {
@@ -280,6 +301,7 @@ public class GoogleMapViewPagerActivity extends FragmentActivity implements OnMa
 
     private void initMap() {
         /* 바꿈 */
+        Log.e("MapActivity", "initmap houselist ::" +houseList.size());
         mMap.moveCamera(CameraUpdateFactory
                 .newLatLng(houseList.get(0).getLatLng()));
         mMap.animateCamera(CameraUpdateFactory.zoomTo(15));

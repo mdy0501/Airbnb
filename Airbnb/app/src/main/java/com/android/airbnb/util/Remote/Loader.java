@@ -20,7 +20,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class Loader {
 
-    public static final String BASE_URL = "http://crusia.xyz/apis/";
+    public static final String BASE_URL = "http://crusia.xyz/";
     public static List<Host> hostList;
     public static List<House> houseList;
     public static House house;

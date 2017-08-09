@@ -15,16 +15,16 @@ import retrofit2.http.Path;
 
 public interface IServerApi {
 
-    @GET("house/")
+    @GET("apis/house/")
     Call<List<House>> readAllHouses();
 
-    @GET("house/{pk}")
+    @GET("apis/house/{pk}")
     Call<House> readOneHouse(@Path("pk") String pk);
 
-    @GET("user/")
+    @GET("apis/user/")
     Call<List<Host>> readAllHosts();
 
-    @GET("house/{pk}")
+    @GET("apis/house/{pk}")
     Call<Host> readOneHost(@Path("pk") String pk);
 
 }

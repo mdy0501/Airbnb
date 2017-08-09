@@ -154,9 +154,17 @@ public class DetailHouseActivity extends AppCompatActivity implements ITask, OnM
     /* 이 부분이 parcelable로 넘겨 받음 == 아직 이미지가 넘어오지 않음 */
     private void getExIntent() {
         Intent intent = getIntent();
-        house = intent.getParcelableExtra(MapPagerAdapter.HOUSE_OBJ);
-        houseImages = house.getHouse_images();
-        amenities = house.getAmenities();
+        Bundle extra = intent.getExtras();
+        if(extra.getString("key").equals("roomsHouse")){
+            house = extra.getParcelable("roomsHouse");
+            houseImages = house.getHouse_images();
+            amenities = house.getAmenities();
+
+        } else if(extra.getString("key").equals(MapPagerAdapter.HOUSE_OBJ)) {
+            house = extra.getParcelable(MapPagerAdapter.HOUSE_OBJ);
+            houseImages = house.getHouse_images();
+            amenities = house.getAmenities();
+        }
     }
 
     private void initView() {

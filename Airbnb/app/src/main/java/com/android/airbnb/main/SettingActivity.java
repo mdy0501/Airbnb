@@ -89,6 +89,10 @@ public class SettingActivity extends AppCompatActivity implements View.OnClickLi
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 Log.e("===============", "로그아웃 데이터 전송");
                 Log.e("===============", "Response" + response.body());
+                Intent intent = new Intent(SettingActivity.this, WelcomeActivity.class);
+                startActivity(intent);
+                finish();
+                Toast.makeText(SettingActivity.this, "정상적으로 로그아웃 되었습니다.", Toast.LENGTH_SHORT).show();
             }
 
             @Override
@@ -116,10 +120,7 @@ public class SettingActivity extends AppCompatActivity implements View.OnClickLi
                             public void onClick(DialogInterface dialog, int which) {
                                 // 로그아웃을 한다.
                                 postLogout();
-                                Intent intent = new Intent(SettingActivity.this, WelcomeActivity.class);
-                                startActivity(intent);
-                                finish();
-                                Toast.makeText(SettingActivity.this, "정상적으로 로그아웃 되었습니다.", Toast.LENGTH_SHORT).show();
+
                             }
                         })
                 .setPositiveButton("아니오",
