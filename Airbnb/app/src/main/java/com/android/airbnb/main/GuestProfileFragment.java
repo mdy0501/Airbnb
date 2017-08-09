@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.constraint.ConstraintLayout;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,6 +15,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.airbnb.R;
+import com.android.airbnb.util.PreferenceUtil;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -43,6 +45,7 @@ public class GuestProfileFragment extends Fragment implements View.OnClickListen
         View view = inflater.inflate(R.layout.fragment_guest_profile, container, false);
         setViews(view);
         setListeners();
+        Log.e("Profile에서 token값 확인", PreferenceUtil.getToken(getActivity())+"");
         return view;
     }
 

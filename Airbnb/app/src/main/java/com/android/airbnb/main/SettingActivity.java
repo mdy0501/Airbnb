@@ -15,6 +15,7 @@ import android.widget.Toast;
 import com.android.airbnb.R;
 import com.android.airbnb.WelcomeActivity;
 import com.android.airbnb.data.ApiService;
+import com.android.airbnb.util.PreferenceUtil;
 import com.android.airbnb.util.Remote.IServerApi;
 
 import okhttp3.ResponseBody;
@@ -82,9 +83,7 @@ public class SettingActivity extends AppCompatActivity implements View.OnClickLi
                 .build();
         iServerApi = retrofit.create(IServerApi.class);
 
-        Log.e("========", "로그 확인 1");
-
-        Call<ResponseBody> getLogout = iServerApi.getLogout("Token 01f2768f0806f501eed7d0d81d83331b2d3c4480");
+        Call<ResponseBody> getLogout = iServerApi.getLogout("Token " + PreferenceUtil.getToken(this));
         getLogout.enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {

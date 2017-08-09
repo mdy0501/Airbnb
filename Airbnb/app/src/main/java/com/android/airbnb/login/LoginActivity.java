@@ -18,6 +18,8 @@ import com.android.airbnb.WelcomeActivity;
 import com.android.airbnb.data.ApiService;
 import com.android.airbnb.domain.airbnb.LoginData;
 import com.android.airbnb.domain.airbnb.LoginResult;
+import com.android.airbnb.main.GuestMainActivity;
+import com.android.airbnb.util.PreferenceUtil;
 import com.android.airbnb.util.Remote.IServerApi;
 
 import okhttp3.MediaType;
@@ -107,8 +109,16 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             @Override
             public void onResponse(Call<LoginResult> call, Response<LoginResult> response) {
                 Log.e("===============", "로그인 데이터 전송");
-                Log.e("===============", "Response" + response.body().token);
+                Log.e("===============", "Response Token : " + response.body().token);
 
+                // Token값 SharedPreference에 저장
+                PreferenceUtil.setToken(LoginActivity.this, response.body().token);
+
+                // 로그인 완료 후 메인화면으로 이동
+                Toast.makeText(LoginActivity.this, "Main 화면으로 이동합니다.", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(LoginActivity.this, GuestMainActivity.class);
+                startActivity(intent);
+                finish();
             }
 
             @Override
@@ -130,7 +140,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 break;
             case R.id.btnNextLoginEmail :
                 postLoginData();
-                Toast.makeText(LoginActivity.this, "메인 화면으로 이동", Toast.LENGTH_SHORT).show();
                 break;
             case R.id.btnUseTel :
                 Toast.makeText(LoginActivity.this, "전화번호 사용 버튼 클릭", Toast.LENGTH_SHORT).show();
