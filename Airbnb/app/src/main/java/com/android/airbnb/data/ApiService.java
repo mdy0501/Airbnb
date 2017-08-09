@@ -1,5 +1,7 @@
 package com.android.airbnb.data;
 
+import com.android.airbnb.domain.airbnb.House;
+
 import java.util.List;
 
 import okhttp3.RequestBody;
@@ -43,6 +45,9 @@ public interface ApiService {
 
     @GET("apis/house/")
     Call<List<RoomsData>> getTotalHouse();
+
+    @GET("apis/house/")
+    Call<List<House>> readAllHouses();
 
     @GET("apis/house/{houseId}")
     Call<ResponseBody> getHouse(@Path("houseId") String houseId);
