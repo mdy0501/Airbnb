@@ -4,7 +4,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 
 import com.android.airbnb.R;
-import com.android.airbnb.data.SignUpData;
+import com.android.airbnb.domain.airbnb.SignUpData;
 
 public class SignUpActivity extends AppCompatActivity {
 
