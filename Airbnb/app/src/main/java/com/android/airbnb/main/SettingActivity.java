@@ -1,15 +1,32 @@
 package com.android.airbnb.main;
 
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.constraint.ConstraintLayout;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.android.airbnb.R;
+import com.android.airbnb.WelcomeActivity;
+import com.android.airbnb.data.ApiService;
+
+import okhttp3.ResponseBody;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 public class SettingActivity extends AppCompatActivity implements View.OnClickListener{
+
+    Retrofit retrofit;
+    ApiService apiService;
 
     private ConstraintLayout layoutNotice, layoutReceivePayment, layoutCurrency, layoutInformation, layoutAdvancedSettings, layoutMultipleAccounts, layoutSendFeedback, layoutLogout;
     private TextView txtTitle, txtNotice, txtReceivePayment, txtCurrency, txtCurrencyDetail, txtInformation, txtAdvancedSettings, txtMultipleAccounts, txtSendFeedback, txtLogout;
@@ -53,39 +70,104 @@ public class SettingActivity extends AppCompatActivity implements View.OnClickLi
         layoutAdvancedSettings.setOnClickListener(this);
         layoutMultipleAccounts.setOnClickListener(this);
         layoutSendFeedback.setOnClickListener(this);
-        layoutLogout.setOnClickListener(this);
+        txtLogout.setOnClickListener(this);
         btnBack.setOnClickListener(this);
     }
+
+    private void postLogout(){
+        retrofit = new Retrofit.Builder()
+                .baseUrl(ApiService.API_URL)
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+        apiService = retrofit.create(ApiService.class);
+
+        Log.e("========", "로그 확인 1");
+
+        Call<ResponseBody> getLogout = apiService.getLogout("Token 01f2768f0806f501eed7d0d81d83331b2d3c4480");
+        getLogout.enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                Log.e("===============", "로그아웃 데이터 전송");
+                Log.e("===============", "Response" + response.body());
+            }
+
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+
+            }
+        });
+    }
+
+
+    // AlertDialog - Logout
+    private void alertDialogLogout(){
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
+
+        // 제목 setting
+        alertDialogBuilder.setTitle("로그아웃");
+
+        // AlertDialog Setting
+        alertDialogBuilder
+                .setMessage("정말 로그아웃 하시겠습니까?")
+                .setCancelable(false)
+                .setNegativeButton("예",
+                        new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                // 로그아웃을 한다.
+                                postLogout();
+                                Intent intent = new Intent(SettingActivity.this, WelcomeActivity.class);
+                                startActivity(intent);
+                                finish();
+                                Toast.makeText(SettingActivity.this, "정상적으로 로그아웃 되었습니다.", Toast.LENGTH_SHORT).show();
+                            }
+                        })
+                .setPositiveButton("아니오",
+                        new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                // 로그아웃을 하지 않는다.
+                                dialog.cancel();
+                            }
+                        });
+
+        // 다이얼로그 생성
+        AlertDialog alertDialog = alertDialogBuilder.create();
+
+        // 다이얼로그 보여주기
+        alertDialog.show();
+    }
+
 
     @Override
     public void onClick(View v) {
         switch (v.getId()){
-            case R.id.btnBack :
-
+            case R.id.btnBack:
+                finish();
                 break;
-            case R.id.layoutNotice :
-
+            case R.id.layoutNotice:
+                Toast.makeText(this, "알림 클릭", Toast.LENGTH_SHORT).show();
                break;
-            case R.id.layoutReceivePayment :
-
+            case R.id.layoutReceivePayment:
+                Toast.makeText(this, "대금수령방법 클릭", Toast.LENGTH_SHORT).show();
                 break;
-            case R.id.layoutCurrency :
-
+            case R.id.layoutCurrency:
+                Toast.makeText(this, "통화 클릭", Toast.LENGTH_SHORT).show();
                 break;
-            case R.id.layoutInformation :
-
+            case R.id.layoutInformation:
+                Toast.makeText(this, "정보 클릭", Toast.LENGTH_SHORT).show();
                 break;
-            case R.id.layoutAdvancedSettings :
-
+            case R.id.layoutAdvancedSettings:
+                Toast.makeText(this, "고급설정 클릭", Toast.LENGTH_SHORT).show();
                 break;
-            case R.id.layoutMultipleAccounts :
-
+            case R.id.layoutMultipleAccounts:
+                Toast.makeText(this, "복수계정 클릭", Toast.LENGTH_SHORT).show();
                 break;
-            case R.id.layoutSendFeedback :
-
+            case R.id.layoutSendFeedback:
+                Toast.makeText(this, "피드백보내기 클릭", Toast.LENGTH_SHORT).show();
                 break;
-            case R.id.layoutLogout :
-
+            case R.id.txtLogout:
+                alertDialogLogout();
                 break;
         }
 

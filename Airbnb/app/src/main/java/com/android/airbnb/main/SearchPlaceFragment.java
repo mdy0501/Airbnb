@@ -4,8 +4,7 @@ package com.android.airbnb.main;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
+import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -36,9 +35,9 @@ public class SearchPlaceFragment extends Fragment {
 
     private Main2Activity main2Activity;
     private TextView txtTitle1, txtTitle2;
-    private RecyclerView recyclerPlace1, recyclerPlace2;
     private PlaceFirstAdapter placeFirstAdapter;
     private PlaceSecondAdapter placeSecondAdapter;
+    private ViewPager viewPager1, viewPager2;
 
 
     public SearchPlaceFragment() {
@@ -64,8 +63,8 @@ public class SearchPlaceFragment extends Fragment {
     private void setViews(View view){
         txtTitle1 = (TextView) view.findViewById(R.id.txtTitle1);
         txtTitle2 = (TextView) view.findViewById(R.id.txtTitle2);
-        recyclerPlace1 = (RecyclerView) view.findViewById(R.id.recyclerPlace1);
-        recyclerPlace2 = (RecyclerView) view.findViewById(R.id.recyclerPlace2);
+        viewPager1 = (ViewPager) view.findViewById(R.id.viewPager1);
+        viewPager2 = (ViewPager) view.findViewById(R.id.viewPager2);
     }
 
     private void getFirstData(){
@@ -82,10 +81,13 @@ public class SearchPlaceFragment extends Fragment {
                 try {
                     dataList = response.body();
                     placeFirstAdapter = new PlaceFirstAdapter(main2Activity.getBaseContext(), dataList);
-                    recyclerPlace1.setAdapter(placeFirstAdapter);
-                    LinearLayoutManager mLinearlayout = new LinearLayoutManager(main2Activity.getBaseContext());
-                    mLinearlayout.setOrientation(LinearLayoutManager.HORIZONTAL);
-                    recyclerPlace1.setLayoutManager(mLinearlayout);
+                    viewPager1.setAdapter(placeFirstAdapter);
+
+
+//                    recyclerPlace1.setAdapter(placeFirstAdapter);
+//                    LinearLayoutManager mLinearlayout = new LinearLayoutManager(main2Activity.getBaseContext());
+//                    mLinearlayout.setOrientation(LinearLayoutManager.HORIZONTAL);
+//                    recyclerPlace1.setLayoutManager(mLinearlayout);
 //                    recyclerPlace1.setLayoutManager(new LinearLayoutManager(main2Activity.getBaseContext(), LinearLayoutManager.HORIZONTAL, false));
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -113,9 +115,7 @@ public class SearchPlaceFragment extends Fragment {
                 try {
                     dataList = response.body();
                     placeSecondAdapter = new PlaceSecondAdapter(main2Activity.getBaseContext(), dataList);
-                    recyclerPlace2.setAdapter(placeSecondAdapter);
-//                    recyclerPlace2.setLayoutManager(new LinearLayoutManager(main2Activity.getBaseContext()));
-                    recyclerPlace2.setLayoutManager(new LinearLayoutManager(main2Activity.getBaseContext(), LinearLayoutManager.HORIZONTAL, false));
+                    viewPager2.setAdapter(placeSecondAdapter);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }

@@ -2,6 +2,7 @@ package com.android.airbnb.main;
 
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.constraint.ConstraintLayout;
 import android.support.v4.app.Fragment;
@@ -89,7 +90,8 @@ public class ProfileFragment extends Fragment implements View.OnClickListener{
                 Toast.makeText(main2Activity.getBaseContext(), "ChangeMode 클릭", Toast.LENGTH_SHORT).show();
                 break;
             case R.id.layoutSetting :
-                Toast.makeText(main2Activity.getBaseContext(), "Setting 클릭", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(main2Activity.getBaseContext(), SettingActivity.class);
+                startActivity(intent);
                 break;
             case R.id.layoutHelp :
                 Toast.makeText(main2Activity.getBaseContext(), "Help 클릭", Toast.LENGTH_SHORT).show();

@@ -5,8 +5,8 @@ import java.util.List;
 import okhttp3.RequestBody;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
-import retrofit2.http.Body;
 import retrofit2.http.GET;
+import retrofit2.http.Header;
 import retrofit2.http.Multipart;
 import retrofit2.http.POST;
 import retrofit2.http.Part;
@@ -31,8 +31,15 @@ public interface ApiService {
                                     @Part("birthday") RequestBody birthday,
                                     @Part("agreement")RequestBody agreement);
 
+    @Multipart
     @POST("apis/user/login/")
-    Call<LoginData> postLoginData(@Body LoginData loginData);
+    Call<LoginResult> postLoginData(@Part("email") RequestBody email,
+                                    @Part("password") RequestBody password);
+    // Key : Authorization
+    // Value : Token 762e7a853bbf466be109b91f2249b80411ebb99a
+
+    @GET("apis/user/logout/")
+    Call<ResponseBody> getLogout(@Header("Authorization") String token);
 
     @GET("apis/house/")
     Call<List<RoomsData>> getTotalHouse();

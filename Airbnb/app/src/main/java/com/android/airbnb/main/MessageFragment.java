@@ -14,7 +14,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.airbnb.R;
-import com.bumptech.glide.Glide;
+import com.android.airbnb.util.GlideApp;
 
 import static com.android.airbnb.R.id.main_container;
 
@@ -59,9 +59,10 @@ public class MessageFragment extends Fragment implements View.OnClickListener{
         txtMessageContent = (TextView) view.findViewById(R.id.txtMessageContent);
         txtMessageQuestion = (TextView) view.findViewById(R.id.txtMessageQuestion);
         imgProfile = (ImageView) view.findViewById(R.id.imgProfile);
-        Glide.with(main2Activity.getBaseContext())
+        GlideApp
+                .with(main2Activity.getBaseContext())
                 .load(R.drawable.douwe)
-//                .bitmapTransform(new CropCircleTransformation(main2Activity.getBaseContext()))
+                .circleCrop()
                 .into(imgProfile);
         imgBtnNotice = (ImageButton) view.findViewById(R.id.imgBtnNotice);
         imgBtnStorage = (ImageButton) view.findViewById(R.id.imgBtnStorage);

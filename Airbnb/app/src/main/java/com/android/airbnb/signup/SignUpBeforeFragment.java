@@ -26,7 +26,6 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -79,7 +78,7 @@ public class SignUpBeforeFragment extends Fragment implements View.OnClickListen
     private void postSignUpData(){
         retrofit = new Retrofit.Builder()
                 .baseUrl(ApiService.API_URL)
-                .addConverterFactory(GsonConverterFactory.create())
+                //.addConverterFactory(GsonConverterFactory.create())
                 .build();
         apiService = retrofit.create(ApiService.class);
 
