@@ -11,10 +11,14 @@ import java.util.List;
 
 public interface ITask {
 
-    public void doHostListTask(List<Host> hostList);
-    public void doHouseListTask(List<House> houseList);
-    public void doOnHouseTask(House house);
-    public void doOnHostTask(Host host);
+//    public void doHostListTask(List<Host> hostList);
+    public void doTaskTotalHostList(List<Host> hostList);
+//    public void doHouseListTask(List<House> houseList);
+    public void doTaskTotalHouseList(List<House> houseList);
+//    public void doOneHouseTask(House house);
+    public void doTaskOneHouseList(House house);
+//    public void doOneHostTask(Host host);
+    public void doTaskOneHostList(Host host);
 
 
 }

@@ -28,7 +28,7 @@ public class ReviewActivity extends AppCompatActivity implements ITask {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_review);
-        Loader.getHostList(this);
+        Loader.getTotalHost(this);
         initView();
     }
 
@@ -46,24 +46,24 @@ public class ReviewActivity extends AppCompatActivity implements ITask {
     }
 
     @Override
-    public void doHostListTask(List<Host> hostList) {
+    public void doTaskTotalHostList(List<Host> hostList) {
         this.dummyHostList = hostList;
         setAdapter();
     }
 
     @Override
-    public void doHouseListTask(List<House> houseList) {
-        // 안씀
+    public void doTaskTotalHouseList(List<House> houseList) {
 
     }
 
     @Override
-    public void doOnHouseTask(House house) {
+    public void doTaskOneHouseList(House house) {
 
     }
 
     @Override
-    public void doOnHostTask(Host host) {
+    public void doTaskOneHostList(Host host) {
 
     }
+
 }
