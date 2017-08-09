@@ -1,10 +1,13 @@
 package com.android.airbnb.data;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 /**
  * Created by MDY on 2017-08-03.
  */
 
-public class RoomsData
+public class RoomsData implements Parcelable
 {
     private Host host;
 
@@ -49,6 +52,42 @@ public class RoomsData
     private String pk;
 
     private String space_info;
+
+    protected RoomsData(Parcel in) {
+        house_images = in.createTypedArray(House_images.CREATOR);
+        amenities = in.createTypedArray(Amenities.CREATOR);
+        cleaning_fee = in.readString();
+        modified_date = in.readString();
+        guest_access = in.readString();
+        bathrooms = in.readString();
+        introduce = in.readString();
+        bedrooms = in.readString();
+        room_type = in.readString();
+        weekly_discount = in.readString();
+        title = in.readString();
+        beds = in.readString();
+        create_date = in.readString();
+        extra_people_fee = in.readString();
+        address = in.readString();
+        accommodates = in.readString();
+        longitude = in.readString();
+        latitude = in.readString();
+        price_per_day = in.readString();
+        pk = in.readString();
+        space_info = in.readString();
+    }
+
+    public static final Creator<RoomsData> CREATOR = new Creator<RoomsData>() {
+        @Override
+        public RoomsData createFromParcel(Parcel in) {
+            return new RoomsData(in);
+        }
+
+        @Override
+        public RoomsData[] newArray(int size) {
+            return new RoomsData[size];
+        }
+    };
 
     public Host getHost ()
     {
@@ -274,5 +313,35 @@ public class RoomsData
     public String toString()
     {
         return "ClassPojo [host = "+host+", cleaning_fee = "+cleaning_fee+", amenities = "+amenities+", modified_date = "+modified_date+", guest_access = "+guest_access+", bathrooms = "+bathrooms+", introduce = "+introduce+", bedrooms = "+bedrooms+", room_type = "+room_type+", weekly_discount = "+weekly_discount+", title = "+title+", beds = "+beds+", create_date = "+create_date+", extra_people_fee = "+extra_people_fee+", address = "+address+", accommodates = "+accommodates+", house_images = "+house_images+", longitude = "+longitude+", latitude = "+latitude+", price_per_day = "+price_per_day+", pk = "+pk+", space_info = "+space_info+"]";
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeTypedArray(house_images, 0);
+        dest.writeTypedArray(amenities, 0);
+        dest.writeString(cleaning_fee);
+        dest.writeString(modified_date);
+        dest.writeString(guest_access);
+        dest.writeString(bathrooms);
+        dest.writeString(introduce);
+        dest.writeString(bedrooms);
+        dest.writeString(room_type);
+        dest.writeString(weekly_discount);
+        dest.writeString(title);
+        dest.writeString(beds);
+        dest.writeString(create_date);
+        dest.writeString(extra_people_fee);
+        dest.writeString(address);
+        dest.writeString(accommodates);
+        dest.writeString(longitude);
+        dest.writeString(latitude);
+        dest.writeString(price_per_day);
+        dest.writeString(pk);
+        dest.writeString(space_info);
     }
 }
