@@ -10,8 +10,8 @@ import android.widget.RatingBar;
 import android.widget.TextView;
 
 import com.android.airbnb.R;
-import com.android.airbnb.data.House_images;
-import com.android.airbnb.data.RoomsData;
+import com.android.airbnb.domain.airbnb.House;
+import com.android.airbnb.domain.airbnb.House_images;
 import com.android.airbnb.util.GlideApp;
 
 import java.util.List;
@@ -22,10 +22,10 @@ import java.util.List;
 
 public class TripAdapter extends RecyclerView.Adapter<TripAdapter.Holder> {
 
-    List<RoomsData> data;
+    List<House> data;
     LayoutInflater inflater;
 
-    public TripAdapter(Context context, List<RoomsData> data){
+    public TripAdapter(Context context, List<House> data){
         this.data = data;
         inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
@@ -38,12 +38,14 @@ public class TripAdapter extends RecyclerView.Adapter<TripAdapter.Holder> {
 
     @Override
     public void onBindViewHolder(Holder holder, int position) {
-        RoomsData roomsData = data.get(position);
-        holder.setPrice(roomsData.getPrice_per_day());
-        holder.setIntroduce(roomsData.getIntroduce());
-        holder.setRoomType(roomsData.getRoom_type());
+        House house = data.get(position);
+        holder.setPrice(house.getPrice_per_day());
+        holder.setTitle(house.getTitle());
+        holder.setRoomType(house.getRoom_type());
+        holder.setRatingBar("4");
+        holder.setReviewCount("110개");
 
-        House_images[] images = roomsData.getHouse_images();
+        House_images[] images = house.getHouse_images();
 
         GlideApp
                 .with(inflater.getContext())
@@ -59,7 +61,7 @@ public class TripAdapter extends RecyclerView.Adapter<TripAdapter.Holder> {
     }
 
     class Holder extends RecyclerView.ViewHolder{
-        TextView txtPrice, txtIntroduce, txtRoomType, txtReview, txtReviewCount;
+        TextView txtPrice, txtTitle, txtRoomType, txtReview, txtReviewCount;
         ImageView img;
         // ImageButton imgBtnHeart;
         RatingBar ratingBar;
@@ -67,7 +69,7 @@ public class TripAdapter extends RecyclerView.Adapter<TripAdapter.Holder> {
         public Holder(View itemView) {
             super(itemView);
             txtPrice = (TextView) itemView.findViewById(R.id.txtPrice);
-            txtIntroduce = (TextView) itemView.findViewById(R.id.txtIntroduce);
+            txtTitle = (TextView) itemView.findViewById(R.id.txtTitle);
             txtRoomType = (TextView) itemView.findViewById(R.id.txtRoomType);
             txtReview = (TextView) itemView.findViewById(R.id.txtReview);
             txtReviewCount = (TextView) itemView.findViewById(R.id.txtReviewCount);
@@ -79,11 +81,17 @@ public class TripAdapter extends RecyclerView.Adapter<TripAdapter.Holder> {
         private void setPrice(String price){
             txtPrice.setText(price + " 원");
         }
-        private void setIntroduce(String introduce){
-            txtIntroduce.setText(introduce);
+        private void setTitle(String title){
+            txtTitle.setText(title);
         }
         private void setRoomType(String roomType){
             txtRoomType.setText(roomType);
+        }
+        private void setRatingBar(String ratingBar) {
+            this.ratingBar.setRating(Float.parseFloat(ratingBar));
+        }
+        private void setReviewCount(String reviewCount) {
+            this.txtReviewCount.setText(reviewCount);
         }
     }
 }

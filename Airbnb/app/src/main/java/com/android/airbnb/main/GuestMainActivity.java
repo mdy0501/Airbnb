@@ -9,13 +9,13 @@ import com.android.airbnb.R;
 
 import static com.android.airbnb.R.id.main_container;
 
-public class Main2Activity extends AppCompatActivity {
+public class GuestMainActivity extends AppCompatActivity {
 
-    private SearchFragment searchFragment;
+    private GuestSearchFragment guestSearchFragment;
     private WishListDetailFragment wishFragment;
-    private TravelFragment travelFragment;
-    private MessageFragment messageFragment;
-    private ProfileFragment profileFragment;
+    private GuestTravelFragment guestTravelFragment;
+    private GuestMessageFragment guestMessageFragment;
+    private GuestProfileFragment guestProfileFragment;
 
     private TabLayout mainTabLayout;
     private static final int SEARCH = 0;
@@ -28,7 +28,7 @@ public class Main2Activity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main2);
+        setContentView(R.layout.activity_guest_main);
         setFragments();
         setViews();
         setListeners();
@@ -37,7 +37,7 @@ public class Main2Activity extends AppCompatActivity {
     private void setViews(){
         mainTabLayout = (TabLayout) findViewById(R.id.mainTabLayout);
         getSupportFragmentManager().beginTransaction()
-                .add(main_container, searchFragment)
+                .add(main_container, guestSearchFragment)
                 .commit();
     }
 
@@ -51,7 +51,7 @@ public class Main2Activity extends AppCompatActivity {
                 switch (tab.getPosition()){
                     case SEARCH :
                         getSupportFragmentManager().beginTransaction()
-                                .replace(main_container, searchFragment)
+                                .replace(main_container, guestSearchFragment)
                                 .commit();
                         break;
                     case WISH :
@@ -62,20 +62,20 @@ public class Main2Activity extends AppCompatActivity {
                         break;
                     case TRAVEL :
                         getSupportFragmentManager().beginTransaction()
-                                .replace(main_container, travelFragment)
+                                .replace(main_container, guestTravelFragment)
                                 .addToBackStack(null)
                                 .commit();
                         break;
                     case MESSAGE :
                         getSupportFragmentManager().beginTransaction()
-                                .replace(main_container, messageFragment)
+                                .replace(main_container, guestMessageFragment)
                                 .addToBackStack(null)
                                 .commit();
                         break;
 
                     case PROFILE :
                         getSupportFragmentManager().beginTransaction()
-                                .replace(main_container, profileFragment)
+                                .replace(main_container, guestProfileFragment)
                                 .addToBackStack(null)
                                 .commit();
                         break;
@@ -95,11 +95,11 @@ public class Main2Activity extends AppCompatActivity {
     }
 
     private void setFragments(){
-        searchFragment = new SearchFragment();
+        guestSearchFragment = new GuestSearchFragment();
         wishFragment = new WishListDetailFragment();
-        travelFragment = new TravelFragment();
-        messageFragment = new MessageFragment();
-        profileFragment = new ProfileFragment();
+        guestTravelFragment = new GuestTravelFragment();
+        guestMessageFragment = new GuestMessageFragment();
+        guestProfileFragment = new GuestProfileFragment();
     }
 
 }

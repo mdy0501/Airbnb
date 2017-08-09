@@ -21,32 +21,32 @@ import static com.android.airbnb.R.id.main_container;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class MessageFragment extends Fragment implements View.OnClickListener{
+public class GuestMessageFragment extends Fragment implements View.OnClickListener{
 
-    private MessageNoticeFragment messageNoticeFragment;
-    private MessageStorageFragment messageStorageFragment;
+    private GuestMessageNoticeFragment guestMessageNoticeFragment;
+    private GuestMessageStorageFragment guestMessageStorageFragment;
 
-    private Main2Activity main2Activity;
+    private GuestMainActivity guestMainActivity;
     private TextView txtTitle, txtMessageTitle, txtMessageContent, txtMessageQuestion;
     private ConstraintLayout layoutMessage;
     private ImageView imgProfile;
     private ImageButton imgBtnNotice, imgBtnStorage;
 
 
-    public MessageFragment() {
+    public GuestMessageFragment() {
         // Required empty public constructor
     }
 
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        main2Activity = (Main2Activity) context;
+        guestMainActivity = (GuestMainActivity) context;
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_message, container, false);
+        View view = inflater.inflate(R.layout.fragment_guest_message, container, false);
         setFragments();
         setViews(view);
         setListeners();
@@ -60,7 +60,7 @@ public class MessageFragment extends Fragment implements View.OnClickListener{
         txtMessageQuestion = (TextView) view.findViewById(R.id.txtMessageQuestion);
         imgProfile = (ImageView) view.findViewById(R.id.imgProfile);
         GlideApp
-                .with(main2Activity.getBaseContext())
+                .with(guestMainActivity.getBaseContext())
                 .load(R.drawable.douwe)
                 .circleCrop()
                 .into(imgProfile);
@@ -76,27 +76,27 @@ public class MessageFragment extends Fragment implements View.OnClickListener{
     }
 
     private void setFragments(){
-        messageNoticeFragment = new MessageNoticeFragment();
-        messageStorageFragment = new MessageStorageFragment();
+        guestMessageNoticeFragment = new GuestMessageNoticeFragment();
+        guestMessageStorageFragment = new GuestMessageStorageFragment();
     }
 
     @Override
     public void onClick(View v) {
         switch (v.getId()){
             case R.id.imgBtnStorage:
-                main2Activity.getSupportFragmentManager().beginTransaction()
-                        .add(main_container, messageStorageFragment)
+                guestMainActivity.getSupportFragmentManager().beginTransaction()
+                        .add(main_container, guestMessageStorageFragment)
                         .addToBackStack(null)
                         .commit();
                 break;
             case R.id.imgBtnNotice:
-                main2Activity.getSupportFragmentManager().beginTransaction()
-                        .add(main_container, messageNoticeFragment)
+                guestMainActivity.getSupportFragmentManager().beginTransaction()
+                        .add(main_container, guestMessageNoticeFragment)
                         .addToBackStack(null)
                         .commit();
                 break;
             case R.id.layoutMessage :
-                Toast.makeText(main2Activity.getBaseContext(), "메시지 클릭", Toast.LENGTH_SHORT).show();
+                Toast.makeText(guestMainActivity.getBaseContext(), "메시지 클릭", Toast.LENGTH_SHORT).show();
                 break;
         }
     }

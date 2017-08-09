@@ -14,26 +14,26 @@ import com.android.airbnb.R;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class TravelFragment extends Fragment {
+public class GuestTravelFragment extends Fragment {
 
-    private Main2Activity main2Activity;
+    private GuestMainActivity guestMainActivity;
     private TextView txtTitle;
 
 
-    public TravelFragment() {
+    public GuestTravelFragment() {
         // Required empty public constructor
     }
 
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        main2Activity = (Main2Activity) context;
+        guestMainActivity = (GuestMainActivity) context;
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_travel, container, false);
+        View view = inflater.inflate(R.layout.fragment_guest_travel, container, false);
         setViews(view);
         setListeners();
         return view;

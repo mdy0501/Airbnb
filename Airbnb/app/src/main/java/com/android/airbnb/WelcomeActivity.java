@@ -34,7 +34,7 @@ public class WelcomeActivity extends AppCompatActivity implements View.OnClickLi
         imageAirbnb = (ImageView) findViewById(R.id.imageAirbnb);
         txtTitle = (TextView) findViewById(R.id.txtTitle1);
         txtOptions = (TextView) findViewById(R.id.txtOptions);
-        txtDescription = (TextView) findViewById(R.id.txtIntroduce);
+        txtDescription = (TextView) findViewById(R.id.txtTitle);
     }
 
     private void setListeners(){

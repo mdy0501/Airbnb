@@ -25,7 +25,7 @@ public class WistListFragment extends Fragment {
     private RecyclerView wishlistListRecycler;
     private WishListAdadpter adapter;
     private View view = null;
-    public Main2Activity main2Activity;
+    public GuestMainActivity guestMainActivity;
 
 
     public WistListFragment() {
@@ -39,8 +39,8 @@ public class WistListFragment extends Fragment {
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        if (context instanceof Main2Activity){
-            main2Activity = (Main2Activity) context;
+        if (context instanceof GuestMainActivity){
+            guestMainActivity = (GuestMainActivity) context;
 
         }
     }

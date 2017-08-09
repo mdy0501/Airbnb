@@ -45,8 +45,11 @@ public class RoomsAdapter extends RecyclerView.Adapter<RoomsAdapter.Holder> {
     public void onBindViewHolder(Holder holder, int position) {
         House house = data.get(position);
         holder.setPrice(house.getPrice_per_day());
-        holder.setIntroduce(house.getIntroduce());
+        holder.setTitle(house.getTitle());
         holder.setRoomType(house.getRoom_type());
+        holder.setRatingBar("4");
+        holder.setReviewCount("110개");
+
 
         holder.setPosition(position);
 
@@ -68,7 +71,7 @@ public class RoomsAdapter extends RecyclerView.Adapter<RoomsAdapter.Holder> {
 
     class Holder extends RecyclerView.ViewHolder{
         int position = -1;
-        TextView txtPrice, txtIntroduce, txtRoomType, txtReview, txtReviewCount;
+        TextView txtPrice, txtTitle, txtRoomType, txtReview, txtReviewCount;
         ImageView img;
         ImageButton imgBtnHeart;
         RatingBar ratingBar;
@@ -76,7 +79,7 @@ public class RoomsAdapter extends RecyclerView.Adapter<RoomsAdapter.Holder> {
         public Holder(View itemView) {
             super(itemView);
             txtPrice = (TextView) itemView.findViewById(R.id.txtPrice);
-            txtIntroduce = (TextView) itemView.findViewById(R.id.txtIntroduce);
+            txtTitle = (TextView) itemView.findViewById(R.id.txtTitle);
             txtRoomType = (TextView) itemView.findViewById(R.id.txtRoomType);
             txtReview = (TextView) itemView.findViewById(R.id.txtReview);
             txtReviewCount = (TextView) itemView.findViewById(R.id.txtReviewCount);
@@ -103,14 +106,20 @@ public class RoomsAdapter extends RecyclerView.Adapter<RoomsAdapter.Holder> {
         private void setPrice(String price){
             txtPrice.setText(price + " 원");
         }
-        private void setIntroduce(String introduce){
-            txtIntroduce.setText(introduce);
+        private void setTitle(String title){
+            txtTitle.setText(title);
         }
         private void setRoomType(String roomType){
             txtRoomType.setText(roomType);
         }
         private void setPosition(int position){
             this.position = position;
+        }
+        private void setRatingBar(String ratingBar) {
+            this.ratingBar.setRating(Float.parseFloat(ratingBar));
+        }
+        private void setReviewCount(String reviewCount) {
+            this.txtReviewCount.setText(reviewCount);
         }
     }
 }
