@@ -17,36 +17,36 @@ import com.android.airbnb.R;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class SearchFragment extends Fragment {
+public class GuestSearchFragment extends Fragment {
 
-    private Main2Activity main2Activity;
+    private GuestMainActivity guestMainActivity;
     private TextView txtTitle;
     private TabLayout searchTabLayout;
 
-    private SearchRecommendFragment searchRecommendFragment;
-    private SearchRoomsFragment searchRoomsFragment;
-    private SearchTripFragment searchTripFragment;
-    private SearchPlaceFragment searchPlaceFragment;
+    private GuestSearchRecommendFragment guestSearchRecommendFragment;
+    private GuestSearchRoomsFragment guestSearchRoomsFragment;
+    private GuestSearchTripFragment guestSearchTripFragment;
+    private GuestSearchPlaceFragment guestSearchPlaceFragment;
 
     private static final int RECOMMEND = 0;
     private static final int ROOMS = 1;
     private static final int TRIP = 2;
     private static final int PLACE = 3;
 
-    public SearchFragment() {
+    public GuestSearchFragment() {
         // Required empty public constructor
     }
 
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        main2Activity = (Main2Activity) context;
+        guestMainActivity = (GuestMainActivity) context;
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_search, container, false);
+        View view = inflater.inflate(R.layout.fragment_guest_search, container, false);
         setFragments();
         setViews(view);
         setListeners();
@@ -56,8 +56,8 @@ public class SearchFragment extends Fragment {
     private void setViews(View view){
         txtTitle = (TextView) view.findViewById(R.id.txtTitle1);
         searchTabLayout = (TabLayout) view.findViewById(R.id.searchTabLayout);
-        main2Activity.getSupportFragmentManager().beginTransaction()
-                .add(R.id.search_container, searchRecommendFragment)
+        guestMainActivity.getSupportFragmentManager().beginTransaction()
+                .add(R.id.search_container, guestSearchRecommendFragment)
                 .commit();
     }
 
@@ -68,23 +68,23 @@ public class SearchFragment extends Fragment {
                 Log.w("test============" , tab.getPosition()+"");
                 switch (tab.getPosition()){
                     case RECOMMEND :
-                        main2Activity.getSupportFragmentManager().beginTransaction()
-                                .replace(R.id.search_container, searchRecommendFragment)
+                        guestMainActivity.getSupportFragmentManager().beginTransaction()
+                                .replace(R.id.search_container, guestSearchRecommendFragment)
                                 .commit();
                         break;
                     case ROOMS :
-                        main2Activity.getSupportFragmentManager().beginTransaction()
-                                .replace(R.id.search_container, searchRoomsFragment)
+                        guestMainActivity.getSupportFragmentManager().beginTransaction()
+                                .replace(R.id.search_container, guestSearchRoomsFragment)
                                 .commit();
                         break;
                     case TRIP :
-                        main2Activity.getSupportFragmentManager().beginTransaction()
-                                .replace(R.id.search_container, searchTripFragment)
+                        guestMainActivity.getSupportFragmentManager().beginTransaction()
+                                .replace(R.id.search_container, guestSearchTripFragment)
                                 .commit();
                         break;
                     case PLACE :
-                        main2Activity.getSupportFragmentManager().beginTransaction()
-                                .replace(R.id.search_container, searchPlaceFragment)
+                        guestMainActivity.getSupportFragmentManager().beginTransaction()
+                                .replace(R.id.search_container, guestSearchPlaceFragment)
                                 .commit();
                         break;
                 }
@@ -103,10 +103,10 @@ public class SearchFragment extends Fragment {
     }
 
     private void setFragments(){
-        searchRecommendFragment = new SearchRecommendFragment();
-        searchRoomsFragment = new SearchRoomsFragment();
-        searchTripFragment = new SearchTripFragment();
-        searchPlaceFragment = new SearchPlaceFragment();
+        guestSearchRecommendFragment = new GuestSearchRecommendFragment();
+        guestSearchRoomsFragment = new GuestSearchRoomsFragment();
+        guestSearchTripFragment = new GuestSearchTripFragment();
+        guestSearchPlaceFragment = new GuestSearchPlaceFragment();
     }
 
 }

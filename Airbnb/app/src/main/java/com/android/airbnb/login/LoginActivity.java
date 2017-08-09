@@ -16,8 +16,9 @@ import android.widget.Toast;
 import com.android.airbnb.R;
 import com.android.airbnb.WelcomeActivity;
 import com.android.airbnb.data.ApiService;
-import com.android.airbnb.data.LoginData;
-import com.android.airbnb.data.LoginResult;
+import com.android.airbnb.domain.airbnb.LoginData;
+import com.android.airbnb.domain.airbnb.LoginResult;
+import com.android.airbnb.util.Remote.IServerApi;
 
 import okhttp3.MediaType;
 import okhttp3.RequestBody;
@@ -30,7 +31,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener{
 
     Retrofit retrofit;
-    ApiService apiService;
+    IServerApi IServerApi;
 
     private Button btnPreviousLogin, btnNextLoginEmail, btnUseTel;
     private TextView txtFindPassword, txtLogin, txtEmail, txtPassword;
@@ -89,7 +90,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 .baseUrl(ApiService.API_URL)
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
-        apiService = retrofit.create(ApiService.class);
+        IServerApi = retrofit.create(IServerApi.class);
 
         LoginData loginData = new LoginData();
         loginData.setEmail(editEmail.getText().toString());
@@ -101,7 +102,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         loginData.setEmail(editEmail.getText().toString());
         loginData.setPassword(editPassword.getText().toString());
 
-        Call<LoginResult> postLoginData = apiService.postLoginData(email, password);
+        Call<LoginResult> postLoginData = IServerApi.postLoginData(email, password);
         postLoginData.enqueue(new Callback<LoginResult>() {
             @Override
             public void onResponse(Call<LoginResult> call, Response<LoginResult> response) {

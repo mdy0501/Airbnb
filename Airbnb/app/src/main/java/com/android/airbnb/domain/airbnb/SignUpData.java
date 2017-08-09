@@ -1,4 +1,4 @@
-package com.android.airbnb.data;
+package com.android.airbnb.domain.airbnb;
 
 /**
  * Created by MDY on 2017-08-07.
@@ -15,16 +15,6 @@ public class SignUpData {
 
     public SignUpData(){
 
-    }
-
-    public SignUpData(String email, String password1, String passwrod2, String first_name, String last_name, String birthday, Boolean agreement){
-        this.email = email;
-        this.password1 = password1;
-        this.passwrod2 = passwrod2;
-        this.first_name = first_name;
-        this.last_name = last_name;
-        this.birthday = birthday;
-        this.agreement = agreement;
     }
 
     public String getEmail() {

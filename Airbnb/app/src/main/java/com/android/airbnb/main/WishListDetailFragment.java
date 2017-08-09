@@ -34,7 +34,7 @@ import java.util.List;
  */
 public class WishListDetailFragment extends Fragment implements ITask {
 
-    private Main2Activity main2Activity;
+    private GuestMainActivity guestMainActivity;
     private TextView txtTitle;
     private android.support.v7.widget.Toolbar toolbar;
     private ImageView btnBack;
@@ -58,7 +58,7 @@ public class WishListDetailFragment extends Fragment implements ITask {
     public void onAttach(Context context) {
         super.onAttach(context);
         this.mContext = context;
-        main2Activity = (Main2Activity) context;
+        guestMainActivity = (GuestMainActivity) context;
         getData();
     }
 
@@ -112,7 +112,7 @@ public class WishListDetailFragment extends Fragment implements ITask {
     }
 
     private void getData() {
-        Loader.getHouseList(this);
+        Loader.getTotalHouse(this);
     }
 
     private void setAdapter() {
@@ -152,24 +152,24 @@ public class WishListDetailFragment extends Fragment implements ITask {
     }
 
     @Override
-    public void doHostListTask(List<Host> hostList) {
+    public void doTaskTotalHostList(List<Host> hostList) {
 
     }
 
     @Override
-    public void doHouseListTask(List<House> houseList) {
+    public void doTaskTotalHouseList(List<House> houseList) {
         this.houseList = houseList;
         setAdapter();
         connectData();
     }
 
     @Override
-    public void doOnHouseTask(House house) {
+    public void doTaskOneHouseList(House house) {
 
     }
 
     @Override
-    public void doOnHostTask(Host host) {
+    public void doTaskOneHostList(Host host) {
 
     }
 

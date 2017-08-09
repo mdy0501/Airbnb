@@ -14,13 +14,15 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
+import static com.android.airbnb.util.Remote.IServerApi.BASE_URL;
+
 /**
  * Created by JunHee on 2017. 8. 3..
  */
 
 public class Loader {
 
-    public static final String BASE_URL = "http://crusia.xyz/";
+
     public static List<Host> hostList;
     public static List<House> houseList;
     public static House house;
@@ -38,7 +40,7 @@ public class Loader {
             @Override
             public void onResponse(Call<House> call, Response<House> response) {
                 house = response.body();
-                iTask.doOnHouseTask(house);
+                iTask.doTaskOneHouseList(house);
             }
 
             @Override
@@ -49,7 +51,7 @@ public class Loader {
 
     }
 
-    public static void getHouseList(final ITask iTask) {
+    public static void getTotalHouse(final ITask iTask) {
         Retrofit client = new Retrofit.Builder()
                 .baseUrl(BASE_URL)
                 .addConverterFactory(GsonConverterFactory.create())
@@ -62,7 +64,7 @@ public class Loader {
             public void onResponse(Call<List<House>> call, Response<List<House>> response) {
                 try {
                     houseList = response.body();
-                    iTask.doHouseListTask(houseList);
+                    iTask.doTaskTotalHouseList(houseList);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -87,7 +89,7 @@ public class Loader {
             @Override
             public void onResponse(Call<Host> call, Response<Host> response) {
                 host = response.body();
-                iTask.doOnHostTask(host);
+                iTask.doTaskOneHostList(host);
             }
 
             @Override
@@ -98,7 +100,7 @@ public class Loader {
 
     }
 
-    public static void getHostList(final ITask iTask) {
+    public static void getTotalHost(final ITask iTask) {
         Retrofit client = new Retrofit.Builder()
                 .baseUrl(BASE_URL)
                 .addConverterFactory(GsonConverterFactory.create())
@@ -111,7 +113,7 @@ public class Loader {
             public void onResponse(Call<List<Host>> call, Response<List<Host>> response) {
                 hostList = response.body();
                 Log.e("loader", "==== done ====");
-                iTask.doHostListTask(hostList);
+                iTask.doTaskTotalHostList(hostList);
             }
 
             @Override

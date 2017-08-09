@@ -1,22 +1,22 @@
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/DeepGreen"
-    tools:context="com.android.airbnb.main.TravelFragment">
-
+    android:background="@color/white"
+    tools:context="com.android.airbnb.main.GuestSearchRecommendFragment">
 
     <TextView
         android:id="@+id/txtTitle1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="여행"
-        android:textColor="@color/white"
-        android:textSize="30sp"
+        android:layout_marginBottom="90dp"
+        android:text="탐색하기 - 추천"
+        android:textColor="@android:color/black"
+        android:textSize="20sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintRight_toRightOf="parent" />
 </android.support.constraint.ConstraintLayout>

@@ -52,7 +52,7 @@ public class SignUpPasswordFragment extends Fragment implements View.OnClickList
         btnPreviousPassword = (Button) view.findViewById(R.id.btnPreviousPassword);
         btnNextPassword = (Button) view.findViewById(R.id.btnNextPassword);
         txtTitle = (TextView) view.findViewById(R.id.txtTitle1);
-        txtDescription = (TextView) view.findViewById(R.id.txtIntroduce);
+        txtDescription = (TextView) view.findViewById(R.id.txtTitle);
         txtPassword1 = (TextView) view.findViewById(R.id.txtPassword1);
         txtPassword2 = (TextView) view.findViewById(R.id.txtPassword2);
         editPassword1 = (EditText) view.findViewById(R.id.editPassword1);

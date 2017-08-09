@@ -272,20 +272,20 @@ public class DetailHouseActivity extends AppCompatActivity implements ITask, OnM
     }
 
     @Override
-    public void doHostListTask(List<Host> hostList) {
+    public void doTaskTotalHostList(List<Host> hostList) {
     }
 
     @Override
-    public void doHouseListTask(List<House> houseList) {
+    public void doTaskTotalHouseList(List<House> houseList) {
     }
 
     @Override
-    public void doOnHouseTask(House house) {
+    public void doTaskOneHouseList(House house) {
         this.house = house;
     }
 
     @Override
-    public void doOnHostTask(Host host) {
+    public void doTaskOneHostList(Host host) {
 
     }
 

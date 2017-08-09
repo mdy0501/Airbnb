@@ -205,7 +205,7 @@ public class GoogleMapViewPagerActivity extends FragmentActivity implements OnMa
     }
 
     @Override
-    public void doHostListTask(List<Host> hostList) {
+    public void doTaskTotalHostList(List<Host> hostList) {
 
     }
 
@@ -278,7 +278,7 @@ public class GoogleMapViewPagerActivity extends FragmentActivity implements OnMa
     // 1. houselist response 받아온다.
     // 셋팅할 것들 셋팅한다.
     @Override
-    public void doHouseListTask(List<House> houseList) {
+    public void doTaskTotalHouseList(List<House> houseList) {
         this.houseList = houseList;
         setAdapter();
         /* Async 처리 */
@@ -290,12 +290,12 @@ public class GoogleMapViewPagerActivity extends FragmentActivity implements OnMa
     }
 
     @Override
-    public void doOnHouseTask(House house) {
+    public void doTaskOneHouseList(House house) {
 
     }
 
     @Override
-    public void doOnHostTask(Host host) {
+    public void doTaskOneHostList(Host host) {
 
     }
 
