@@ -18,29 +18,29 @@ import com.android.airbnb.R;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class ProfileFragment extends Fragment implements View.OnClickListener{
+public class GuestProfileFragment extends Fragment implements View.OnClickListener{
 
-    private Main2Activity main2Activity;
+    private GuestMainActivity guestMainActivity;
     private TextView txtName, txtModifyProfile, txtTravelCredit, txtChangeMode, txtSetting, txtHelp, txtFeedback;
     private ImageView imgProfile, imgTravelCredit, imgChangeMode, imgSetting, imgHelp, imgFeedback;
     private ConstraintLayout layoutProfile, layoutTravelCredit, layoutChangeMode, layoutSetting, layoutHelp, layoutFeedback;
 
 
-    public ProfileFragment() {
+    public GuestProfileFragment() {
         // Required empty public constructor
     }
 
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        main2Activity = (Main2Activity) context;
+        guestMainActivity = (GuestMainActivity) context;
     }
 
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_profile, container, false);
+        View view = inflater.inflate(R.layout.fragment_guest_profile, container, false);
         setViews(view);
         setListeners();
         return view;
@@ -81,23 +81,23 @@ public class ProfileFragment extends Fragment implements View.OnClickListener{
     public void onClick(View v) {
         switch (v.getId()){
             case R.id.layoutProfile :
-                Toast.makeText(main2Activity.getBaseContext(), "Profile 클릭", Toast.LENGTH_SHORT).show();
+                Toast.makeText(guestMainActivity.getBaseContext(), "Profile 클릭", Toast.LENGTH_SHORT).show();
                 break;
             case R.id.layoutTravelCredit :
-                Toast.makeText(main2Activity.getBaseContext(), "TravelCredit 클릭", Toast.LENGTH_SHORT).show();
+                Toast.makeText(guestMainActivity.getBaseContext(), "TravelCredit 클릭", Toast.LENGTH_SHORT).show();
                 break;
             case R.id.layoutChangeMode :
-                Toast.makeText(main2Activity.getBaseContext(), "ChangeMode 클릭", Toast.LENGTH_SHORT).show();
+                Toast.makeText(guestMainActivity.getBaseContext(), "ChangeMode 클릭", Toast.LENGTH_SHORT).show();
                 break;
             case R.id.layoutSetting :
-                Intent intent = new Intent(main2Activity.getBaseContext(), SettingActivity.class);
+                Intent intent = new Intent(guestMainActivity.getBaseContext(), SettingActivity.class);
                 startActivity(intent);
                 break;
             case R.id.layoutHelp :
-                Toast.makeText(main2Activity.getBaseContext(), "Help 클릭", Toast.LENGTH_SHORT).show();
+                Toast.makeText(guestMainActivity.getBaseContext(), "Help 클릭", Toast.LENGTH_SHORT).show();
                 break;
             case R.id.layoutFeedback :
-                Toast.makeText(main2Activity.getBaseContext(), "Feedback 클릭", Toast.LENGTH_SHORT).show();
+                Toast.makeText(guestMainActivity.getBaseContext(), "Feedback 클릭", Toast.LENGTH_SHORT).show();
                 break;
 
         }

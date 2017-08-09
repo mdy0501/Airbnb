@@ -17,28 +17,28 @@ import static com.android.airbnb.R.id.main_container;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class MessageNoticeFragment extends Fragment implements View.OnClickListener {
+public class GuestMessageStorageFragment extends Fragment implements View.OnClickListener{
 
-    private MessageFragment messageFragment;
+    private GuestMessageFragment guestMessageFragment;
 
-    private Main2Activity main2Activity;
+    private GuestMainActivity guestMainActivity;
     private TextView txtTitle, txtContent1, txtContent2;
     private ImageButton imgBtnBack;
 
-    public MessageNoticeFragment() {
+    public GuestMessageStorageFragment() {
         // Required empty public constructor
     }
 
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        main2Activity = (Main2Activity) context;
+        guestMainActivity = (GuestMainActivity) context;
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_message_notice, container, false);
+        View view = inflater.inflate(R.layout.fragment_guest_message_storage, container, false);
         setFragments();
         setViews(view);
         setListeners();
@@ -57,15 +57,15 @@ public class MessageNoticeFragment extends Fragment implements View.OnClickListe
     }
 
     private void setFragments(){
-        messageFragment = new MessageFragment();
+        guestMessageFragment = new GuestMessageFragment();
     }
 
     @Override
     public void onClick(View v) {
         switch (v.getId()){
             case R.id.imgBtnBack :
-                main2Activity.getSupportFragmentManager().beginTransaction()
-                        .replace(main_container, messageFragment)
+                guestMainActivity.getSupportFragmentManager().beginTransaction()
+                        .replace(main_container, guestMessageFragment)
                         .commit();
                 break;
         }
