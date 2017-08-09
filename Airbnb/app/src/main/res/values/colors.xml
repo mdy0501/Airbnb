@@ -13,4 +13,5 @@
 
     <color name="editTextUnderLine">#FFB7B7B7</color>
     <color name="marker_clicked">#00A599</color>
+    <color name="trasparent">#00000000</color>
 </resources>
