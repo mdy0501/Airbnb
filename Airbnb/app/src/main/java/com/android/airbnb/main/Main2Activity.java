@@ -12,7 +12,7 @@ import static com.android.airbnb.R.id.main_container;
 public class Main2Activity extends AppCompatActivity {
 
     private SearchFragment searchFragment;
-    private WishFragment wishFragment;
+    private WishListDetailFragment wishFragment;
     private TravelFragment travelFragment;
     private MessageFragment messageFragment;
     private ProfileFragment profileFragment;
@@ -96,7 +96,7 @@ public class Main2Activity extends AppCompatActivity {
 
     private void setFragments(){
         searchFragment = new SearchFragment();
-        wishFragment = new WishFragment();
+        wishFragment = new WishListDetailFragment();
         travelFragment = new TravelFragment();
         messageFragment = new MessageFragment();
         profileFragment = new ProfileFragment();

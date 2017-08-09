@@ -1,5 +1,7 @@
 package com.android.airbnb.util.Remote;
 
+import android.util.Log;
+
 import com.android.airbnb.domain.airbnb.Host;
 import com.android.airbnb.domain.airbnb.House;
 import com.android.airbnb.presenter.ITask;
@@ -108,6 +110,7 @@ public class Loader {
             @Override
             public void onResponse(Call<List<Host>> call, Response<List<Host>> response) {
                 hostList = response.body();
+                Log.e("loader", "==== done ====");
                 iTask.doHostListTask(hostList);
             }
 
@@ -115,6 +118,7 @@ public class Loader {
             public void onFailure(Call<List<Host>> call, Throwable t) {
                 t.printStackTrace();
             }
+
         });
     }
 }

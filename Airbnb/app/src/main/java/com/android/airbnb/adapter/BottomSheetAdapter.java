@@ -52,6 +52,7 @@ public class BottomSheetAdapter extends RecyclerView.Adapter<BottomSheetAdapter.
         if (houseImages.length > 0) {
             holder.setItemCount(houseImages.length + "");
             holder.setListImg1(houseImages[0].getImage());
+
             GlideApp
                     .with(mContext)
                     .load(houseImages[0].getImage())
