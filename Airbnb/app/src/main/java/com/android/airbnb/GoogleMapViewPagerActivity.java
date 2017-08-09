@@ -207,7 +207,6 @@ public class GoogleMapViewPagerActivity extends FragmentActivity implements OnMa
     }
 
     public String selectedMarkerID = "";
-
     public Map<String, Marker> markerMap = new HashMap<>();
 
     private void setMarkerIcon(Marker marker, int styleId, int color) {
@@ -224,7 +223,6 @@ public class GoogleMapViewPagerActivity extends FragmentActivity implements OnMa
     public MarkerOptions getMarkerOpt(int position) {
         iconGenerator = new IconGenerator(GoogleMapViewPagerActivity.this);
         // style 추가해서 커스텀하기
-        iconGenerator.setTextAppearance(R.style.iconGenTxt_default);
         MarkerOptions markerOptions = new MarkerOptions()
                 .position(houseList.get(position).getLatLng())
                 .icon(BitmapDescriptorFactory.fromBitmap(iconGenerator.makeIcon("₩" + houseList.get(position).getTitle())))
@@ -296,14 +294,20 @@ public class GoogleMapViewPagerActivity extends FragmentActivity implements OnMa
                 // 셋포지션하려고 비동기처리
                 //
                 for (int i = 0; i < houseList.size(); i++) {
-                    getMarkerOpt(i);
+//                    getMarkerOpt(i);
                 }
 
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
+                        MarkerOptions markerOptions;
+                        iconGenerator = new IconGenerator(GoogleMapViewPagerActivity.this);
                         for (int i = 0; i < houseList.size(); i++) {
-                            Marker marker = googleMap.addMarker(markerOptList.get(i));
+                            markerOptions = new MarkerOptions()
+                                    .position(houseList.get(i).getLatLng())
+                                    .icon(BitmapDescriptorFactory.fromBitmap(iconGenerator.makeIcon("₩" + houseList.get(i).getTitle())))
+                                    .anchor(iconGenerator.getAnchorU(), iconGenerator.getAnchorV());
+                            Marker marker = googleMap.addMarker(markerOptions);
                             marker.setTag(houseList.get(i));
                             houseList.get(i).setMarker(marker);
                             markerList.add(marker);
