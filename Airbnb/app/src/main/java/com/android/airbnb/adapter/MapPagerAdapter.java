@@ -80,6 +80,7 @@ public class MapPagerAdapter extends PagerAdapter {
                 /* House index 값 설정 다시 하기 넘기기 */
                 House house = houseList.get(currentPostition);
                 intent.putExtra(HOUSE_OBJ, house);
+                intent.putExtra("key", HOUSE_OBJ);
                 v.getContext().startActivity(intent);
             }
         });
