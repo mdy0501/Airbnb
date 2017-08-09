@@ -16,7 +16,7 @@ import android.widget.Toast;
 import com.android.airbnb.R;
 import com.android.airbnb.data.ApiService;
 import com.android.airbnb.domain.airbnb.SignUpData;
-import com.android.airbnb.main.GuestMainActivity;
+import com.android.airbnb.login.LoginActivity;
 import com.android.airbnb.util.Remote.IServerApi;
 
 import java.util.List;
@@ -27,6 +27,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -79,7 +80,7 @@ public class SignUpBeforeFragment extends Fragment implements View.OnClickListen
     private void postSignUpData(){
         retrofit = new Retrofit.Builder()
                 .baseUrl(ApiService.API_URL)
-                //.addConverterFactory(GsonConverterFactory.create())
+                .addConverterFactory(GsonConverterFactory.create())
                 .build();
         iServerApi = retrofit.create(IServerApi.class);
 
@@ -103,8 +104,9 @@ public class SignUpBeforeFragment extends Fragment implements View.OnClickListen
                 Log.e("==============" , "데이터 전송");
                 // response.toString() 을 로그에 찍어보면 response 결과를 바로 로그창에서 볼 수 있음
                 Log.e("================", response.toString());
-                Toast.makeText(signUpActivity.getBaseContext(), "회원가입이 완료되었습니다.\nMain 화면으로 이동합니다.", Toast.LENGTH_SHORT).show();
-                Intent intent = new Intent(signUpActivity.getBaseContext(), GuestMainActivity.class);
+                Log.e("================", response.body().getBirthday());
+                Toast.makeText(signUpActivity.getBaseContext(), "회원가입이 완료되었습니다.\n로그인 화면으로 이동합니다.", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(signUpActivity.getBaseContext(), LoginActivity.class);
                 startActivity(intent);
                 signUpActivity.finish();
             }

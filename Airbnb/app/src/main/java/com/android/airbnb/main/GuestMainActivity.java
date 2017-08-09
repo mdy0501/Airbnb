@@ -6,13 +6,14 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 
 import com.android.airbnb.R;
+import com.android.airbnb.util.PreferenceUtil;
 
 import static com.android.airbnb.R.id.main_container;
 
 public class GuestMainActivity extends AppCompatActivity {
 
     private GuestSearchFragment guestSearchFragment;
-    private WishListDetailFragment wishFragment;
+    private GuestWishListDetailFragment wishFragment;
     private GuestTravelFragment guestTravelFragment;
     private GuestMessageFragment guestMessageFragment;
     private GuestProfileFragment guestProfileFragment;
@@ -32,6 +33,7 @@ public class GuestMainActivity extends AppCompatActivity {
         setFragments();
         setViews();
         setListeners();
+        Log.e("Main에서 token값 확인", PreferenceUtil.getToken(this)+"");
     }
 
     private void setViews(){
@@ -96,7 +98,7 @@ public class GuestMainActivity extends AppCompatActivity {
 
     private void setFragments(){
         guestSearchFragment = new GuestSearchFragment();
-        wishFragment = new WishListDetailFragment();
+        wishFragment = new GuestWishListDetailFragment();
         guestTravelFragment = new GuestTravelFragment();
         guestMessageFragment = new GuestMessageFragment();
         guestProfileFragment = new GuestProfileFragment();
