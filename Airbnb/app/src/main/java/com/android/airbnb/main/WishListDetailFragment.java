@@ -3,12 +3,13 @@ package com.android.airbnb.main;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -62,6 +63,12 @@ public class WishListDetailFragment extends Fragment implements ITask {
     }
 
     @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setHasOptionsMenu(true);
+    }
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_wish, container, false);
@@ -73,7 +80,13 @@ public class WishListDetailFragment extends Fragment implements ITask {
 
     private void setToolbar(){
         ((AppCompatActivity)getActivity()).setSupportActionBar(toolbar);
-        ((AppCompatActivity)getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+        ((AppCompatActivity)getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+
+        ActionBar actionBar = ((AppCompatActivity) getActivity()).getSupportActionBar();
+        actionBar.setDisplayShowCustomEnabled(true); //커스터마이징 하기 위해 필요
+        actionBar.setDisplayShowTitleEnabled(false);
+        actionBar.setDisplayHomeAsUpEnabled(true);
 
     }
 
@@ -86,16 +99,12 @@ public class WishListDetailFragment extends Fragment implements ITask {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()){
-            case R.id.btnBack:
-                getActivity().onBackPressed();
+            case R.id.wishlist_menu_delete:
+                Toast.makeText(mContext, "목록을 삭제합니다.", Toast.LENGTH_SHORT).show();
                 break;
 
-            case R.id.btnFilter:
-
-                break;
-
-            case R.id.menu_delete:
-
+            case R.id.wishlist_menu_filter:
+                Toast.makeText(mContext, "필터로 갑니다.", Toast.LENGTH_SHORT).show();
                 break;
         }
         return super.onOptionsItemSelected(item);
@@ -115,19 +124,13 @@ public class WishListDetailFragment extends Fragment implements ITask {
 
     private void setViews(View view) {
         txtTitle = (TextView) view.findViewById(R.id.txtTitle1);
-        toolbar = (android.support.v7.widget.Toolbar) view.findViewById(R.id.tooblar);
-        btnBack = (ImageView) view.findViewById(R.id.wish_btnback);
-        btnMenu = (ImageView) view.findViewById(R.id.wish_menu);
+        toolbar = (android.support.v7.widget.Toolbar) view.findViewById(R.id.toolbar);
         title = (TextView) view.findViewById(R.id.wishlist_title);
         filteredResult = (TextView) view.findViewById(R.id.filtered_result);
         houseCount = (TextView) view.findViewById(R.id.reservation_house_count);
         wishRecycler = (RecyclerView) view.findViewById(R.id.wish_recycler);
         fabMap = (FloatingActionButton) view.findViewById(R.id.floatingActionButton);
-        btnFilter = (ImageView) view.findViewById(R.id.btnFilter);
 
-        btnBack.setClickable(true);
-        btnMenu.setClickable(true);
-        btnFilter.setClickable(true);
 
 //        View viewToolbar = getActivity().getLayoutInflater().inflate(R.layout.tt, null)
     }
@@ -143,36 +146,9 @@ public class WishListDetailFragment extends Fragment implements ITask {
         fabMap.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-            }
-        });
-
-        btnBack.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                wishListFragment = new WistListFragment();
-                /* fragment stack에서 pop을 한 번하고 해주고 다시 쌓아줌 */
-                getActivity().getSupportFragmentManager().popBackStack();
-                getActivity().getSupportFragmentManager().beginTransaction().add(R.id.main_container, wishListFragment).addToBackStack(null).commit();
 
             }
         });
-
-        btnMenu.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-            }
-        });
-
-        btnFilter.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Toast.makeText(v.getContext(), "move to filter activity", Toast.LENGTH_SHORT).show();
-
-            }
-        });
-
-
     }
 
     @Override
@@ -183,7 +159,6 @@ public class WishListDetailFragment extends Fragment implements ITask {
     @Override
     public void doHouseListTask(List<House> houseList) {
         this.houseList = houseList;
-        Log.e("houselist size :: ", "------------------- " + houseList.size());
         setAdapter();
         connectData();
     }
