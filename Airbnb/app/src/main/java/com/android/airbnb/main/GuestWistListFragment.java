@@ -19,7 +19,7 @@ import java.util.List;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class WistListFragment extends Fragment {
+public class GuestWistListFragment extends Fragment {
 
     private List<House> houseList;
     private RecyclerView wishlistListRecycler;
@@ -28,7 +28,7 @@ public class WistListFragment extends Fragment {
     public GuestMainActivity guestMainActivity;
 
 
-    public WistListFragment() {
+    public GuestWistListFragment() {
         // Required empty public constructor
     }
 
@@ -55,7 +55,7 @@ public class WistListFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         if (view == null) {
-            view = inflater.inflate(R.layout.fragment_wist_list, container, false);
+            view = inflater.inflate(R.layout.fragment_guest_wist_list, container, false);
         }
         setViews();
         return view;

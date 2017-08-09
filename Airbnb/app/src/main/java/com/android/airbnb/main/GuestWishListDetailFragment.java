@@ -32,7 +32,7 @@ import java.util.List;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class WishListDetailFragment extends Fragment implements ITask {
+public class GuestWishListDetailFragment extends Fragment implements ITask {
 
     private GuestMainActivity guestMainActivity;
     private TextView txtTitle;
@@ -48,9 +48,9 @@ public class WishListDetailFragment extends Fragment implements ITask {
     private WishListDetailAdapter adapter;
     private List<House> houseList;
     private ImageView btnFilter;
-    private WistListFragment wishListFragment;
+    private GuestWistListFragment wishListFragment;
 
-    public WishListDetailFragment() {
+    public GuestWishListDetailFragment() {
         // Required empty public constructor
     }
 
@@ -71,7 +71,7 @@ public class WishListDetailFragment extends Fragment implements ITask {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_wish, container, false);
+        View view = inflater.inflate(R.layout.fragment_guest_wish, container, false);
         setViews(view);
         setToolbar();
         setListeners();
