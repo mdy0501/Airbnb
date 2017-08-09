@@ -9,4 +9,5 @@
     </string>
 
     <string name="saveList">목록 만들기</string>
+    <string name="wishlist_menu_delete">삭제하기</string>
 </resources>

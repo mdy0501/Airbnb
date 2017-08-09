@@ -9,59 +9,19 @@
     <android.support.design.widget.AppBarLayout
         android:id="@+id/layout_toolbar"
         android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize"
-        android:background="@color/white">
+        android:background="@color/white"
+        android:layout_height="wrap_content"
+        app:theme="@style/ThemeOverlay.AppCompat.Light">
 
         <android.support.v7.widget.Toolbar
-            android:id="@+id/tooblar"
+            android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:popupTheme="@style/ThemeOverlay.AppCompat.Light"
-            app:layout_scrollFlags="scroll|enterAlways|snap">
-
-            <android.support.constraint.ConstraintLayout
-                android:id="@+id/tooblar_layout"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
-
-                <ImageView
-                    android:id="@+id/btnFilter"
-                    android:layout_width="?attr/actionBarSize"
-                    android:layout_height="?attr/actionBarSize"
-                    android:padding="20dp"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintRight_toLeftOf="@+id/wish_menu"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintVertical_bias="1.0"
-                    app:srcCompat="@drawable/icon_wish_filters" />
-
-                <ImageView
-                    android:id="@+id/wish_btnback"
-                    android:layout_width="?attr/actionBarSize"
-                    android:layout_height="?attr/actionBarSize"
-                    android:padding="20dp"
-                    android:src="@drawable/left_arrow_black"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintVertical_bias="0.0" />
-
-                <ImageView
-                    android:id="@+id/wish_menu"
-                    android:layout_width="?attr/actionBarSize"
-                    android:layout_height="?attr/actionBarSize"
-                    android:padding="20dp"
-                    android:src="@drawable/icon_menu_black"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintRight_toRightOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-
-            </android.support.constraint.ConstraintLayout>
+            android:minHeight="?attr/actionBarSize"
+            app:layout_scrollFlags="scroll|enterAlways|snap"
+            app:popupTheme="@style/ThemeOverlay.AppCompat.Light">
 
         </android.support.v7.widget.Toolbar>
-
-
     </android.support.design.widget.AppBarLayout>
 
     <android.support.design.widget.FloatingActionButton
@@ -146,11 +106,6 @@
                 app:layout_constraintTop_toBottomOf="@+id/reservation_house_count"
                 app:layout_constraintVertical_bias="0.0" />
 
-
         </android.support.constraint.ConstraintLayout>
-
-
     </android.support.v4.widget.NestedScrollView>
-
-
 </android.support.design.widget.CoordinatorLayout>
