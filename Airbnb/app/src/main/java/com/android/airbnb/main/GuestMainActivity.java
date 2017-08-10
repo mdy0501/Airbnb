@@ -8,7 +8,7 @@ import android.util.Log;
 import com.android.airbnb.R;
 import com.android.airbnb.util.PreferenceUtil;
 
-import static com.android.airbnb.R.id.main_container;
+import static com.android.airbnb.R.id.guest_main_container;
 
 public class GuestMainActivity extends AppCompatActivity {
 
@@ -37,9 +37,9 @@ public class GuestMainActivity extends AppCompatActivity {
     }
 
     private void setViews(){
-        mainTabLayout = (TabLayout) findViewById(R.id.mainTabLayout);
+        mainTabLayout = (TabLayout) findViewById(R.id.hostMainTabLayout);
         getSupportFragmentManager().beginTransaction()
-                .add(main_container, guestSearchFragment)
+                .add(guest_main_container, guestSearchFragment)
                 .commit();
     }
 
@@ -53,31 +53,31 @@ public class GuestMainActivity extends AppCompatActivity {
                 switch (tab.getPosition()){
                     case SEARCH :
                         getSupportFragmentManager().beginTransaction()
-                                .replace(main_container, guestSearchFragment)
+                                .replace(guest_main_container, guestSearchFragment)
                                 .commit();
                         break;
                     case WISH :
                         getSupportFragmentManager().beginTransaction()
-                                .replace(main_container, wishFragment)
+                                .replace(guest_main_container, wishFragment)
                                 .addToBackStack(null)
                                 .commit();
                         break;
                     case TRAVEL :
                         getSupportFragmentManager().beginTransaction()
-                                .replace(main_container, guestTravelFragment)
+                                .replace(guest_main_container, guestTravelFragment)
                                 .addToBackStack(null)
                                 .commit();
                         break;
                     case MESSAGE :
                         getSupportFragmentManager().beginTransaction()
-                                .replace(main_container, guestMessageFragment)
+                                .replace(guest_main_container, guestMessageFragment)
                                 .addToBackStack(null)
                                 .commit();
                         break;
 
                     case PROFILE :
                         getSupportFragmentManager().beginTransaction()
-                                .replace(main_container, guestProfileFragment)
+                                .replace(guest_main_container, guestProfileFragment)
                                 .addToBackStack(null)
                                 .commit();
                         break;
