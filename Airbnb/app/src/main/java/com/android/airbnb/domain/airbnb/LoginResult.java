@@ -6,4 +6,15 @@ package com.android.airbnb.domain.airbnb;
 
 public class LoginResult {
     public String token;
+    public String primaryKey;
+    public String email;
+
+    @Override
+    public String toString() {
+        return "LoginResult{" +
+                "token='" + token + '\'' +
+                ", primaryKey='" + primaryKey + '\'' +
+                ", email='" + email + '\'' +
+                '}';
+    }
 }
