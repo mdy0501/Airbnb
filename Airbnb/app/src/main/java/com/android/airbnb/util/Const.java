@@ -20,7 +20,6 @@ public class Const {
         public static int getAmenityImg(String key) {
             return amenitiesMap.get(key);
         }
-
         public static void setAmenities() {
             amenitiesMap.put("Pets_allowed", R.drawable.ic_pets_allowed);
             amenitiesMap.put("Elevator", R.drawable.ic_elevator);

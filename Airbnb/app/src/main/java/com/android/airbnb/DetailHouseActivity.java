@@ -8,13 +8,17 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.Spannable;
+import android.text.SpannableStringBuilder;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.android.airbnb.adapter.DetailImgPager;
 import com.android.airbnb.adapter.MapPagerAdapter;
@@ -45,6 +49,7 @@ public class DetailHouseActivity extends AppCompatActivity implements ITask, OnM
     private TextView detailRoomStyleTxt;
     private TextView detailBedCountTxt;
     private TextView detailBathroomCountTxt;
+    private FrameLayout mapFrame;
 
     public void setHousePricePerDay(TextView housePricePerDay) {
         this.housePricePerDay = housePricePerDay;
@@ -168,6 +173,7 @@ public class DetailHouseActivity extends AppCompatActivity implements ITask, OnM
     }
 
     private void initView() {
+        mapFrame = (FrameLayout) findViewById(R.id.mapFrameLayout);
         btnTranslate = (TextView) findViewById(R.id.btnTranslate);
         btnTranslate.setClickable(true);
         detailHostImg = (ImageView) findViewById(R.id.detail_host_img);
@@ -245,12 +251,11 @@ public class DetailHouseActivity extends AppCompatActivity implements ITask, OnM
                 startActivity(intent);
             }
         });
-
+        // papago api를 통해 영문 -> 한글 번역한다..
         btnTranslate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 mHandler = new Handler();
-
                 new Thread() {
                     @Override
                     public void run() {
@@ -267,6 +272,14 @@ public class DetailHouseActivity extends AppCompatActivity implements ITask, OnM
                         });
                     }
                 }.start();
+            }
+        });
+        mapFrame.setClickable(true);
+        mapFrame.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(v.getContext(), "디테일 맵으로 이동합니다..", Toast.LENGTH_SHORT).show();
+
             }
         });
     }
@@ -293,7 +306,13 @@ public class DetailHouseActivity extends AppCompatActivity implements ITask, OnM
     public void onMapReady(GoogleMap googleMap) {
         Log.i("Detail", house.getLatLng().toString());
         mMap = googleMap;
-        Marker marker = googleMap.addMarker(new MarkerOptions().position(house.getLatLng()).title(house.getTitle()));
+        mMap.getUiSettings().setScrollGesturesEnabled(false);
+        /* spannable 객체 사용법 */
+        String address =house.getAddress();
+        String title = address + "\n" + "정확한 위치는 예약 완료 후에 표시됩니다.";
+        SpannableStringBuilder builder = new SpannableStringBuilder(title);
+        builder.setSpan(title, 0, address.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+        Marker marker = googleMap.addMarker(new MarkerOptions().position(house.getLatLng()).title(title));
         mMap.moveCamera(CameraUpdateFactory.newLatLng(house.getLatLng()));
         mMap.animateCamera(CameraUpdateFactory.zoomTo(12));
         marker.showInfoWindow();
@@ -328,6 +347,7 @@ public class DetailHouseActivity extends AppCompatActivity implements ITask, OnM
 
         @Override
         public void onBindViewHolder(Holder holder, int position) {
+            // 받아온 amenities 목록에 맞는 이미지 리소스를 조회하여 imageView에 setting한다.
             Const.Amenities.setAmenities();
             Log.e("amen", "adapter :: amen name" + position + ", " + amenities[position].getName());
             holder.setAmenityImg(Const.Amenities.getAmenityImg(amenities[position].getName()));
@@ -342,20 +362,20 @@ public class DetailHouseActivity extends AppCompatActivity implements ITask, OnM
 
             private ImageView amenityImg;
 
-            // toolbug 발견
+            // toolbug 발견 -> () 안에 typecasting 안해줘도 빨간줄이 뜨지 않는 문제..
             public Holder(View itemView) {
                 super(itemView);
                 amenityImg = (ImageView) itemView.findViewById(R.id.amenity_img);
                 itemView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        /* 액티비티 만들기 */
+                        /* 액티비티 넘기기 만들기 */
                         Intent intent = new Intent();
-
                     }
                 });
             }
 
+            // amenities 이미지를 setting한다..
             public void setAmenityImg(int resId) {
                 GlideApp
                         .with(getBaseContext())

@@ -149,7 +149,6 @@ public class GoogleMapViewPagerActivity extends FragmentActivity implements OnMa
         setMarkers(mMap);
         setMarkerOnClick();
         initMap();
-
     }
 
     private int getThemedResId(@AttrRes int attr) {
@@ -301,13 +300,14 @@ public class GoogleMapViewPagerActivity extends FragmentActivity implements OnMa
 
     private void initMap() {
         /* 바꿈 */
-        Log.e("MapActivity", "initmap houselist ::" +houseList.size());
+        Log.e("MapActivity", "initmap houselist ::" + houseList.size());
         mMap.moveCamera(CameraUpdateFactory
                 .newLatLng(houseList.get(0).getLatLng()));
         mMap.animateCamera(CameraUpdateFactory.zoomTo(15));
     }
 
     /* 비동기 처리 thread 구현부 */
+    // 다시 다듬기
     private void setMarkers(final GoogleMap googleMap) {
         new Thread(new Runnable() {
             @Override

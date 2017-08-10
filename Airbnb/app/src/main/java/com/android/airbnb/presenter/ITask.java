@@ -10,7 +10,6 @@ import java.util.List;
  */
 
 public interface ITask {
-
 //    public void doHostListTask(List<Host> hostList);
     public void doTaskTotalHostList(List<Host> hostList);
 //    public void doHouseListTask(List<House> houseList);
@@ -19,8 +18,6 @@ public interface ITask {
     public void doTaskOneHouseList(House house);
 //    public void doOneHostTask(Host host);
     public void doTaskOneHostList(Host host);
-
-
 }
 
 
