@@ -34,4 +34,21 @@ public class PreferenceUtil {
     public static String getToken(Context context) {
         return getString(context, "userToken");
     }
+
+    // pk
+    public static void setPrimaryKey(Context context, String token){
+        setString(context,"userPrimaryKey", token);
+    }
+    public static String getPrimaryKey(Context context) {
+        return getString(context, "userPrimaryKey");
+    }
+
+    // email
+    public static void setEmail(Context context, String token){
+        setString(context,"userEmail", token);
+    }
+    public static String getEmail(Context context) {
+        return getString(context, "userEmail");
+    }
+
 }

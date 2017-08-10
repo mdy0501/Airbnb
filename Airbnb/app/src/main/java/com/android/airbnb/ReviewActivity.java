@@ -9,13 +9,12 @@ import android.widget.TextView;
 
 import com.android.airbnb.adapter.ReviewAdapter;
 import com.android.airbnb.domain.airbnb.Host;
-import com.android.airbnb.domain.airbnb.House;
-import com.android.airbnb.presenter.ITask;
+import com.android.airbnb.util.Remote.ITask;
 import com.android.airbnb.util.Remote.Loader;
 
 import java.util.List;
 
-public class ReviewActivity extends AppCompatActivity implements ITask {
+public class ReviewActivity extends AppCompatActivity implements ITask.totalHostList {
 
 
     private TextView reviewCount;
@@ -28,8 +27,8 @@ public class ReviewActivity extends AppCompatActivity implements ITask {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_review);
-        Loader.getTotalHost(this);
         initView();
+        Loader.getTotalHost(this);
     }
 
     private void initView() {
@@ -42,28 +41,11 @@ public class ReviewActivity extends AppCompatActivity implements ITask {
         adapter = new ReviewAdapter(dummyHostList, this);
         reviewRecycler.setAdapter(adapter);
         reviewRecycler.setLayoutManager(new LinearLayoutManager(this));
-
     }
 
     @Override
-    public void doTaskTotalHostList(List<Host> hostList) {
+    public void doTask(List<Host> hostList) {
         this.dummyHostList = hostList;
         setAdapter();
     }
-
-    @Override
-    public void doTaskTotalHouseList(List<House> houseList) {
-
-    }
-
-    @Override
-    public void doTaskOneHouseList(House house) {
-
-    }
-
-    @Override
-    public void doTaskOneHostList(Host host) {
-
-    }
-
 }

@@ -13,9 +13,8 @@ import android.widget.TextView;
 import com.android.airbnb.R;
 import com.android.airbnb.adapter.PlaceFirstAdapter;
 import com.android.airbnb.adapter.PlaceSecondAdapter;
-import com.android.airbnb.domain.airbnb.Host;
 import com.android.airbnb.domain.airbnb.House;
-import com.android.airbnb.presenter.ITask;
+import com.android.airbnb.util.Remote.ITask;
 import com.android.airbnb.util.Remote.Loader;
 
 import java.util.List;
@@ -23,7 +22,7 @@ import java.util.List;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class GuestSearchPlaceFragment extends Fragment implements ITask{
+public class GuestSearchPlaceFragment extends Fragment implements ITask.totalHouseList{
 
     private List<House> dataList;
     private GuestMainActivity guestMainActivity;
@@ -61,12 +60,7 @@ public class GuestSearchPlaceFragment extends Fragment implements ITask{
 
 
     @Override
-    public void doTaskTotalHostList(List<Host> hostList) {
-
-    }
-
-    @Override
-    public void doTaskTotalHouseList(List<House> houseList) {
+    public void doTask(List<House> houseList) {
         dataList = houseList;
         // Place(장소) 첫번째 ViewPager
         placeFirstAdapter = new PlaceFirstAdapter(guestMainActivity.getBaseContext(), dataList);
@@ -74,15 +68,5 @@ public class GuestSearchPlaceFragment extends Fragment implements ITask{
         // Place(장소) 두번째 ViewPager
         placeSecondAdapter = new PlaceSecondAdapter(guestMainActivity.getBaseContext(), dataList);
         viewPager2.setAdapter(placeSecondAdapter);
-    }
-
-    @Override
-    public void doTaskOneHouseList(House house) {
-
-    }
-
-    @Override
-    public void doTaskOneHostList(Host host) {
-
     }
 }

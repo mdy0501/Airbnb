@@ -22,9 +22,8 @@ import android.widget.Toast;
 
 import com.android.airbnb.R;
 import com.android.airbnb.adapter.WishListDetailAdapter;
-import com.android.airbnb.domain.airbnb.Host;
 import com.android.airbnb.domain.airbnb.House;
-import com.android.airbnb.presenter.ITask;
+import com.android.airbnb.util.Remote.ITask;
 import com.android.airbnb.util.Remote.Loader;
 
 import java.util.List;
@@ -32,7 +31,7 @@ import java.util.List;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class GuestWishListDetailFragment extends Fragment implements ITask {
+public class GuestWishListDetailFragment extends Fragment implements ITask.totalHouseList {
 
     private GuestMainActivity guestMainActivity;
     private TextView txtTitle;
@@ -152,25 +151,9 @@ public class GuestWishListDetailFragment extends Fragment implements ITask {
     }
 
     @Override
-    public void doTaskTotalHostList(List<Host> hostList) {
-
-    }
-
-    @Override
-    public void doTaskTotalHouseList(List<House> houseList) {
+    public void doTask(List<House> houseList) {
         this.houseList = houseList;
         setAdapter();
         connectData();
     }
-
-    @Override
-    public void doTaskOneHouseList(House house) {
-
-    }
-
-    @Override
-    public void doTaskOneHostList(Host host) {
-
-    }
-
 }

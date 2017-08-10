@@ -4,7 +4,6 @@ import android.util.Log;
 
 import com.android.airbnb.domain.airbnb.Host;
 import com.android.airbnb.domain.airbnb.House;
-import com.android.airbnb.presenter.ITask;
 
 import java.util.List;
 
@@ -28,7 +27,7 @@ public class Loader {
     public static House house;
     public static Host host;
 
-    public static void getOneHouse(String pk, final ITask iTask) {
+    public static void getOneHouse(String pk, final ITask.oneHouseList oneHouseList) {
         Retrofit client = new Retrofit.Builder()
                 .baseUrl(BASE_URL)
                 .addConverterFactory(GsonConverterFactory.create())
@@ -40,7 +39,8 @@ public class Loader {
             @Override
             public void onResponse(Call<House> call, Response<House> response) {
                 house = response.body();
-                iTask.doTaskOneHouseList(house);
+//                iTask.doTaskOneHouseList(house);
+                oneHouseList.doTask(house);
             }
 
             @Override
@@ -51,7 +51,7 @@ public class Loader {
 
     }
 
-    public static void getTotalHouse(final ITask iTask) {
+    public static void getTotalHouse(final ITask.totalHouseList totalHouseList) {
         Retrofit client = new Retrofit.Builder()
                 .baseUrl(BASE_URL)
                 .addConverterFactory(GsonConverterFactory.create())
@@ -64,7 +64,9 @@ public class Loader {
             public void onResponse(Call<List<House>> call, Response<List<House>> response) {
                 try {
                     houseList = response.body();
-                    iTask.doTaskTotalHouseList(houseList);
+//                    iTask.doTaskTotalHouseList(houseList);
+//                    totalHouseList(houseList);
+                    totalHouseList.doTask(houseList);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -77,7 +79,7 @@ public class Loader {
         });
     }
 
-    public static void getOneHost(String pk, final ITask iTask) {
+    public static void getOneHost(String pk, final ITask.oneHostList oneHostList) {
         Retrofit client = new Retrofit.Builder()
                 .baseUrl(BASE_URL)
                 .addConverterFactory(GsonConverterFactory.create())
@@ -89,7 +91,7 @@ public class Loader {
             @Override
             public void onResponse(Call<Host> call, Response<Host> response) {
                 host = response.body();
-                iTask.doTaskOneHostList(host);
+                oneHostList.doTask(host);
             }
 
             @Override
@@ -100,7 +102,7 @@ public class Loader {
 
     }
 
-    public static void getTotalHost(final ITask iTask) {
+    public static void getTotalHost(final ITask.totalHostList totalHostList) {
         Retrofit client = new Retrofit.Builder()
                 .baseUrl(BASE_URL)
                 .addConverterFactory(GsonConverterFactory.create())
@@ -113,7 +115,8 @@ public class Loader {
             public void onResponse(Call<List<Host>> call, Response<List<Host>> response) {
                 hostList = response.body();
                 Log.e("loader", "==== done ====");
-                iTask.doTaskTotalHostList(hostList);
+//                iTask.doTaskTotalHostList(hostList);
+                totalHostList.doTask(hostList);
             }
 
             @Override
