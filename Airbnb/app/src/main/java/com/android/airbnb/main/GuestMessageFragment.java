@@ -16,7 +16,7 @@ import android.widget.Toast;
 import com.android.airbnb.R;
 import com.android.airbnb.util.GlideApp;
 
-import static com.android.airbnb.R.id.main_container;
+import static com.android.airbnb.R.id.guest_main_container;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -85,13 +85,13 @@ public class GuestMessageFragment extends Fragment implements View.OnClickListen
         switch (v.getId()){
             case R.id.imgBtnStorage:
                 guestMainActivity.getSupportFragmentManager().beginTransaction()
-                        .add(main_container, guestMessageStorageFragment)
+                        .add(guest_main_container, guestMessageStorageFragment)
                         .addToBackStack(null)
                         .commit();
                 break;
             case R.id.imgBtnNotice:
                 guestMainActivity.getSupportFragmentManager().beginTransaction()
-                        .add(main_container, guestMessageNoticeFragment)
+                        .add(guest_main_container, guestMessageNoticeFragment)
                         .addToBackStack(null)
                         .commit();
                 break;

@@ -82,6 +82,7 @@ public class GuestProfileFragment extends Fragment implements View.OnClickListen
 
     @Override
     public void onClick(View v) {
+        Intent intent;
         switch (v.getId()){
             case R.id.layoutProfile :
                 Toast.makeText(guestMainActivity.getBaseContext(), "Profile 클릭", Toast.LENGTH_SHORT).show();
@@ -90,10 +91,13 @@ public class GuestProfileFragment extends Fragment implements View.OnClickListen
                 Toast.makeText(guestMainActivity.getBaseContext(), "TravelCredit 클릭", Toast.LENGTH_SHORT).show();
                 break;
             case R.id.layoutChangeMode :
-                Toast.makeText(guestMainActivity.getBaseContext(), "ChangeMode 클릭", Toast.LENGTH_SHORT).show();
+                Toast.makeText(guestMainActivity.getBaseContext(), "Host 모드로 전환됩니다.", Toast.LENGTH_SHORT).show();
+                intent = new Intent(getActivity(), HostMainActivity.class);
+                startActivity(intent);
+                getActivity().finish();
                 break;
             case R.id.layoutSetting :
-                Intent intent = new Intent(guestMainActivity.getBaseContext(), SettingActivity.class);
+                intent = new Intent(guestMainActivity.getBaseContext(), SettingActivity.class);
                 startActivity(intent);
                 break;
             case R.id.layoutHelp :
