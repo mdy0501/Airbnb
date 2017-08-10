@@ -3,6 +3,7 @@
     package="com.android.airbnb">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
 
     <application
         android:allowBackup="true"
@@ -48,10 +49,9 @@
         <activity android:name=".main.GuestMainActivity" />
         <activity
             android:name=".MakeWishListActivity"
-            android:theme="@style/NoActioinBarTheme"></activity>
-        <activity android:name=".main.SettingActivity"></activity>
+            android:theme="@style/NoActioinBarTheme" />
+        <activity android:name=".main.SettingActivity" />
+        <activity android:name=".main.HostMainActivity"></activity>
     </application>
-
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
 
 </manifest>
