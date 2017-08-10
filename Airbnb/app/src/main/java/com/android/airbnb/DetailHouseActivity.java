@@ -23,12 +23,10 @@ import android.widget.Toast;
 import com.android.airbnb.adapter.DetailImgPager;
 import com.android.airbnb.adapter.MapPagerAdapter;
 import com.android.airbnb.domain.airbnb.Amenities;
-import com.android.airbnb.domain.airbnb.Host;
 import com.android.airbnb.domain.airbnb.House;
 import com.android.airbnb.domain.airbnb.House_images;
 import com.android.airbnb.papago.Translator;
 import com.android.airbnb.papago.domain.Data;
-import com.android.airbnb.presenter.ITask;
 import com.android.airbnb.util.Const;
 import com.android.airbnb.util.GlideApp;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -39,11 +37,9 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.gson.Gson;
 
-import java.util.List;
-
 import me.relex.circleindicator.CircleIndicator;
 
-public class DetailHouseActivity extends AppCompatActivity implements ITask, OnMapReadyCallback, Translator.IPapago {
+public class DetailHouseActivity extends AppCompatActivity implements OnMapReadyCallback, Translator.IPapago {
 
     private TextView detailGuestCountTxt;
     private TextView detailRoomStyleTxt;
@@ -255,6 +251,7 @@ public class DetailHouseActivity extends AppCompatActivity implements ITask, OnM
         btnTranslate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 mHandler = new Handler();
                 new Thread() {
                     @Override
@@ -285,24 +282,6 @@ public class DetailHouseActivity extends AppCompatActivity implements ITask, OnM
     }
 
     @Override
-    public void doTaskTotalHostList(List<Host> hostList) {
-    }
-
-    @Override
-    public void doTaskTotalHouseList(List<House> houseList) {
-    }
-
-    @Override
-    public void doTaskOneHouseList(House house) {
-        this.house = house;
-    }
-
-    @Override
-    public void doTaskOneHostList(Host host) {
-
-    }
-
-    @Override
     public void onMapReady(GoogleMap googleMap) {
         Log.i("Detail", house.getLatLng().toString());
         mMap = googleMap;
@@ -318,7 +297,7 @@ public class DetailHouseActivity extends AppCompatActivity implements ITask, OnM
         marker.showInfoWindow();
     }
 
-    String translatedTxt = "";
+    private String translatedTxt = "";
 
     @Override
     public void getResult(String jsonString) {
@@ -348,7 +327,6 @@ public class DetailHouseActivity extends AppCompatActivity implements ITask, OnM
         @Override
         public void onBindViewHolder(Holder holder, int position) {
             // 받아온 amenities 목록에 맞는 이미지 리소스를 조회하여 imageView에 setting한다.
-            Const.Amenities.setAmenities();
             Log.e("amen", "adapter :: amen name" + position + ", " + amenities[position].getName());
             holder.setAmenityImg(Const.Amenities.getAmenityImg(amenities[position].getName()));
         }

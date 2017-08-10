@@ -12,9 +12,8 @@ import android.view.ViewGroup;
 
 import com.android.airbnb.R;
 import com.android.airbnb.adapter.TripAdapter;
-import com.android.airbnb.domain.airbnb.Host;
 import com.android.airbnb.domain.airbnb.House;
-import com.android.airbnb.presenter.ITask;
+import com.android.airbnb.util.Remote.ITask;
 import com.android.airbnb.util.Remote.Loader;
 
 import java.util.List;
@@ -22,7 +21,7 @@ import java.util.List;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class GuestSearchTripFragment extends Fragment implements ITask{
+public class GuestSearchTripFragment extends Fragment implements ITask.totalHouseList{
 
     private List<House> dataList;
     private GuestMainActivity guestMainActivity;
@@ -55,25 +54,10 @@ public class GuestSearchTripFragment extends Fragment implements ITask{
 
 
     @Override
-    public void doTaskTotalHostList(List<Host> hostList) {
-
-    }
-
-    @Override
-    public void doTaskTotalHouseList(List<House> houseList) {
+    public void doTask(List<House> houseList) {
         dataList = houseList;
         tripAdapter = new TripAdapter(guestMainActivity.getBaseContext(), dataList);
         recyclerTrip.setAdapter(tripAdapter);
         recyclerTrip.setLayoutManager(new GridLayoutManager(guestMainActivity.getBaseContext(), 2));
-    }
-
-    @Override
-    public void doTaskOneHouseList(House house) {
-
-    }
-
-    @Override
-    public void doTaskOneHostList(Host host) {
-
     }
 }

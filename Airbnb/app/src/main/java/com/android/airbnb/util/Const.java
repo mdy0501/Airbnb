@@ -18,9 +18,11 @@ public class Const {
 
         // 서버에서 넘겨 받은 amenities의 String을 key로 사용한다.
         public static int getAmenityImg(String key) {
+            setAmenities();
             return amenitiesMap.get(key);
         }
-        public static void setAmenities() {
+
+        private static void setAmenities() {
             amenitiesMap.put("Pets_allowed", R.drawable.ic_pets_allowed);
             amenitiesMap.put("Elevator", R.drawable.ic_elevator);
             amenitiesMap.put("Gym", R.drawable.ic_gym);

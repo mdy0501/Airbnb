@@ -16,9 +16,8 @@ import android.view.ViewGroup;
 import com.android.airbnb.GoogleMapViewPagerActivity;
 import com.android.airbnb.R;
 import com.android.airbnb.adapter.RoomsAdapter;
-import com.android.airbnb.domain.airbnb.Host;
 import com.android.airbnb.domain.airbnb.House;
-import com.android.airbnb.presenter.ITask;
+import com.android.airbnb.util.Remote.ITask;
 import com.android.airbnb.util.Remote.Loader;
 
 import java.util.ArrayList;
@@ -27,7 +26,7 @@ import java.util.List;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class GuestSearchRoomsFragment extends Fragment implements ITask, View.OnClickListener {
+public class GuestSearchRoomsFragment extends Fragment implements ITask.totalHouseList, View.OnClickListener {
 
     private List<House> dataList;
     private GuestMainActivity guestMainActivity;
@@ -79,26 +78,11 @@ public class GuestSearchRoomsFragment extends Fragment implements ITask, View.On
     }
 
     @Override
-    public void doTaskTotalHostList(List<Host> hostList) {
-
-    }
-
-    @Override
-    public void doTaskTotalHouseList(List<House> houseList) {
+    public void doTask(List<House> houseList) {
         // FloatingActionButton을 통해 데이터를 넘겨주기 위해 houseList값을 dataList에 저장한다.
         dataList = houseList;
         roomsAdapter = new RoomsAdapter(guestMainActivity.getBaseContext(), houseList);
         recyclerRooms.setAdapter(roomsAdapter);
         recyclerRooms.setLayoutManager(new LinearLayoutManager(guestMainActivity.getBaseContext()));
-    }
-
-    @Override
-    public void doTaskOneHouseList(House house) {
-
-    }
-
-    @Override
-    public void doTaskOneHostList(Host host) {
-
     }
 }
