@@ -109,28 +109,30 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             @Override
             public void onResponse(Call<LoginResult> call, Response<LoginResult> response) {
                 Log.e("===============", "로그인 데이터 전송");
-                Log.e("===============", "Response Token : " + response.body().token);
 
+                // 로그인시 예외처리
                 if(response.isSuccessful()) {
+                    Log.e("response code", "Success : " + response.code()+"");
 
-                    // Token값 SharedPreference에 저장
+
+                    // TODO  - 회원가입하는 부분도 바로 로그인하기 때문에 PK, email sharedPreference에 저장하는 코드 작성
+                    // SharedPreference에 저장 (Token값)
                     PreferenceUtil.setToken(LoginActivity.this, response.body().token);
 //                    PreferenceUtil.setPrimaryKey(LoginActivity.this, response.body().primaryKey);
 //                    PreferenceUtil.setEmail(LoginActivity.this, response.body().email);
 
-//                    Log.e("LoginAct", response.body().primaryKey);
-//                    Log.e("LoginAct", response.body().email);
-                    Log.e("LoginAct", response.body().token.toString());
 
                     // 로그인 완료 후 메인화면으로 이동
-                    Toast.makeText(LoginActivity.this, "Main 화면으로 이동합니다.", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(LoginActivity.this, "정상 로그인 되었습니다.\nMain 화면으로 이동합니다.", Toast.LENGTH_SHORT).show();
                     Intent intent = new Intent(LoginActivity.this, GuestMainActivity.class);
                     startActivity(intent);
                     finish();
-                }else if (response.code() == 400){
-//                    response.code() == 400
+                } else if (response.code() == 400){
+                    Log.e("response code", "Fail : " + response.code()+"");
+                    Toast.makeText(LoginActivity.this, "이메일주소와 비밀번호를\n다시 확인해주세요.", Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(LoginActivity.this, "로그인 실패", Toast.LENGTH_SHORT).show();
                 }
-
             }
 
             @Override
