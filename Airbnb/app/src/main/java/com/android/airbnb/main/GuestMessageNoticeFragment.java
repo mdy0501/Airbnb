@@ -12,7 +12,7 @@ import android.widget.TextView;
 
 import com.android.airbnb.R;
 
-import static com.android.airbnb.R.id.main_container;
+import static com.android.airbnb.R.id.guest_main_container;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -65,7 +65,7 @@ public class GuestMessageNoticeFragment extends Fragment implements View.OnClick
         switch (v.getId()){
             case R.id.imgBtnBack :
                 guestMainActivity.getSupportFragmentManager().beginTransaction()
-                        .replace(main_container, guestMessageFragment)
+                        .replace(guest_main_container, guestMessageFragment)
                         .commit();
                 break;
         }

@@ -1,0 +1,130 @@
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    tools:context="com.android.airbnb.main.HostStatisticsFragment">
+
+
+    <ScrollView
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginTop="0dp"
+        android:layout_marginRight="0dp"
+        app:layout_constraintRight_toRightOf="parent"
+        android:layout_marginLeft="0dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginBottom="0dp">
+
+        <android.support.constraint.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" >
+
+            <TextView
+                android:id="@+id/txtViewsAndReservationDescription"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="24dp"
+                android:layout_marginTop="24dp"
+                android:text="숙소 조회 수 없음"
+                android:textColor="@android:color/black"
+                android:textSize="20sp"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/txtViewsAndReservation"
+                app:layout_constraintBottom_toBottomOf="parent"
+                android:layout_marginBottom="32dp" />
+
+            <TextView
+                android:id="@+id/txtViewsAndReservation"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="조회 및 예약 수"
+                android:textColor="@android:color/black"
+                android:textSize="26sp"
+                android:textStyle="bold"
+                android:layout_marginTop="80dp"
+                app:layout_constraintTop_toBottomOf="@+id/txtCurrentGrade"
+                android:layout_marginLeft="24dp"
+                app:layout_constraintLeft_toLeftOf="parent" />
+
+            <TextView
+                android:id="@+id/txtCurrentGrade"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="현재 평점 없음"
+                android:textColor="@android:color/black"
+                android:textSize="20sp"
+                android:layout_marginTop="24dp"
+                app:layout_constraintTop_toBottomOf="@+id/txtTotalGradeDescription"
+                android:layout_marginLeft="24dp"
+                app:layout_constraintLeft_toLeftOf="parent" />
+
+            <TextView
+                android:id="@+id/txtTotalGradeDescription"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="24dp"
+                android:layout_marginTop="12dp"
+                android:text="전체"
+                android:textColor="@android:color/black"
+                android:textSize="18sp"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/txtTotalGrade" />
+
+            <TextView
+                android:id="@+id/txtTotalGrade"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="전체 평점"
+                android:textColor="@android:color/black"
+                android:textSize="26sp"
+                android:textStyle="bold"
+                android:layout_marginTop="80dp"
+                app:layout_constraintTop_toBottomOf="@+id/txtIncomeDescription"
+                android:layout_marginLeft="24dp"
+                app:layout_constraintLeft_toLeftOf="parent" />
+
+            <TextView
+                android:id="@+id/txtIncomeDescription"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="아직 수익이 없습니다."
+                android:textColor="@android:color/black"
+                android:textSize="20sp"
+                android:layout_marginTop="24dp"
+                app:layout_constraintTop_toBottomOf="@+id/txtIncome"
+                android:layout_marginLeft="24dp"
+                app:layout_constraintLeft_toLeftOf="parent" />
+
+            <TextView
+                android:id="@+id/txtIncome"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="24dp"
+                android:layout_marginTop="60dp"
+                android:text="8월 수입"
+                android:textColor="@android:color/black"
+                android:textSize="26sp"
+                android:textStyle="bold"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/txtTitle" />
+
+            <TextView
+                android:id="@+id/txtTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="통계"
+                android:textColor="@android:color/black"
+                android:textSize="36sp"
+                android:textStyle="bold"
+                app:layout_constraintTop_toTopOf="parent"
+                android:layout_marginTop="74dp"
+                android:layout_marginLeft="24dp"
+                app:layout_constraintLeft_toLeftOf="parent" />
+        </android.support.constraint.ConstraintLayout>
+    </ScrollView>
+
+</android.support.constraint.ConstraintLayout>

@@ -51,7 +51,9 @@
             android:name=".MakeWishListActivity"
             android:theme="@style/NoActioinBarTheme" />
         <activity android:name=".main.SettingActivity" />
-        <activity android:name=".calendar.CustomCalendar"></activity>
+        <activity android:name=".calendar.CustomCalendar"/>
+        <activity android:name=".main.HostMainActivity">
+        </activity>
     </application>
 
 </manifest>

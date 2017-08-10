@@ -18,39 +18,30 @@ import com.android.airbnb.R;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class GuestProfileFragment extends Fragment implements View.OnClickListener{
+public class HostProfileFragment extends Fragment implements View.OnClickListener{
 
-    private GuestMainActivity guestMainActivity;
+    private HostMainActivity hostMainActivity;
     private TextView txtName, txtModifyProfile, txtTravelCredit, txtChangeMode, txtSetting, txtHelp, txtFeedback;
     private ImageView imgProfile, imgTravelCredit, imgChangeMode, imgSetting, imgHelp, imgFeedback;
     private ConstraintLayout layoutProfile, layoutTravelCredit, layoutChangeMode, layoutSetting, layoutHelp, layoutFeedback;
 
-//    private ProgressDialog changeModeDialog;
 
-
-    public GuestProfileFragment() {
+    public HostProfileFragment() {
         // Required empty public constructor
     }
 
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        guestMainActivity = (GuestMainActivity) context;
+        hostMainActivity = (HostMainActivity) context;
     }
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_guest_profile, container, false);
+        View view = inflater.inflate(R.layout.fragment_host_profile, container, false);
         setViews(view);
         setListeners();
-
-//        changeModeDialog = new ProgressDialog(getActivity());
-//        changeModeDialog.setTitle("Host 모드로 전환");
-//        changeModeDialog.setMessage("Host 모드로 전환하고 있습니다.");
-//        changeModeDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-
         return view;
     }
 
@@ -90,32 +81,29 @@ public class GuestProfileFragment extends Fragment implements View.OnClickListen
         Intent intent;
         switch (v.getId()){
             case R.id.layoutProfile :
-                Toast.makeText(guestMainActivity.getBaseContext(), "Profile 클릭", Toast.LENGTH_SHORT).show();
+                Toast.makeText(hostMainActivity.getBaseContext(), "Profile 클릭", Toast.LENGTH_SHORT).show();
                 break;
             case R.id.layoutTravelCredit :
-                Toast.makeText(guestMainActivity.getBaseContext(), "TravelCredit 클릭", Toast.LENGTH_SHORT).show();
+                Toast.makeText(hostMainActivity.getBaseContext(), "TravelCredit 클릭", Toast.LENGTH_SHORT).show();
                 break;
             case R.id.layoutChangeMode :
-//                changeModeDialog.show();
-                Toast.makeText(getActivity(), "Host 모드로 전환됩니다.", Toast.LENGTH_SHORT).show();
-                intent = new Intent(getActivity(), HostMainActivity.class);
+                Toast.makeText(hostMainActivity.getBaseContext(), "Guest 모드로 전환됩니다.", Toast.LENGTH_SHORT).show();
+                intent = new Intent(getActivity(), GuestMainActivity.class);
                 startActivity(intent);
-//                getActivity().overridePendingTransition(R.anim.change_mode_slide_in, R.anim.change_mode_step_back);
-
-//                changeModeDialog.dismiss();
                 getActivity().finish();
                 break;
             case R.id.layoutSetting :
-                intent = new Intent(guestMainActivity.getBaseContext(), SettingActivity.class);
+                intent = new Intent(hostMainActivity.getBaseContext(), SettingActivity.class);
                 startActivity(intent);
                 break;
             case R.id.layoutHelp :
-                Toast.makeText(guestMainActivity.getBaseContext(), "Help 클릭", Toast.LENGTH_SHORT).show();
+                Toast.makeText(hostMainActivity.getBaseContext(), "Help 클릭", Toast.LENGTH_SHORT).show();
                 break;
             case R.id.layoutFeedback :
-                Toast.makeText(guestMainActivity.getBaseContext(), "Feedback 클릭", Toast.LENGTH_SHORT).show();
+                Toast.makeText(hostMainActivity.getBaseContext(), "Feedback 클릭", Toast.LENGTH_SHORT).show();
                 break;
 
         }
     }
+
 }

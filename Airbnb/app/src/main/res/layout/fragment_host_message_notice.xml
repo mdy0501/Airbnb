@@ -1,0 +1,57 @@
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/white"
+        tools:context="com.android.airbnb.main.HostMessageNoticeFragment">
+
+
+        <ImageButton
+            android:id="@+id/imgBtnBack"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_marginLeft="24dp"
+            android:background="@drawable/left_arrow_black"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_marginTop="24dp" />
+
+        <TextView
+            android:id="@+id/txtTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="24dp"
+            android:layout_marginTop="32dp"
+            android:text="알림"
+            android:textColor="@android:color/black"
+            android:textSize="40sp"
+            android:textStyle="bold"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/imgBtnBack" />
+
+        <TextView
+            android:id="@+id/txtContent1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="24dp"
+            android:layout_marginTop="16dp"
+            android:text="알림 없음"
+            android:textColor="@android:color/black"
+            android:textSize="20sp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/txtTitle" />
+
+        <TextView
+            android:id="@+id/txtContent2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="24dp"
+            android:layout_marginTop="50dp"
+            android:text="축하합니다! 알림을 모두 확인했습니다."
+            android:textColor="@android:color/black"
+            android:textSize="20sp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/txtContent1" />
+</android.support.constraint.ConstraintLayout>
+

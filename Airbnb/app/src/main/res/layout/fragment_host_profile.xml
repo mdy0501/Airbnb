@@ -4,17 +4,13 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/white"
-    tools:context="com.android.airbnb.main.GuestProfileFragment">
+    tools:context="com.android.airbnb.main.HostProfileFragment">
 
 
     <ScrollView
         android:id="@+id/scrollView4"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginBottom="0dp"
-        android:layout_marginLeft="0dp"
-        android:layout_marginRight="0dp"
-        android:layout_marginTop="0dp"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintLeft_toLeftOf="parent"
@@ -169,7 +165,7 @@
                     android:layout_marginLeft="16dp"
                     android:layout_marginStart="16dp"
                     android:layout_marginTop="8dp"
-                    android:text="호스트 모드로 전환"
+                    android:text="게스트 모드로 전환"
                     android:textColor="@android:color/black"
                     android:textSize="25sp"
                     android:textStyle="bold"

@@ -15,8 +15,11 @@ import android.widget.Toast;
 
 import com.android.airbnb.R;
 import com.android.airbnb.data.ApiService;
+import com.android.airbnb.domain.airbnb.LoginResult;
 import com.android.airbnb.domain.airbnb.SignUpData;
 import com.android.airbnb.login.LoginActivity;
+import com.android.airbnb.main.GuestMainActivity;
+import com.android.airbnb.util.PreferenceUtil;
 import com.android.airbnb.util.Remote.IServerApi;
 
 import java.util.List;
@@ -88,8 +91,8 @@ public class SignUpBeforeFragment extends Fragment implements View.OnClickListen
 
         /* RequestBody 객체에 실어보내야 함, sign-up 정보 post 시 JSON 객체로 통신하지 않고 text/plain으로 구성되어 있는 form-data로 통신 */
         // json 객체로 통신 시도하면 400 error와 함께 bad request error가 뜸 -> 조사해본 결과 보통 syntax error 때문에 발생한다고 함
-        RequestBody email = RequestBody.create(MediaType.parse("text/plain"), signUpActivity.signUpData.getEmail());
-        RequestBody password1 = RequestBody.create(MediaType.parse("text/plain"), signUpActivity.signUpData.getPassword1());
+        final RequestBody email = RequestBody.create(MediaType.parse("text/plain"), signUpActivity.signUpData.getEmail());
+        final RequestBody password1 = RequestBody.create(MediaType.parse("text/plain"), signUpActivity.signUpData.getPassword1());
         RequestBody password2 = RequestBody.create(MediaType.parse("text/plain"), signUpActivity.signUpData.getPasswrod2());
         RequestBody firstName = RequestBody.create(MediaType.parse("text/plain"), signUpActivity.signUpData.getFirst_name());
         RequestBody lastName = RequestBody.create(MediaType.parse("text/plain"), signUpActivity.signUpData.getLast_name());
@@ -101,11 +104,45 @@ public class SignUpBeforeFragment extends Fragment implements View.OnClickListen
         postSignUp.enqueue(new Callback<SignUpData>() {
             @Override
             public void onResponse(Call<SignUpData> call, Response<SignUpData> response) {
-                Log.e("==============" , "데이터 전송");
-                // response.toString() 을 로그에 찍어보면 response 결과를 바로 로그창에서 볼 수 있음
-                Log.e("================", response.toString());
-                Log.e("================", response.body().getBirthday());
-                Toast.makeText(signUpActivity.getBaseContext(), "회원가입이 완료되었습니다.\n로그인 화면으로 이동합니다.", Toast.LENGTH_SHORT).show();
+
+                // 회원가입 성공시,
+                if(response.isSuccessful()){
+                    Toast.makeText(getActivity(), "회원가입이 완료되었습니다.\nMain 화면으로 이동합니다.", Toast.LENGTH_SHORT).show();
+
+                    // 회원가입 성공하면, 바로 로그인하기
+                    Call<LoginResult> postLoginData = iServerApi.postLoginData(email, password1);
+                    postLoginData.enqueue(new Callback<LoginResult>() {
+                        @Override
+                        public void onResponse(Call<LoginResult> call, Response<LoginResult> response) {
+                            // 로그인 성공시
+                            if(response.isSuccessful()) {
+                                // response되는 token값 저장
+                                PreferenceUtil.setToken(getActivity(), response.body().token);
+//                                PreferenceUtil.setPrimaryKey(getActivity(), response.body().primaryKey);
+//                                PreferenceUtil.setEmail(getActivity(), response.body().email);
+
+                                // 로그인 완료되면 Guest Main 화면으로 이동
+                                Intent intent = new Intent(getActivity(), GuestMainActivity.class);
+                                startActivity(intent);
+                                signUpActivity.finish();
+                            } else if (response.code() == 400) {
+                                Toast.makeText(getActivity(), "로그인에 실패하였습니다.", Toast.LENGTH_SHORT).show();
+                            } else {
+                                Toast.makeText(getActivity(), "로그인 실패", Toast.LENGTH_SHORT).show();
+                            }
+
+                        }
+
+                        @Override
+                        public void onFailure(Call<LoginResult> call, Throwable t) {
+
+                        }
+                    });
+                }
+
+
+
+
                 Intent intent = new Intent(signUpActivity.getBaseContext(), LoginActivity.class);
                 startActivity(intent);
                 signUpActivity.finish();

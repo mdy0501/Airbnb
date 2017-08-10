@@ -12,33 +12,33 @@ import android.widget.TextView;
 
 import com.android.airbnb.R;
 
-import static com.android.airbnb.R.id.guest_main_container;
+import static com.android.airbnb.R.id.host_main_container;
 
 /**
  * A simple {@link Fragment} subclass.
  */
-public class GuestMessageStorageFragment extends Fragment implements View.OnClickListener{
+public class HostMessageStorageFragment extends Fragment implements View.OnClickListener{
 
-    private GuestMessageFragment guestMessageFragment;
-
-    private GuestMainActivity guestMainActivity;
+    private HostMessageFragment hostMessageFragment;
+    private HostMainActivity hostMainActivity;
     private TextView txtTitle, txtContent1, txtContent2;
     private ImageButton imgBtnBack;
 
-    public GuestMessageStorageFragment() {
+
+    public HostMessageStorageFragment() {
         // Required empty public constructor
     }
 
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        guestMainActivity = (GuestMainActivity) context;
+        hostMainActivity = (HostMainActivity) context;
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_guest_message_storage, container, false);
+        View view = inflater.inflate(R.layout.fragment_host_message_storage, container, false);
         setFragments();
         setViews(view);
         setListeners();
@@ -57,17 +57,18 @@ public class GuestMessageStorageFragment extends Fragment implements View.OnClic
     }
 
     private void setFragments(){
-        guestMessageFragment = new GuestMessageFragment();
+        hostMessageFragment = new HostMessageFragment();
     }
 
     @Override
     public void onClick(View v) {
         switch (v.getId()){
             case R.id.imgBtnBack :
-                guestMainActivity.getSupportFragmentManager().beginTransaction()
-                        .replace(guest_main_container, guestMessageFragment)
+                hostMainActivity.getSupportFragmentManager().beginTransaction()
+                        .replace(host_main_container, hostMessageFragment)
                         .commit();
                 break;
         }
     }
+
 }
