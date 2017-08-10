@@ -14,6 +14,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.RatingBar;
@@ -22,6 +23,7 @@ import android.widget.Toast;
 
 import com.android.airbnb.adapter.DetailImgPager;
 import com.android.airbnb.adapter.MapPagerAdapter;
+import com.android.airbnb.calendar.CustomCalendar;
 import com.android.airbnb.domain.airbnb.Amenities;
 import com.android.airbnb.domain.airbnb.House;
 import com.android.airbnb.domain.airbnb.House_images;
@@ -46,6 +48,7 @@ public class DetailHouseActivity extends AppCompatActivity implements OnMapReady
     private TextView detailBedCountTxt;
     private TextView detailBathroomCountTxt;
     private FrameLayout mapFrame;
+    private Button detailHouseBtnCheckReserve;
 
     public void setHousePricePerDay(TextView housePricePerDay) {
         this.housePricePerDay = housePricePerDay;
@@ -156,12 +159,12 @@ public class DetailHouseActivity extends AppCompatActivity implements OnMapReady
     private void getExIntent() {
         Intent intent = getIntent();
         Bundle extra = intent.getExtras();
-        if(extra.getString("key").equals("roomsHouse")){
+        if (extra.getString("key").equals("roomsHouse")) {
             house = extra.getParcelable("roomsHouse");
             houseImages = house.getHouse_images();
             amenities = house.getAmenities();
 
-        } else if(extra.getString("key").equals(MapPagerAdapter.HOUSE_OBJ)) {
+        } else if (extra.getString("key").equals(MapPagerAdapter.HOUSE_OBJ)) {
             house = extra.getParcelable(MapPagerAdapter.HOUSE_OBJ);
             houseImages = house.getHouse_images();
             amenities = house.getAmenities();
@@ -190,6 +193,7 @@ public class DetailHouseActivity extends AppCompatActivity implements OnMapReady
         detailRoomStyleTxt = (TextView) findViewById(R.id.detail_room_style_txt);
         detailBedCountTxt = (TextView) findViewById(R.id.detail_bed_count_txt);
         detailBathroomCountTxt = (TextView) findViewById(R.id.detail_bathroom_count_txt);
+        detailHouseBtnCheckReserve = (Button) findViewById(R.id.detailHouse_btn_check_reserve);
     }
 
     private void setRoomPager() {
@@ -211,9 +215,9 @@ public class DetailHouseActivity extends AppCompatActivity implements OnMapReady
         detailRoomtypeTxt.setText(house.getRoom_type());
         housePricePerDay.setText("₩" + house.getPrice_per_day() + "/1박");
         detailRoomStyleTxt.setText("방 " + house.getBedrooms() + "개");
-        detailBathroomCountTxt.setText("욕실 " + house.getBathrooms()+"개");
-        detailGuestCountTxt.setText("게스트 " + house.getAccommodates()+"명");
-        detailBedCountTxt.setText("침대 "+ house.getBeds() + "개");
+        detailBathroomCountTxt.setText("욕실 " + house.getBathrooms() + "개");
+        detailGuestCountTxt.setText("게스트 " + house.getAccommodates() + "명");
+        detailBedCountTxt.setText("침대 " + house.getBeds() + "개");
 
         GlideApp.with(this)
                 .load(house.getHost().getImg_profile())
@@ -279,6 +283,17 @@ public class DetailHouseActivity extends AppCompatActivity implements OnMapReady
 
             }
         });
+
+        detailHouseBtnCheckReserve.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(v.getContext(), CustomCalendar.class);
+                v.getContext().startActivity(intent);
+                // activity 전환효과를 위해 anim에 전환효과 설정값 셋팅
+                // 아래 메소드를 통해 전환효과 설정
+                overridePendingTransition(R.anim.slide_in_up, R.anim.stay);
+            }
+        });
     }
 
     @Override
@@ -287,7 +302,7 @@ public class DetailHouseActivity extends AppCompatActivity implements OnMapReady
         mMap = googleMap;
         mMap.getUiSettings().setScrollGesturesEnabled(false);
         /* spannable 객체 사용법 */
-        String address =house.getAddress();
+        String address = house.getAddress();
         String title = address + "\n" + "정확한 위치는 예약 완료 후에 표시됩니다.";
         SpannableStringBuilder builder = new SpannableStringBuilder(title);
         builder.setSpan(title, 0, address.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
@@ -340,7 +355,8 @@ public class DetailHouseActivity extends AppCompatActivity implements OnMapReady
 
             private ImageView amenityImg;
 
-            // toolbug 발견 -> () 안에 typecasting 안해줘도 빨간줄이 뜨지 않는 문제..
+            // toolbug 발견 -> () 안에 typecasting 안해줘도 빨간줄이 뜨지 않는 문제...
+            // 해결 완료
             public Holder(View itemView) {
                 super(itemView);
                 amenityImg = (ImageView) itemView.findViewById(R.id.amenity_img);
