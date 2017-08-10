@@ -25,9 +25,7 @@ import android.widget.Toast;
 
 import com.android.airbnb.adapter.BottomSheetAdapter;
 import com.android.airbnb.adapter.MapPagerAdapter;
-import com.android.airbnb.domain.airbnb.Host;
 import com.android.airbnb.domain.airbnb.House;
-import com.android.airbnb.presenter.ITask;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapsInitializer;
@@ -45,7 +43,7 @@ import java.util.List;
 import java.util.Map;
 
 
-public class GoogleMapViewPagerActivity extends FragmentActivity implements OnMapReadyCallback, ITask, MapPagerAdapter.OnMapPagerListener {
+public class GoogleMapViewPagerActivity extends FragmentActivity implements OnMapReadyCallback, MapPagerAdapter.OnMapPagerListener {
 
     private GoogleMap mMap;
 
@@ -149,7 +147,6 @@ public class GoogleMapViewPagerActivity extends FragmentActivity implements OnMa
         setMarkers(mMap);
         setMarkerOnClick();
         initMap();
-
     }
 
     private int getThemedResId(@AttrRes int attr) {
@@ -202,11 +199,6 @@ public class GoogleMapViewPagerActivity extends FragmentActivity implements OnMa
         bottomSheetAdapter = new BottomSheetAdapter(houseList, this);
         wishBottomRecycler.setAdapter(bottomSheetAdapter);
         wishBottomRecycler.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
-    }
-
-    @Override
-    public void doTaskTotalHostList(List<Host> hostList) {
-
     }
 
     private void setBtnOnClick() {
@@ -277,27 +269,17 @@ public class GoogleMapViewPagerActivity extends FragmentActivity implements OnMa
 
     // 1. houselist response 받아온다.
     // 셋팅할 것들 셋팅한다.
-    @Override
-    public void doTaskTotalHouseList(List<House> houseList) {
-        this.houseList = houseList;
-        setAdapter();
-        /* Async 처리 */
-        progress.start();
-        setMarkers(mMap);
-        setMarkerOnClick();
-        setViewPager();
-        initMap();
-    }
-
-    @Override
-    public void doTaskOneHouseList(House house) {
-
-    }
-
-    @Override
-    public void doTaskOneHostList(Host host) {
-
-    }
+//    @Override
+//    public void doTaskTotalHouseList(List<House> houseList) {
+//        this.houseList = houseList;
+//        setAdapter();
+//        /* Async 처리 */
+//        progress.start();
+//        setMarkers(mMap);
+//        setMarkerOnClick();
+//        setViewPager();
+//        initMap();
+//    }
 
     private void initMap() {
         /* 바꿈 */
