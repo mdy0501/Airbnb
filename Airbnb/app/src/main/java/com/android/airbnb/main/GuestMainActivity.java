@@ -9,6 +9,7 @@ import com.android.airbnb.R;
 import com.android.airbnb.util.PreferenceUtil;
 
 import static com.android.airbnb.R.id.guest_main_container;
+import static com.android.airbnb.R.id.hostMainTabLayout;
 
 public class GuestMainActivity extends AppCompatActivity {
 
@@ -18,7 +19,7 @@ public class GuestMainActivity extends AppCompatActivity {
     private GuestMessageFragment guestMessageFragment;
     private GuestProfileFragment guestProfileFragment;
 
-    private TabLayout mainTabLayout;
+    private TabLayout guestMainTabLayout;
     private static final int SEARCH = 0;
     private static final int WISH = 1;
     private static final int TRAVEL = 2;
@@ -37,7 +38,7 @@ public class GuestMainActivity extends AppCompatActivity {
     }
 
     private void setViews(){
-        mainTabLayout = (TabLayout) findViewById(R.id.hostMainTabLayout);
+        guestMainTabLayout = (TabLayout) findViewById(hostMainTabLayout);
         getSupportFragmentManager().beginTransaction()
                 .add(guest_main_container, guestSearchFragment)
                 .commit();
@@ -46,7 +47,7 @@ public class GuestMainActivity extends AppCompatActivity {
     private void setListeners(){
 
         // TabLayout Listener
-        mainTabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+        guestMainTabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
                 Log.w("test============" , tab.getPosition()+"");
