@@ -9,21 +9,23 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.android.airbnb.R;
+
+import static com.android.airbnb.R.id.host_main_container;
 
 /**
  * A simple {@link Fragment} subclass.
  */
-public class HostRoomsFragment extends Fragment implements View.OnClickListener{
+public class HostMessageNoticeFragment extends Fragment implements View.OnClickListener{
 
+    private HostMessageFragment hostMessageFragment;
     private HostMainActivity hostMainActivity;
-    private TextView txtTitle, txtDescription;
-    private ImageButton imgBtnAddRooms;
+    private TextView txtTitle, txtContent1, txtContent2;
+    private ImageButton imgBtnBack;
 
 
-    public HostRoomsFragment() {
+    public HostMessageNoticeFragment() {
         // Required empty public constructor
     }
 
@@ -36,7 +38,8 @@ public class HostRoomsFragment extends Fragment implements View.OnClickListener{
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_host_rooms, container, false);
+        View view = inflater.inflate(R.layout.fragment_host_message_notice, container, false);
+        setFragments();
         setViews(view);
         setListeners();
         return view;
@@ -44,19 +47,26 @@ public class HostRoomsFragment extends Fragment implements View.OnClickListener{
 
     private void setViews(View view){
         txtTitle = (TextView) view.findViewById(R.id.txtTitle);
-        txtDescription = (TextView) view.findViewById(R.id.txtDescription);
-        imgBtnAddRooms = (ImageButton) view.findViewById(R.id.imgBtnAddRooms);
+        txtContent1 = (TextView) view.findViewById(R.id.txtContent1);
+        txtContent2 = (TextView) view.findViewById(R.id.txtContent2);
+        imgBtnBack = (ImageButton) view.findViewById(R.id.imgBtnBack);
     }
 
     private void setListeners(){
-        imgBtnAddRooms.setOnClickListener(this);
+        imgBtnBack.setOnClickListener(this);
+    }
+
+    private void setFragments(){
+        hostMessageFragment = new HostMessageFragment();
     }
 
     @Override
     public void onClick(View v) {
         switch (v.getId()){
-            case R.id.imgBtnAddRooms:
-                Toast.makeText(hostMainActivity, "숙소 추가버튼 클릭", Toast.LENGTH_SHORT).show();
+            case R.id.imgBtnBack :
+                hostMainActivity.getSupportFragmentManager().beginTransaction()
+                        .replace(host_main_container, hostMessageFragment)
+                        .commit();
                 break;
         }
     }
