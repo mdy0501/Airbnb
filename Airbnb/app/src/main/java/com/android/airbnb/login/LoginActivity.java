@@ -111,14 +111,26 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 Log.e("===============", "로그인 데이터 전송");
                 Log.e("===============", "Response Token : " + response.body().token);
 
-                // Token값 SharedPreference에 저장
-                PreferenceUtil.setToken(LoginActivity.this, response.body().token);
+                if(response.isSuccessful()) {
 
-                // 로그인 완료 후 메인화면으로 이동
-                Toast.makeText(LoginActivity.this, "Main 화면으로 이동합니다.", Toast.LENGTH_SHORT).show();
-                Intent intent = new Intent(LoginActivity.this, GuestMainActivity.class);
-                startActivity(intent);
-                finish();
+                    // Token값 SharedPreference에 저장
+                    PreferenceUtil.setToken(LoginActivity.this, response.body().token);
+//                    PreferenceUtil.setPrimaryKey(LoginActivity.this, response.body().primaryKey);
+//                    PreferenceUtil.setEmail(LoginActivity.this, response.body().email);
+
+//                    Log.e("LoginAct", response.body().primaryKey);
+//                    Log.e("LoginAct", response.body().email);
+                    Log.e("LoginAct", response.body().token.toString());
+
+                    // 로그인 완료 후 메인화면으로 이동
+                    Toast.makeText(LoginActivity.this, "Main 화면으로 이동합니다.", Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent(LoginActivity.this, GuestMainActivity.class);
+                    startActivity(intent);
+                    finish();
+                }else if (response.code() == 400){
+//                    response.code() == 400
+                }
+
             }
 
             @Override
