@@ -6,7 +6,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.constraint.ConstraintLayout;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,7 +14,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.airbnb.R;
-import com.android.airbnb.util.PreferenceUtil;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -26,6 +24,8 @@ public class GuestProfileFragment extends Fragment implements View.OnClickListen
     private TextView txtName, txtModifyProfile, txtTravelCredit, txtChangeMode, txtSetting, txtHelp, txtFeedback;
     private ImageView imgProfile, imgTravelCredit, imgChangeMode, imgSetting, imgHelp, imgFeedback;
     private ConstraintLayout layoutProfile, layoutTravelCredit, layoutChangeMode, layoutSetting, layoutHelp, layoutFeedback;
+
+//    private ProgressDialog changeModeDialog;
 
 
     public GuestProfileFragment() {
@@ -45,7 +45,12 @@ public class GuestProfileFragment extends Fragment implements View.OnClickListen
         View view = inflater.inflate(R.layout.fragment_guest_profile, container, false);
         setViews(view);
         setListeners();
-        Log.e("Profile에서 token값 확인", PreferenceUtil.getToken(getActivity())+"");
+
+//        changeModeDialog = new ProgressDialog(getActivity());
+//        changeModeDialog.setTitle("Host 모드로 전환");
+//        changeModeDialog.setMessage("Host 모드로 전환하고 있습니다.");
+//        changeModeDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+
         return view;
     }
 
@@ -91,9 +96,13 @@ public class GuestProfileFragment extends Fragment implements View.OnClickListen
                 Toast.makeText(guestMainActivity.getBaseContext(), "TravelCredit 클릭", Toast.LENGTH_SHORT).show();
                 break;
             case R.id.layoutChangeMode :
-                Toast.makeText(guestMainActivity.getBaseContext(), "Host 모드로 전환됩니다.", Toast.LENGTH_SHORT).show();
+//                changeModeDialog.show();
+                Toast.makeText(getActivity(), "Host 모드로 전환됩니다.", Toast.LENGTH_SHORT).show();
                 intent = new Intent(getActivity(), HostMainActivity.class);
                 startActivity(intent);
+//                getActivity().overridePendingTransition(R.anim.change_mode_slide_in, R.anim.change_mode_step_back);
+
+//                changeModeDialog.dismiss();
                 getActivity().finish();
                 break;
             case R.id.layoutSetting :
