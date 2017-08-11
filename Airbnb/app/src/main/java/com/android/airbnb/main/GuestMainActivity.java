@@ -34,7 +34,9 @@ public class GuestMainActivity extends AppCompatActivity {
         setFragments();
         setViews();
         setListeners();
-        Log.e("Main에서 token값 확인", PreferenceUtil.getToken(this)+"");
+        Log.e("Main에서 token값 확인", PreferenceUtil.getToken(this));
+        Log.e("Main에서 primaryKey값 확인", PreferenceUtil.getPrimaryKey(this));
+        Log.e("Main에서 email값 확인", PreferenceUtil.getEmail(this));
     }
 
     private void setViews(){
