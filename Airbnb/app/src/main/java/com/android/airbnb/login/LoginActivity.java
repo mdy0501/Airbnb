@@ -113,13 +113,16 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 // 로그인시 예외처리
                 if(response.isSuccessful()) {
                     Log.e("response code", "Success : " + response.code()+"");
+                    Log.e("response body PK", "Success : " + response.body().getPrimaryKey());
+                    Log.e("response body email", "Success : " + response.body().getEmail());
+                    Log.e("response body token", "Success : " + response.body().getToken());
 
 
                     // TODO  - 회원가입하는 부분도 바로 로그인하기 때문에 PK, email sharedPreference에 저장하는 코드 작성
                     // SharedPreference에 저장 (Token값)
-                    PreferenceUtil.setToken(LoginActivity.this, response.body().token);
-//                    PreferenceUtil.setPrimaryKey(LoginActivity.this, response.body().primaryKey);
-//                    PreferenceUtil.setEmail(LoginActivity.this, response.body().email);
+                    PreferenceUtil.setToken(LoginActivity.this, response.body().getToken());
+                    PreferenceUtil.setPrimaryKey(LoginActivity.this, response.body().getPrimaryKey());
+                    PreferenceUtil.setEmail(LoginActivity.this, response.body().getEmail());
 
 
                     // 로그인 완료 후 메인화면으로 이동
