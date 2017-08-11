@@ -123,7 +123,7 @@ public class GuestWishListDetailFragment extends Fragment implements ITask.total
 
     private void setViews(View view) {
         txtTitle = (TextView) view.findViewById(R.id.txtTitle1);
-        toolbar = (android.support.v7.widget.Toolbar) view.findViewById(R.id.toolbar);
+        toolbar = (android.support.v7.widget.Toolbar) view.findViewById(R.id.content);
         title = (TextView) view.findViewById(R.id.wishlist_title);
         filteredResult = (TextView) view.findViewById(R.id.filtered_result);
         houseCount = (TextView) view.findViewById(R.id.reservation_house_count);

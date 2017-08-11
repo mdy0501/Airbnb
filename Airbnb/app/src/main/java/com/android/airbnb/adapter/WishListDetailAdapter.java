@@ -21,6 +21,7 @@ import java.util.List;
 
 /**
  * Created by JunHee on 2017. 8. 8..
+ * wishlist의 담겨있는 아이템을 보여주는 리스트어댑터
  */
 
 public class WishListDetailAdapter extends RecyclerView.Adapter<WishListDetailAdapter.Holder> {
@@ -116,6 +117,14 @@ public class WishListDetailAdapter extends RecyclerView.Adapter<WishListDetailAd
                 @Override
                 public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                     Toast.makeText(mContext, "isChecked :: " + isChecked, Toast.LENGTH_SHORT).show();
+                }
+            });
+
+            v.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Toast.makeText(mContext, "item clicked ======= done! ", Toast.LENGTH_SHORT).show();
+
                 }
             });
         }

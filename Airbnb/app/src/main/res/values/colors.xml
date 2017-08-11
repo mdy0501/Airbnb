@@ -5,6 +5,7 @@
     <color name="colorAccent">#FF4081</color>
     <color name="colorWhite">#FFFFFFFF</color>
     <color name="colorLine">#aeaca8a8</color>
+    <color name="colorLightGray">#918e8e</color>
     <color name="fontColor_black">#AE000000</color>
 
     <color name="DeepGreen">#247c83</color>

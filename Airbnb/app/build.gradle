@@ -48,19 +48,3 @@ dependencies {
     testCompile 'junit:junit:4.12'
     annotationProcessor 'com.github.bumptech.glide:compiler:4.0.0'
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

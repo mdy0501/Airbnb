@@ -10,4 +10,17 @@
 
     <string name="saveList">목록 만들기</string>
     <string name="wishlist_menu_delete">삭제하기</string>
+
+
+
+    <!-- calendarView -->
+    <string name="mon_kr">월</string>
+    <string name="thu_kr">화</string>
+    <string name="wen_kr">수</string>
+    <string name="thur_kr">목</string>
+    <string name="fri_kr">금</string>
+    <string name="sat_kr">토</string>
+    <string name="sun_kr">일</string>
+
+    <string name="btn_save">저장</string>
 </resources>

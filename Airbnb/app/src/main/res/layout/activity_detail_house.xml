@@ -644,7 +644,7 @@
         app:layout_constraintVertical_bias="1.0">
 
         <Button
-            android:id="@+id/button2"
+            android:id="@+id/detailHouse_btn_check_reserve"
             android:layout_width="wrap_content"
             android:layout_height="60dp"
             android:layout_marginBottom="8dp"
