@@ -11,6 +11,8 @@
     <color name="DeepGreen">#247c83</color>
     <color name="white">#ffffff</color>
     <color name="black">#000000</color>
+    <color name="gray">#888a89</color>
+
 
     <color name="editTextUnderLine">#FFB7B7B7</color>
     <color name="marker_clicked">#00A599</color>
