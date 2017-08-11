@@ -33,7 +33,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener{
 
     Retrofit retrofit;
-    IServerApi IServerApi;
+    IServerApi iServerApi;
 
     private Button btnPreviousLogin, btnNextLoginEmail, btnUseTel;
     private TextView txtFindPassword, txtLogin, txtEmail, txtPassword;
@@ -92,7 +92,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 .baseUrl(ApiService.API_URL)
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
-        IServerApi = retrofit.create(IServerApi.class);
+        iServerApi = retrofit.create(IServerApi.class);
 
         LoginData loginData = new LoginData();
         loginData.setEmail(editEmail.getText().toString());
@@ -104,7 +104,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         loginData.setEmail(editEmail.getText().toString());
         loginData.setPassword(editPassword.getText().toString());
 
-        Call<LoginResult> postLoginData = IServerApi.postLoginData(email, password);
+        Call<LoginResult> postLoginData = iServerApi.postLoginData(email, password);
         postLoginData.enqueue(new Callback<LoginResult>() {
             @Override
             public void onResponse(Call<LoginResult> call, Response<LoginResult> response) {

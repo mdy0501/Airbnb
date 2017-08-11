@@ -55,6 +55,13 @@ public interface IServerApi {
     Call<LoginResult> postLoginData(@Part("email") RequestBody email,
                                     @Part("password") RequestBody password);
 
+
+    // 페이스북 로그인 POST
+    @Multipart
+    @POST("facebook-login/")
+    Call<LoginResult> postFacebookLoginData(@Part("token") RequestBody token);
+
+
     // 로그아웃 GET
     // Key : Authorization  ,  Value : Token xxxxxxxxxxxxxxx
     @GET("apis/user/logout/")
