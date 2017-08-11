@@ -17,6 +17,7 @@ import com.android.airbnb.WelcomeActivity;
 import com.android.airbnb.data.ApiService;
 import com.android.airbnb.util.PreferenceUtil;
 import com.android.airbnb.util.Remote.IServerApi;
+import com.facebook.login.LoginManager;
 
 import okhttp3.ResponseBody;
 import retrofit2.Call;
@@ -120,6 +121,7 @@ public class SettingActivity extends AppCompatActivity implements View.OnClickLi
                             public void onClick(DialogInterface dialog, int which) {
                                 // 로그아웃을 한다.
                                 postLogout();
+                                LoginManager.getInstance().logOut();
 
                             }
                         })
