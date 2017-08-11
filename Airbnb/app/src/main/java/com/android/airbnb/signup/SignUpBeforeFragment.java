@@ -117,9 +117,9 @@ public class SignUpBeforeFragment extends Fragment implements View.OnClickListen
                             // 로그인 성공시
                             if(response.isSuccessful()) {
                                 // response되는 token값 저장
-                                PreferenceUtil.setToken(getActivity(), response.body().token);
-//                                PreferenceUtil.setPrimaryKey(getActivity(), response.body().primaryKey);
-//                                PreferenceUtil.setEmail(getActivity(), response.body().email);
+                                PreferenceUtil.setToken(getActivity(), response.body().getToken());
+                                PreferenceUtil.setPrimaryKey(getActivity(), response.body().getPrimaryKey());
+                                PreferenceUtil.setEmail(getActivity(), response.body().getEmail());
 
                                 // 로그인 완료되면 Guest Main 화면으로 이동
                                 Intent intent = new Intent(getActivity(), GuestMainActivity.class);

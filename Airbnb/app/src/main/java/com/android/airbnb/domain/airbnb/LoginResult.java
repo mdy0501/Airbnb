@@ -5,16 +5,40 @@ package com.android.airbnb.domain.airbnb;
  */
 
 public class LoginResult {
-    public String token;
-    public String primaryKey;
-    public String email;
+    private String token;
+    private String user_pk;     // primary key
+    private String user_name;   // email
+
+    public String getToken() {
+        return token;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
+    }
+
+    public String getPrimaryKey() {
+        return user_pk;
+    }
+
+    public void setPrimaryKey(String user_pk) {
+        this.user_pk = user_pk;
+    }
+
+    public String getEmail() {
+        return user_name;
+    }
+
+    public void setEmail(String user_name) {
+        this.user_name = user_name;
+    }
 
     @Override
     public String toString() {
         return "LoginResult{" +
                 "token='" + token + '\'' +
-                ", primaryKey='" + primaryKey + '\'' +
-                ", email='" + email + '\'' +
+                ", primaryKey='" + user_pk + '\'' +
+                ", email='" + user_name + '\'' +
                 '}';
     }
 }

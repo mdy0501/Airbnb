@@ -36,16 +36,16 @@ public class PreferenceUtil {
     }
 
     // pk
-    public static void setPrimaryKey(Context context, String token){
-        setString(context,"userPrimaryKey", token);
+    public static void setPrimaryKey(Context context, String primaryKey){
+        setString(context,"userPrimaryKey", primaryKey);
     }
     public static String getPrimaryKey(Context context) {
         return getString(context, "userPrimaryKey");
     }
 
     // email
-    public static void setEmail(Context context, String token){
-        setString(context,"userEmail", token);
+    public static void setEmail(Context context, String email){
+        setString(context,"userEmail", email);
     }
     public static String getEmail(Context context) {
         return getString(context, "userEmail");
