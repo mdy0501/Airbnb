@@ -12,7 +12,10 @@
         android:roundIcon="@drawable/airbnb_black"
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat.NoActionBar">
-        <meta-data android:name="com.facebook.sdk.ApplicationId" android:value="@string/facebook_app_id"/>
+        <meta-data
+            android:name="com.facebook.sdk.ApplicationId"
+            android:value="@string/facebook_app_id" />
+
         <activity android:name=".StartActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -20,8 +23,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
-
         <activity android:name=".login.LoginActivity" />
         <!--
              The API key for Google Maps-based APIs is defined as a string resource.
@@ -54,9 +55,9 @@
             android:name=".MakeWishListActivity"
             android:theme="@style/NoActioinBarTheme" />
         <activity android:name=".main.SettingActivity" />
-        <activity android:name=".calendar.CustomCalendar"/>
-        <activity android:name=".main.HostMainActivity">
-        </activity>
+        <activity android:name=".calendar.CustomCalendar" />
+        <activity android:name=".main.HostMainActivity"></activity>
+        <activity android:name=".main.registerrooms.HostRoomsRegisterActivity"></activity>
     </application>
 
 </manifest>
