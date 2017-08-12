@@ -17,7 +17,7 @@ public class Utils {
 
         private static Calendar mCalendar = Calendar.getInstance();
 
-        public static int getDaysInMonth(int month, int year) {
+        public static int getDaysInMonth(int year, int month) {
 
             switch (month-1) {
                 case Calendar.JANUARY:
@@ -56,9 +56,11 @@ public class Utils {
         }
 
         public static int getFirstWeekDay(int yyyy, int month){
+            // 특정 년, 월의 1일의 요일을 구한다.
+            // [1 : Sunday] ~ [7 : Saturday]
             mCalendar.set(yyyy, month-1, 1);
-            int day_of_week = mCalendar.get(Calendar.DAY_OF_WEEK);
-            return day_of_week;
+            int firstDayOfWeek = mCalendar.get(Calendar.DAY_OF_WEEK);
+            return firstDayOfWeek;
         }
     }
 

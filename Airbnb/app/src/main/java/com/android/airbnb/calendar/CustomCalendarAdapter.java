@@ -2,7 +2,6 @@ package com.android.airbnb.calendar;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,8 +20,10 @@ public class CustomCalendarAdapter extends RecyclerView.Adapter<CustomCalendarAd
 
     private List<CalendarData> dateList;
     private Context mContext;
+    private GridAdapter.OnTextChangedListener mOnTextChangedListener;
 
-    public CustomCalendarAdapter(List<CalendarData> dateList, Context mContext) {
+    public CustomCalendarAdapter(List<CalendarData> dateList, GridAdapter.OnTextChangedListener mOnTextChangedListener, Context mContext) {
+        this.mOnTextChangedListener = mOnTextChangedListener;
         this.dateList = dateList;
         this.mContext = mContext;
     }
@@ -30,28 +31,23 @@ public class CustomCalendarAdapter extends RecyclerView.Adapter<CustomCalendarAd
     @Override
     public Holder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.calendar_item, parent, false);
-        Log.e("Calendar adapter", "onCreateViewHolder == done!");
         return new Holder(view);
     }
 
     @Override
     public void onBindViewHolder(Holder holder, int position) {
         CalendarData calendarData = dateList.get(position);
-        List<String> days = calendarData.getDays();
-
+        List<Integer> days = calendarData.getDays();
         holder.setCalendarMonth(calendarData.getMonth() + "월");
-        Log.e("Calendar adapter", "onBindViewHolder == done!");
 
         // holder가 gridView를 품고 있기 때문에, 이곳에서 setAdapter를 해준다.
-        holder.getCalendarGridView().setAdapter(new GridAdapter(days, (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE)));
-        Log.e("Calendar adapter", "onBindViewHolder == set grid adapter done!");
+        holder.getCalendarGridView().setAdapter(new GridAdapter(days, (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE), mOnTextChangedListener));
     }
 
     @Override
     public int getItemCount() {
         return dateList.size();
     }
-
 
     class Holder extends RecyclerView.ViewHolder {
 
