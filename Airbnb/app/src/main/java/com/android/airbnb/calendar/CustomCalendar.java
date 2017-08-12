@@ -16,7 +16,7 @@ import com.android.airbnb.R;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CustomCalendar extends AppCompatActivity implements View.OnClickListener {
+public class CustomCalendar extends AppCompatActivity implements View.OnClickListener, GridAdapter.OnTextChangedListener {
 
     private ImageView calendarBtnClose;
     private TextView calendarDelete;
@@ -34,44 +34,50 @@ public class CustomCalendar extends AppCompatActivity implements View.OnClickLis
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_custom_calendar);
         calendarDatas = new ArrayList<>();
-        setDummy();
+        getCalendarData();
         initView();
-        setClikable();
+        setOnClick();
         setAdapter();
     }
 
-    private void setDummy() {
+    // 추후
+    private void getCalendarData(){
 
-        List<String> days = new ArrayList<>();
+        List<Integer> days;
         int dayCount = 0;
         int currentYear = Integer.parseInt(Utils.DateUtil.getCurrentYear());
         for (int i = 1; i <= 12; i++) {
+            days = new ArrayList<>();
+            dayCount = Utils.CalendarUtil.getDaysInMonth(currentYear, i);
             data = new CalendarData();
-            dayCount = Utils.CalendarUtil.getDaysInMonth(i, currentYear);
-            Log.e("CustomCalendar", dayCount + "");
-            days.clear();
+            data.setFirstWeekDay(Utils.CalendarUtil.getFirstWeekDay(currentYear, i));
+            Log.e("CustomCalendar", "days address :: " + days.toString());
+            Log.e("CustomCalendar", "days address :: " + days.toString());
+            Log.e("CustomCalendar", "after days.clear() :: " + days.toString());
+            for (int k = 0; k < data.getFirstWeekDay(); k++){
+                days.add(000000);
+            }
             for (int j = 1; j <= dayCount; j++) {
-                days.add(j + "");
+                days.add(j);
                 Log.e("CustomCalendar", "add :: " + j + "");
             }
             data.setDays(days);
-            data.setMonth(i + "");
-            data.setWeekDaysCount(Utils.CalendarUtil.getWeekCount(currentYear, i) + "");
+            data.setMonth(i);
+            data.setWeekDaysCount(Utils.CalendarUtil.getWeekCount(currentYear, i));
             Log.e("CustomCalendar", data.toString());
             calendarDatas.add(data);
         }
-
     }
 
-    private void setAdapter() {
-        calendarAdapter = new CustomCalendarAdapter(calendarDatas, this);
+    private void setAdapter(){
+        calendarAdapter = new CustomCalendarAdapter(calendarDatas, this, this);
         calendarList.setAdapter(calendarAdapter);
         calendarList.setLayoutManager(new LinearLayoutManager(this));
         calendarList.scrollToPosition(Integer.parseInt(Utils.DateUtil.getCurrentMonth())-1);
         calendarList.setItemViewCacheSize(5);
     }
 
-    private void initView() {
+    private void initView(){
         calendarBtnClose = (ImageView) findViewById(R.id.calendar_btn_close);
         calendarDelete = (TextView) findViewById(R.id.calendar_delete);
         checkinDateTxt = (TextView) findViewById(R.id.checkin_date_txt);
@@ -80,7 +86,7 @@ public class CustomCalendar extends AppCompatActivity implements View.OnClickLis
         calendarBtnSave = (Button) findViewById(R.id.calendar_btn_Save);
     }
 
-    private void setClikable() {
+    private void setOnClick(){
         calendarBtnClose.setClickable(true);
         calendarDelete.setClickable(true);
         calendarDelete.setClickable(true);
@@ -91,8 +97,8 @@ public class CustomCalendar extends AppCompatActivity implements View.OnClickLis
     }
 
     @Override
-    public void onClick(View v) {
-        switch (v.getId()) {
+    public void onClick(View v){
+        switch (v.getId()){
             case R.id.calendar_btn_close:
                 Toast.makeText(v.getContext(), "close", Toast.LENGTH_SHORT).show();
                 onBackPressed();
@@ -105,5 +111,23 @@ public class CustomCalendar extends AppCompatActivity implements View.OnClickLis
             case R.id.calendar_delete:
                 Toast.makeText(v.getContext(), "del", Toast.LENGTH_SHORT).show();
         }
+    }
+
+    private boolean flag = false;
+    @Override
+    public void checkInChanged(String selectedCheckInDate) {
+        Log.e("CustomCalenar", selectedCheckInDate);
+        if(flag){
+            checkoutDateTxt.setText("");
+            checkinDateTxt.setText("");
+        }
+        checkinDateTxt.setText(selectedCheckInDate);
+    }
+
+    @Override
+    public void checkOutChanged(String selectedCheckOutDate) {
+        Log.e("CustomCalenar", selectedCheckOutDate);
+        checkoutDateTxt.setText(selectedCheckOutDate);
+        flag = true;
     }
 }
