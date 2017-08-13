@@ -11,8 +11,6 @@ import java.util.Date;
  */
 
 public class Utils {
-
-
     public static class CalendarUtil{
 
         private static Calendar mCalendar = Calendar.getInstance();
@@ -83,6 +81,4 @@ public class Utils {
             return sdf.format(new Date(now));
         }
     }
-
-
 }
