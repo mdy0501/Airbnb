@@ -19,11 +19,10 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.android.airbnb.adapter.DetailImgPager;
 import com.android.airbnb.adapter.MapPagerAdapter;
-import com.android.airbnb.calendar.CustomCalendar;
+import com.android.airbnb.canvas_calendar.CalendarActivity;
 import com.android.airbnb.domain.airbnb.Amenities;
 import com.android.airbnb.domain.airbnb.House;
 import com.android.airbnb.domain.airbnb.House_images;
@@ -49,6 +48,8 @@ public class DetailHouseActivity extends AppCompatActivity implements OnMapReady
     private TextView detailBathroomCountTxt;
     private FrameLayout mapFrame;
     private Button detailHouseBtnCheckReserve;
+    public static final String HOUSE_LATLNG = "detail_house_latlng";
+    public static final String HOUSE_ADDRESS = "detail_house_address";
 
     public void setHousePricePerDay(TextView housePricePerDay) {
         this.housePricePerDay = housePricePerDay;
@@ -155,7 +156,7 @@ public class DetailHouseActivity extends AppCompatActivity implements OnMapReady
         setOnClick();
     }
 
-    /* 이 부분이 parcelable로 넘겨 받음 == 아직 이미지가 넘어오지 않음 */
+    // DetailMapViewPagerActivity로 부터 전달 받은 intent를 꺼낸다.
     private void getExIntent() {
         Intent intent = getIntent();
         Bundle extra = intent.getExtras();
@@ -251,12 +252,10 @@ public class DetailHouseActivity extends AppCompatActivity implements OnMapReady
                 startActivity(intent);
             }
         });
-        // papago api를 통해 영문 -> 한글 번역한다..
+        // papago api를 통해 영문 -> 한글 번역한다.
         btnTranslate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                mHandler = new Handler();
                 new Thread() {
                     @Override
                     public void run() {
@@ -279,15 +278,17 @@ public class DetailHouseActivity extends AppCompatActivity implements OnMapReady
         mapFrame.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(v.getContext(), "디테일 맵으로 이동합니다..", Toast.LENGTH_SHORT).show();
-
+                Intent intent = new Intent(DetailHouseActivity.this, DetailMapActivity.class);
+                intent.putExtra(HOUSE_LATLNG, house.getLatLng());
+                intent.putExtra(HOUSE_ADDRESS, house.getAddress());
+                startActivity(intent);
             }
         });
 
         detailHouseBtnCheckReserve.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(v.getContext(), CustomCalendar.class);
+                Intent intent = new Intent(v.getContext(), CalendarActivity.class);
                 v.getContext().startActivity(intent);
                 // activity 전환효과를 위해 anim에 전환효과 설정값 셋팅
                 // 아래 메소드를 통해 전환효과 설정
