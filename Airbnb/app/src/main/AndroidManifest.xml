@@ -56,8 +56,14 @@
             android:theme="@style/NoActioinBarTheme" />
         <activity android:name=".main.SettingActivity" />
         <activity android:name=".calendar.CustomCalendar" />
-        <activity android:name=".main.HostMainActivity"></activity>
-        <activity android:name=".main.registerrooms.HostRoomsRegisterActivity"></activity>
+        <activity android:name=".main.HostMainActivity" />
+        <activity android:name=".main.registerrooms.HostRoomsRegisterActivity" />
+        <activity android:name=".canvas_calendar.CalendarActivity" />
+        <activity
+            android:name=".DetailMapActivity"
+            android:label="@string/title_activity_detail_map"
+            android:theme="@style/NoActioinBarTheme"
+            ></activity>
     </application>
 
 </manifest>

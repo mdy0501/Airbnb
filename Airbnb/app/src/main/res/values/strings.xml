@@ -21,6 +21,11 @@
     <string name="fri_kr">금</string>
     <string name="sat_kr">토</string>
     <string name="sun_kr">일</string>
-
     <string name="btn_save">저장</string>
+
+    <string name="sans_serif" translatable="false">sans-serif</string>
+    <string name="title_activity_detail_maps">Map</string>
+    <string name="title_activity_detail_map">Map</string>
+
+
 </resources>

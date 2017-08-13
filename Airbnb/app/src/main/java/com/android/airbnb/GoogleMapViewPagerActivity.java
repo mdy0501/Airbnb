@@ -100,8 +100,6 @@ public class GoogleMapViewPagerActivity extends FragmentActivity implements OnMa
         Intent intent = getIntent();
         houseList = intent.getParcelableArrayListExtra("roomsHouseList");
         Log.e("MapActivity", "houseLIst :: " + houseList.size());
-
-
     }
 
     private void initArrayList() {
