@@ -41,7 +41,8 @@ public class CustomCalendarAdapter extends RecyclerView.Adapter<CustomCalendarAd
         holder.setCalendarMonth(calendarData.getMonth() + "월");
 
         // holder가 gridView를 품고 있기 때문에, 이곳에서 setAdapter를 해준다.
-        holder.getCalendarGridView().setAdapter(new GridAdapter(days, (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE), mOnTextChangedListener));
+        GridAdapter gridAdapter = new GridAdapter(days, (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE), mOnTextChangedListener);
+        holder.getCalendarGridView().setAdapter(gridAdapter);
     }
 
     @Override

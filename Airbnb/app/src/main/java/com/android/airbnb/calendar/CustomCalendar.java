@@ -22,11 +22,11 @@ public class CustomCalendar extends AppCompatActivity implements View.OnClickLis
     private TextView calendarDelete;
     private TextView checkinDateTxt;
     private TextView checkoutDateTxt;
-    private RecyclerView calendarList;
+    private RecyclerView calendarRecycler;
     private Button calendarBtnSave;
     private CalendarData data;
     private List<CalendarData> calendarDatas;
-    int result = 0;
+    private EndlessScrollListener scrollListener;
     private CustomCalendarAdapter calendarAdapter;
 
     @Override
@@ -38,10 +38,11 @@ public class CustomCalendar extends AppCompatActivity implements View.OnClickLis
         initView();
         setOnClick();
         setAdapter();
+        setOnScrollListener();
     }
 
     // 추후
-    private void getCalendarData(){
+    private void getCalendarData() {
 
         List<Integer> days;
         int dayCount = 0;
@@ -54,8 +55,8 @@ public class CustomCalendar extends AppCompatActivity implements View.OnClickLis
             Log.e("CustomCalendar", "days address :: " + days.toString());
             Log.e("CustomCalendar", "days address :: " + days.toString());
             Log.e("CustomCalendar", "after days.clear() :: " + days.toString());
-            for (int k = 0; k < data.getFirstWeekDay(); k++){
-                days.add(000000);
+            for (int k = 0; k < data.getFirstWeekDay(); k++) {
+                days.add(0);
             }
             for (int j = 1; j <= dayCount; j++) {
                 days.add(j);
@@ -69,24 +70,56 @@ public class CustomCalendar extends AppCompatActivity implements View.OnClickLis
         }
     }
 
-    private void setAdapter(){
+    LinearLayoutManager manager = new LinearLayoutManager(this);
+
+    private void setAdapter() {
         calendarAdapter = new CustomCalendarAdapter(calendarDatas, this, this);
-        calendarList.setAdapter(calendarAdapter);
-        calendarList.setLayoutManager(new LinearLayoutManager(this));
-        calendarList.scrollToPosition(Integer.parseInt(Utils.DateUtil.getCurrentMonth())-1);
-        calendarList.setItemViewCacheSize(5);
+        calendarRecycler.setAdapter(calendarAdapter);
+        calendarRecycler.setLayoutManager(manager);
+        calendarRecycler.scrollToPosition(Integer.parseInt(Utils.DateUtil.getCurrentMonth()) - 1);
+        calendarRecycler.setItemViewCacheSize(5);
     }
 
-    private void initView(){
+    // ==========================[ scrollListener code ]========================================
+    // 위쪽 혹은 아래쪽에 새로운 달력 데이터를 로드해야할 경우, setOnScrollListener를 통해 이벤트를 감지한다.
+    private void setOnScrollListener() {
+        scrollListener = new EndlessScrollListener(manager) {
+            @Override
+            public void onLoadMore(int page, int totalItemsCount, RecyclerView view) {
+                loadNextDataFromApi(page);
+            }
+        };
+        calendarRecycler.addOnScrollListener(scrollListener);
+    }
+
+    public void loadNextDataFromApi(int offset) {
+        // Send an API request to retrieve appropriate paginated data
+        //  --> Send the request including an offset value (i.e `page`) as a query parameter.
+        //  --> Deserialize and construct new model objects from the API response
+        //  --> Append the new data objects to the existing set of items inside the array of items
+        //  --> Notify the adapter of the new items made with `notifyItemRangeInserted()`
+    }
+
+    private void sadjflkjsdlfkj() {
+        // 1. First, clear the array of data
+        calendarDatas.clear();
+        // 2. Notify the adapter of the update
+        calendarAdapter.notifyDataSetChanged(); // or notifyItemRangeRemoved
+        // 3. Reset endless scroll listener when performing a new search
+        scrollListener.resetState();
+    }
+    // ================================================================================================
+
+    private void initView() {
         calendarBtnClose = (ImageView) findViewById(R.id.calendar_btn_close);
         calendarDelete = (TextView) findViewById(R.id.calendar_delete);
         checkinDateTxt = (TextView) findViewById(R.id.checkin_date_txt);
         checkoutDateTxt = (TextView) findViewById(R.id.checkout_date_txt);
-        calendarList = (RecyclerView) findViewById(R.id.calendar_list);
+        calendarRecycler = (RecyclerView) findViewById(R.id.calendar_list);
         calendarBtnSave = (Button) findViewById(R.id.calendar_btn_Save);
     }
 
-    private void setOnClick(){
+    private void setOnClick() {
         calendarBtnClose.setClickable(true);
         calendarDelete.setClickable(true);
         calendarDelete.setClickable(true);
@@ -97,8 +130,8 @@ public class CustomCalendar extends AppCompatActivity implements View.OnClickLis
     }
 
     @Override
-    public void onClick(View v){
-        switch (v.getId()){
+    public void onClick(View v) {
+        switch (v.getId()) {
             case R.id.calendar_btn_close:
                 Toast.makeText(v.getContext(), "close", Toast.LENGTH_SHORT).show();
                 onBackPressed();
@@ -114,10 +147,11 @@ public class CustomCalendar extends AppCompatActivity implements View.OnClickLis
     }
 
     private boolean flag = false;
+
     @Override
     public void checkInChanged(String selectedCheckInDate) {
         Log.e("CustomCalenar", selectedCheckInDate);
-        if(flag){
+        if (flag) {
             checkoutDateTxt.setText("");
             checkinDateTxt.setText("");
         }
