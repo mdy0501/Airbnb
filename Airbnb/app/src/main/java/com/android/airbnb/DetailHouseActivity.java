@@ -22,7 +22,7 @@ import android.widget.TextView;
 
 import com.android.airbnb.adapter.DetailImgPager;
 import com.android.airbnb.adapter.MapPagerAdapter;
-import com.android.airbnb.canvas_calendar.CalendarActivity;
+import com.android.airbnb.calendar.CustomCalendar;
 import com.android.airbnb.domain.airbnb.Amenities;
 import com.android.airbnb.domain.airbnb.House;
 import com.android.airbnb.domain.airbnb.House_images;
@@ -288,7 +288,7 @@ public class DetailHouseActivity extends AppCompatActivity implements OnMapReady
         detailHouseBtnCheckReserve.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(v.getContext(), CalendarActivity.class);
+                Intent intent = new Intent(v.getContext(), CustomCalendar.class);
                 v.getContext().startActivity(intent);
                 // activity 전환효과를 위해 anim에 전환효과 설정값 셋팅
                 // 아래 메소드를 통해 전환효과 설정
