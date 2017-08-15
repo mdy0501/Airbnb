@@ -9,7 +9,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.android.airbnb.R;
 
@@ -22,32 +21,36 @@ import java.util.List;
 
 public class GridAdapter extends BaseAdapter {
 
-    private CalendarData dataList;
+    public CalendarData mCalendarData;
     private LayoutInflater inflater;
-    private List<View> selectedConvertviews = new ArrayList<>();
-    private List<Holder> selectedHolders = new ArrayList<>();
+    public List<View> selectedConvertviews = new ArrayList<>();
+    public List<Holder> selectedHolders = new ArrayList<>();
     private OnTextChangedListener mOnTextChangedListener;
     private OnCalendarChangedListener mOnCalendarChangedListener;
     public String beginDate = "";
     public String endDate = "";
     public List<Holder> allHolders = new ArrayList<>();
     public List<View> allConvertviews = new ArrayList<>();
+    public int selectedCount = 0;
+    // key 값 역할을 할 수 있도록 yearMonth
+    public String yearMonth = "";
 
-    public GridAdapter(CalendarData dataList, LayoutInflater inflater, OnTextChangedListener onTextChangedListener, OnCalendarChangedListener onCalendarChangedListener) {
+    public GridAdapter(CalendarData mCalendarData, LayoutInflater inflater, OnTextChangedListener onTextChangedListener, OnCalendarChangedListener onCalendarChangedListener) {
         this.mOnTextChangedListener = onTextChangedListener;
-        this.dataList = dataList;
+        this.mCalendarData = mCalendarData;
         this.inflater = inflater;
         this.mOnCalendarChangedListener = onCalendarChangedListener;
+        yearMonth = mCalendarData.getYear() + Utils.CalendarUtil.getFormattedForCal(mCalendarData.getMonth());
     }
 
     @Override
     public int getCount() {
-        return dataList.getDays().size();
+        return mCalendarData.getDays().size();
     }
 
     @Override
     public Object getItem(int position) {
-        return dataList.getDays().get(position);
+        return mCalendarData.getDays().get(position);
     }
 
     @Override
@@ -62,7 +65,7 @@ public class GridAdapter extends BaseAdapter {
             convertView = LayoutInflater.from(parent.getContext()).inflate(R.layout.calendar_item_gridview, parent, false);
             final View finalConvertView = convertView;
             final Holder holder = new Holder(convertView);
-            final List<String> days = dataList.getDays();
+            final List<String> days = mCalendarData.getDays();
 
             holder.setHolderPosition(position);
             holder.setCalendarOneday(days.get(position));
@@ -74,7 +77,6 @@ public class GridAdapter extends BaseAdapter {
                 @Override
                 public void onClick(View v) {
                     if (days.size() > 0) {
-                        Toast.makeText(v.getContext(), dataList.getYear() + "년 " + dataList.getMonth() + "월 " + days.get(position) + "일 is clicked", Toast.LENGTH_SHORT).show();
                         switch (CustomCalendarAdapter.status) {
                             case CustomCalendarAdapter.STATUS_CHECKIN:
                                 mOnCalendarChangedListener.resetAll();
@@ -88,24 +90,23 @@ public class GridAdapter extends BaseAdapter {
                                     selectedConvertviews.clear();
                                     selectedHolders.clear();
                                 }
-                                mOnTextChangedListener.checkInChanged("체크인" + "\n" + dataList.getMonth() + "월 " + dataList.getDays().get(position) + "일");
+                                selectedCount++;
                                 setClickedView(finalConvertView, holder, holder.getHolderPosition());
                                 addList(finalConvertView, holder);
-                                CustomCalendar.beginDate = dataList.getYear() + "-" + Utils.CalendarUtil.getFormattedForCal(dataList.getMonth()) + "-" + Utils.CalendarUtil.getFormattedForCal(dataList.getDays().get(position)) ;
-                                Log.e("GridAdapter", "beginDate :: " + CustomCalendar.beginDate);
+                                beginDate = mCalendarData.getYear() + "-" + Utils.CalendarUtil.getFormattedForCal(mCalendarData.getMonth()) + "-" + Utils.CalendarUtil.getFormattedForCal(mCalendarData.getDays().get(position));
+                                CustomCalendar.beginDate = beginDate;
+                                mOnTextChangedListener.checkInChanged("체크인" + "\n" + mCalendarData.getMonth() + "월 " + mCalendarData.getDays().get(position) + "일");
                                 CustomCalendarAdapter.status = CustomCalendarAdapter.STATUS_CHECKOUT;
-                                Log.e("GridAdapter", "status :: " + CustomCalendarAdapter.status);
                                 break;
 
                             case CustomCalendarAdapter.STATUS_CHECKOUT:
+                                selectedCount++;
                                 setClickedView(finalConvertView, holder, holder.getHolderPosition());
                                 addList(finalConvertView, holder);
-                                CustomCalendar.endDate = dataList.getYear() + "-" + Utils.CalendarUtil.getFormattedForCal(dataList.getMonth()) + "-" + Utils.CalendarUtil.getFormattedForCal(dataList.getDays().get(position)) ;
-                                mOnTextChangedListener.checkOutChanged("체크아웃" + "\n" + dataList.getMonth() + "월 " + dataList.getDays().get(holder.getHolderPosition()) + "일");
-                                Log.e("GridAdapter", "endDate :: " + CustomCalendar.beginDate);
-                                Log.e("GridAdapter", "begin date :: " + CustomCalendar.beginDate + ", end date :: " + CustomCalendar.endDate);
+                                endDate = mCalendarData.getYear() + "-" + Utils.CalendarUtil.getFormattedForCal(mCalendarData.getMonth()) + "-" + Utils.CalendarUtil.getFormattedForCal(mCalendarData.getDays().get(position));
+                                CustomCalendar.endDate = endDate;
+                                mOnTextChangedListener.checkOutChanged("체크아웃" + "\n" + mCalendarData.getMonth() + "월 " + mCalendarData.getDays().get(holder.getHolderPosition()) + "일");
                                 CustomCalendarAdapter.status = CustomCalendarAdapter.STATUS_CHECKIN;
-                                Log.e("GridAdapter", "status :: " + CustomCalendarAdapter.status);
                                 break;
                         }
                     }
@@ -120,25 +121,22 @@ public class GridAdapter extends BaseAdapter {
         convertView.setBackgroundResource(R.color.DeepGreen);
         holder.calendarOneday.setTextColor(Color.WHITE);
         holder.calendarOneday.setTypeface(null, Typeface.BOLD);
-        holder.setCalendarOneday(dataList.getDays().get(position).toString());
+        holder.setCalendarOneday(mCalendarData.getDays().get(position).toString());
         // 리스트에 추가되는 부분 또한 해당 함수에 넣어 놓았다.
     }
 
-    public void resetAll() {
-        Log.e("GridAdapter", "all holders size :: " + allHolders.size());
-        Log.e("GridAdapter", "all convertviews size :: " + allConvertviews.size());
-
+    public void resetAllGridAdapter() {
+        Log.e("GridAdapter", "selectedCount : " + selectedCount);
+        selectedCount = 0;
         for (View convertView : allConvertviews) {
             convertView.setBackgroundResource(R.color.white);
-            Log.e("GridAdapter", "=== reset converviews done");
         }
         for (Holder holder : allHolders) {
             holder.calendarOneday.setTextColor(Color.BLACK);
             holder.calendarOneday.setTypeface(null, Typeface.NORMAL);
-            holder.setCalendarOneday(dataList.getDays().get(holder.getHolderPosition()).toString());
-            Log.e("GridAdapter", "=== reset all holders done");
+            holder.setCalendarOneday(mCalendarData.getDays().get(holder.getHolderPosition()).toString());
         }
-        Log.e("GridAdapter", "=== reset all  done");
+        Log.e("GridAdapter", "resetAllGridAdapter done ====");
     }
 
     private void addList(View convertView, Holder holder) {
@@ -150,7 +148,7 @@ public class GridAdapter extends BaseAdapter {
         convertView.setBackgroundResource(R.color.white);
         holder.calendarOneday.setTextColor(Color.BLACK);
         holder.calendarOneday.setTypeface(null, Typeface.NORMAL);
-        holder.setCalendarOneday(dataList.getDays().get(position).toString());
+        holder.setCalendarOneday(mCalendarData.getDays().get(position).toString());
     }
 
     public class Holder extends RecyclerView.ViewHolder {
@@ -181,9 +179,19 @@ public class GridAdapter extends BaseAdapter {
         }
     }
 
+    public String getYearMonth() {
+        return yearMonth;
+    }
+
+    public void setYearMonth(String yearMonth) {
+        this.yearMonth = yearMonth;
+    }
+
     public interface OnTextChangedListener {
         public void checkInChanged(String selectedCheckInDate);
+
         public void checkOutChanged(String selectedCheckOutDate);
+
         public void calculatedDate(String result);
     }
 

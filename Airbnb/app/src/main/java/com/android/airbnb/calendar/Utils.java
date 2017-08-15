@@ -35,7 +35,7 @@ public class Utils {
 
                 // 2월달은 윤년으로 인해 아래와 같은 코드를 리턴해줘야 한다.
                 case Calendar.FEBRUARY:
-                    return ((year % 4 == 0 && year % 100 != 0) || (year % 400 == 0)) ? 28 : 29;
+                    return ((year % 4 == 0 && year % 100 != 0) || (year % 400 == 0)) ? 29 : 28;
 
                 default:
                     throw new IllegalArgumentException("Invalid Month");
