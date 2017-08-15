@@ -11,13 +11,13 @@ import java.util.Date;
  */
 
 public class Utils {
-    public static class CalendarUtil{
+    public static class CalendarUtil {
 
         private static Calendar mCalendar = Calendar.getInstance();
 
         public static int getDaysInMonth(int year, int month) {
 
-            switch (month-1) {
+            switch (month - 1) {
                 case Calendar.JANUARY:
                 case Calendar.MARCH:
                 case Calendar.MAY:
@@ -47,38 +47,48 @@ public class Utils {
             int maxWeeknumber = 0;
             mCalendar.set(mCalendar.YEAR, yyyy);
             mCalendar.set(mCalendar.DAY_OF_MONTH, 1);
-            mCalendar.set(mCalendar.MONTH, month-1);
+            mCalendar.set(mCalendar.MONTH, month - 1);
             maxWeeknumber = mCalendar.getActualMaximum(Calendar.WEEK_OF_MONTH);
             Log.d("LOG", "For Month :: " + month + " Num Week :: " + maxWeeknumber);
             return maxWeeknumber;
         }
 
-        public static int getFirstWeekDay(int yyyy, int month){
+        public static int getFirstWeekDay(int yyyy, int month) {
             // 특정 년, 월의 1일의 요일을 구한다.
             // [1 : Sunday] ~ [7 : Saturday]
-            mCalendar.set(yyyy, month-1, 1);
+            mCalendar.set(yyyy, month - 1, 1);
             int firstDayOfWeek = mCalendar.get(Calendar.DAY_OF_WEEK);
             return firstDayOfWeek;
         }
-    }
 
-    public static class DateUtil {
+        public static String getFormattedForCal(String date) {
+            String result = date;
+            if (date.length() != 2)
+                result = "0" + date;
+            else
+                return result;
 
-        static long now = System.currentTimeMillis();
-
-        public static String getCurrentMonth(){
-            SimpleDateFormat sdf = new SimpleDateFormat("M");
-            Log.e("Utils", "getCurrentMonth :: sdf " + sdf.toString());
-            Log.e("Utils", "getCurrentMonth :: " + sdf.format(new Date(now)));
-            return sdf.format(new Date(now));
+                return result;
+            }
         }
 
-        public static String getCurrentYear(){
-            SimpleDateFormat sdf = new SimpleDateFormat("yyyy");
-            Log.e("Utils", "getCurrentYear :: sdf " + sdf.toString());
-            Log.e("Utils", "getCurrentYear :: " + sdf.format(new Date(now)));
+        public static class DateUtil {
 
-            return sdf.format(new Date(now));
+            static long now = System.currentTimeMillis();
+
+            public static String getCurrentMonth() {
+                SimpleDateFormat sdf = new SimpleDateFormat("M");
+                Log.e("Utils", "getCurrentMonth :: sdf " + sdf.toString());
+                Log.e("Utils", "getCurrentMonth :: " + sdf.format(new Date(now)));
+                return sdf.format(new Date(now));
+            }
+
+            public static String getCurrentYear() {
+                SimpleDateFormat sdf = new SimpleDateFormat("yyyy");
+                Log.e("Utils", "getCurrentYear :: sdf " + sdf.toString());
+                Log.e("Utils", "getCurrentYear :: " + sdf.format(new Date(now)));
+
+                return sdf.format(new Date(now));
+            }
         }
     }
-}

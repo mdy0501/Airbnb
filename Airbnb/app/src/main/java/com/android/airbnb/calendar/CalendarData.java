@@ -8,18 +8,27 @@ import java.util.List;
 
 public class CalendarData {
 
-    private int month = 0;
-    private List<Integer> days;
+    private String month = "";
+    private String year = "";
+    private List<String> days;
     private int weekDaysCount;
     private int firstWeekDay = 0;
 
-    public CalendarData(int month, List<Integer> days){
+    public CalendarData(String month, List<String> days){
         this.month = month;
         this.days = days;
     }
 
     public CalendarData() {
 
+    }
+
+    public String getYear() {
+        return year;
+    }
+
+    public void setYear(String year) {
+        this.year = year;
     }
 
     public int getFirstWeekDay() {
@@ -30,19 +39,19 @@ public class CalendarData {
         this.firstWeekDay = firstWeekDay;
     }
 
-    public int getMonth() {
+    public String getMonth() {
         return month;
     }
 
-    public void setMonth(int month) {
+    public void setMonth(String month) {
         this.month = month;
     }
 
-    public List<Integer> getDays() {
+    public List<String> getDays() {
         return days;
     }
 
-    public void setDays(List<Integer> days) {
+    public void setDays(List<String> days) {
         this.days = days;
     }
 
@@ -57,10 +66,11 @@ public class CalendarData {
     @Override
     public String toString() {
         return "CalendarData{" +
-                "month='" + month + '\'' +
+                "month=" + month +
+                ", year=" + year +
                 ", days=" + days +
-                ", weekDaysCount='" + weekDaysCount + '\'' +
-                ", dayOfWeek='" + firstWeekDay + '\'' +
+                ", weekDaysCount=" + weekDaysCount +
+                ", firstWeekDay=" + firstWeekDay +
                 '}';
     }
 }

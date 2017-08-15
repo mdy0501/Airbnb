@@ -14,11 +14,9 @@ import com.android.airbnb.R;
  */
 public class HostRoomsRegisterBasicAddressFragment extends Fragment {
 
-
     public HostRoomsRegisterBasicAddressFragment() {
         // Required empty public constructor
     }
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -26,5 +24,4 @@ public class HostRoomsRegisterBasicAddressFragment extends Fragment {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_host_rooms_register_basic_address, container, false);
     }
-
 }

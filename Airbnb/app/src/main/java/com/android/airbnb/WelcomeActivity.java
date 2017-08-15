@@ -55,11 +55,7 @@ public class WelcomeActivity extends AppCompatActivity implements View.OnClickLi
         setContentView(R.layout.activity_welcome);
         setViews();
         setListeners();
-
-
         callbackManager = CallbackManager.Factory.create();
-
-
         btnLoginFacebook.setReadPermissions(Arrays.asList("public_profile", "email"));
         btnLoginFacebook.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
             @Override
@@ -67,18 +63,15 @@ public class WelcomeActivity extends AppCompatActivity implements View.OnClickLi
                 GraphRequest graphRequest = GraphRequest.newMeRequest(loginResult.getAccessToken(), new GraphRequest.GraphJSONObjectCallback() {
                     @Override
                     public void onCompleted(JSONObject object, GraphResponse response) {
-                        Log.e("페이스북 로그인 결과 == ", response.toString());
 
+                        Log.e("페이스북 로그인 결과 == ", response.toString());
                         Log.e("페이스북 토큰 : ", loginResult.getAccessToken().getToken());
                         Log.e("페이스북 User ID : ", loginResult.getAccessToken().getUserId());
                         Log.e("Facebook result : ",object.toString());
 
                         // 페이스북 Token SharedPreference에 저장
                         PreferenceUtil.setToken(WelcomeActivity.this, loginResult.getAccessToken().getToken());
-
                         postFacebookLoginData(loginResult.getAccessToken().getToken());
-
-
                     }
                 });
 
@@ -86,7 +79,6 @@ public class WelcomeActivity extends AppCompatActivity implements View.OnClickLi
                 parameters.putString("fields", "id,name,email,gender,birthday");
                 graphRequest.setParameters(parameters);
                 graphRequest.executeAsync();
-
             }
 
             @Override
@@ -96,11 +88,10 @@ public class WelcomeActivity extends AppCompatActivity implements View.OnClickLi
 
             @Override
             public void onError(FacebookException error) {
-                Log.e("LoginErr",error.toString());
+                Log.e("LoginErr", error.toString());
             }
         });
     }
-
 
     // 페이스북
     @Override
@@ -109,7 +100,6 @@ public class WelcomeActivity extends AppCompatActivity implements View.OnClickLi
         Log.e("onActivityResult :: ", "onActivityResult");
         callbackManager.onActivityResult(requestCode, resultCode, data);
     }
-
 
     // 페이스북 로그인 POST
     private void postFacebookLoginData(String facebookToken){
