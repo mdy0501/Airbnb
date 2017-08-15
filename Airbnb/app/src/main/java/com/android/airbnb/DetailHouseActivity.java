@@ -256,6 +256,7 @@ public class DetailHouseActivity extends AppCompatActivity implements OnMapReady
         btnTranslate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                mHandler = new Handler();
                 new Thread() {
                     @Override
                     public void run() {
