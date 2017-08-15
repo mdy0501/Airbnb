@@ -26,6 +26,7 @@
     <string name="sans_serif" translatable="false">sans-serif</string>
     <string name="title_activity_detail_maps">Map</string>
     <string name="title_activity_detail_map">Map</string>
+    <string name="calendar_info">체크인 날짜와 체크아웃 날짜를 선택해주세요.</string>
 
 
 </resources>
