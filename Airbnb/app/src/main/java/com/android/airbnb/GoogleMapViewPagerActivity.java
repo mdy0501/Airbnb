@@ -171,7 +171,6 @@ public class GoogleMapViewPagerActivity extends FragmentActivity implements OnMa
         wishBottomRecycler = (RecyclerView) findViewById(R.id.wishlist_recyclerview);
         btnAddList = (ImageView) findViewById(R.id.wish_bottomsheet_addlist);
         snackbarPlace = (CoordinatorLayout) findViewById(R.id.snackbar_place);
-
     }
 
     private void setAdapter() {
@@ -216,7 +215,6 @@ public class GoogleMapViewPagerActivity extends FragmentActivity implements OnMa
             }
         });
     }
-
     public String selectedMarkerID = "";
     public Map<String, Marker> markerMap = new HashMap<>();
 
