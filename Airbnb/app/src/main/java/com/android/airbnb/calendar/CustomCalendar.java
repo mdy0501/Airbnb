@@ -25,6 +25,7 @@ public class CustomCalendar extends AppCompatActivity implements View.OnClickLis
     private TextView calendarDelete;
     private TextView checkinDateTxt;
     private TextView checkoutDateTxt;
+    private TextView calendarResultTxt;
     private RecyclerView calendarRecycler;
     private Button calendarBtnSave;
     private CalendarData data;
@@ -34,10 +35,6 @@ public class CustomCalendar extends AppCompatActivity implements View.OnClickLis
 
     public static String beginDate = "";
     public static String endDate = "";
-
-
-
-    private TextView calendarResultTxt;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,32 +54,43 @@ public class CustomCalendar extends AppCompatActivity implements View.OnClickLis
         List<String> days;
         int dayCount = 0;
         int currentYear = Integer.parseInt(Utils.DateUtil.getCurrentYear());
+        int currentMonth = Integer.parseInt(Utils.DateUtil.getCurrentMonth());
+        Log.e("CustomCalendar", "current month : " + currentMonth);
 
-        // util로 추후에 빼기
-        for (int i = 1; i <= 12; i++) {
+        int tempMonth = 0;
+        // Utils로 추후에 빼기
+        // 12월 넘을 경우, 년도 ++ 처리 및 월 reset
+        for (int i = currentMonth; i <= currentMonth + 12; i++) {
+            tempMonth = i;
+            if (i > 12) {
+                tempMonth = i - 12;
+                if (i % 12 == 1) {
+                    currentYear++;
+                }
+            }
             days = new ArrayList<>();
-            dayCount = Utils.CalendarUtil.getDaysInMonth(currentYear, i);
+            dayCount = Utils.CalendarUtil.getDaysInMonth(currentYear, tempMonth);
             data = new CalendarData();
-            data.setFirstWeekDay(Utils.CalendarUtil.getFirstWeekDay(currentYear, i));
+            data.setFirstWeekDay(Utils.CalendarUtil.getFirstWeekDay(currentYear, tempMonth));
+
             for (int k = 1; k < data.getFirstWeekDay(); k++) {
                 days.add(" ");
             }
+
             for (int j = 1; j <= dayCount; j++) {
                 days.add(j + "");
-                Log.e("CustomCalendar", "add :: " + j + "");
             }
-            data.setYear(Utils.DateUtil.getCurrentYear());
+            data.setYear(currentYear + "");
             data.setDays(days);
-            data.setMonth(i + "");
-            data.setWeekDaysCount(Utils.CalendarUtil.getWeekCount(currentYear, i));
+            data.setMonth(tempMonth + "");
+            data.setWeekDaysCount(Utils.CalendarUtil.getWeekCount(currentYear, tempMonth));
             Log.e("CustomCalendar", data.toString());
             calendarDatas.add(data);
-            Log.e("CustomCalendar", "month :: " + i + ", data size :: " + calendarDatas.size());
-
+            Log.e("CustomCalendar", "month :: " + tempMonth + ", data size :: " + calendarDatas.size());
         }
     }
 
-    LinearLayoutManager manager = new LinearLayoutManager(this);
+    private LinearLayoutManager manager = new LinearLayoutManager(this);
 
     private void setAdapter() {
         calendarAdapter = new CustomCalendarAdapter(calendarDatas, this, this);
@@ -91,7 +99,7 @@ public class CustomCalendar extends AppCompatActivity implements View.OnClickLis
         calendarRecycler.setItemViewCacheSize(12);
     }
 
-    // ==========================[ scrollListener code ]========================================
+    // ========================== [ scrollListener code ] ========================================
     // 위쪽 혹은 아래쪽에 새로운 달력 데이터를 로드해야할 경우, setOnScrollListener를 통해 이벤트를 감지한다.
     private void setOnScrollListener() {
         scrollListener = new EndlessScrollListener(manager) {
@@ -141,10 +149,6 @@ public class CustomCalendar extends AppCompatActivity implements View.OnClickLis
         calendarDelete.setOnClickListener(this);
     }
 
-    public void setCalendarResultTxt(TextView calendarResultTxt) {
-        this.calendarResultTxt = calendarResultTxt;
-    }
-
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
@@ -164,7 +168,6 @@ public class CustomCalendar extends AppCompatActivity implements View.OnClickLis
     }
 
     private String calculatePeriod(String beginDate, String endDate) {
-
         long result = 0;
 
         try {
@@ -175,7 +178,6 @@ public class CustomCalendar extends AppCompatActivity implements View.OnClickLis
             // 시간차이를 시간,분,초를 곱한 값으로 나누면 하루 단위가 나옴
             long diff = formattedEnd.getTime() - formattedBegin.getTime();
             result = diff / (24 * 60 * 60 * 1000);
-
             System.out.println("날짜차이=" + result);
 
         } catch (ParseException e) {
@@ -199,19 +201,16 @@ public class CustomCalendar extends AppCompatActivity implements View.OnClickLis
 
     @Override
     public void checkOutChanged(String selectedCheckOutDate) {
-        Log.e("CustomCalendar", selectedCheckOutDate);
         checkoutDateTxt.setText(selectedCheckOutDate);
-        Log.e("CustomCalendar", "begin date : " + beginDate);
-        Log.e("CustomCalendar", "end date : " + endDate);
         String result = calculatePeriod(beginDate, endDate);
+        Log.e("CustomCalendar", "do calendarAdapter.findCheckIn() ===== ");
+        calendarAdapter.findCheckIn();
         calendarResultTxt.setText(result + "박을 선택했습니다.");
-        Log.e("CustomCalendar", "checkOutChanged done!");
         flag = true;
     }
 
     @Override
     public void calculatedDate(String result) {
-        calendarResultTxt.setText(result + "박을 선택했습니다.");
-
+        // TODO 불필요할 경우, 반드시 코드 제거하기!
     }
 }
