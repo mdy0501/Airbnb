@@ -15,8 +15,6 @@ import android.widget.Toast;
 import com.android.airbnb.DetailHouseActivity;
 import com.android.airbnb.R;
 import com.android.airbnb.domain.reservation.Reservation;
-import com.android.airbnb.util.Remote.ITask;
-import com.android.airbnb.util.Remote.Loader;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -24,7 +22,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-public class CustomCalendar extends AppCompatActivity implements View.OnClickListener, GridAdapter.OnTextChangedListener, ITask.oneReservation {
+public class CustomCalendar extends AppCompatActivity implements View.OnClickListener, GridAdapter.OnTextChangedListener {
 
     private ImageView calendarBtnClose;
     private TextView calendarDelete;
@@ -51,13 +49,12 @@ public class CustomCalendar extends AppCompatActivity implements View.OnClickLis
         getCalendarData();
         initView();
         getHousePk();
-        Loader.getReservation(housePk, this);
         setOnClick();
         setAdapter();
         setOnScrollListener();
     }
 
-    private void getHousePk(){
+    private void getHousePk() {
         Intent intent = getIntent();
         housePk = intent.getStringExtra(DetailHouseActivity.HOUSE_PK);
     }
@@ -108,7 +105,7 @@ public class CustomCalendar extends AppCompatActivity implements View.OnClickLis
     private LinearLayoutManager manager = new LinearLayoutManager(this);
 
     private void setAdapter() {
-        calendarAdapter = new CustomCalendarAdapter(calendarDatas, this, this);
+        calendarAdapter = new CustomCalendarAdapter(calendarDatas, housePk, this, this);
         calendarRecycler.setAdapter(calendarAdapter);
         calendarRecycler.setLayoutManager(manager);
         calendarRecycler.setItemViewCacheSize(12);
@@ -218,8 +215,9 @@ public class CustomCalendar extends AppCompatActivity implements View.OnClickLis
     public void checkOutChanged(String selectedCheckOutDate) {
         checkoutDateTxt.setText(selectedCheckOutDate);
         String result = calculatePeriod(beginDate, endDate);
-        Log.e("CustomCalendar", "do calendarAdapter.findCheckIn() ===== ");
-        calendarAdapter.findCheckIn();
+        Log.e("CustomCalendar", "do calendarAdapter.findSelectedGridAdapter() ===== ");
+        calendarAdapter.findSelectedGridAdapter();
+        calendarAdapter.setSelectedHolders();
         calendarResultTxt.setText(result + "박을 선택했습니다.");
         flag = true;
     }
@@ -227,10 +225,5 @@ public class CustomCalendar extends AppCompatActivity implements View.OnClickLis
     @Override
     public void calculatedDate(String result) {
         // TODO 불필요할 경우, 반드시 코드 제거하기!
-    }
-
-    @Override
-    public void doTask(List<Reservation> reservations) {
-        this.reservations = reservations;
     }
 }
