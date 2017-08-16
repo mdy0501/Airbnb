@@ -33,14 +33,12 @@ public class GridAdapter extends BaseAdapter {
     public List<View> allConvertviews = new ArrayList<>();
     public int selectedCount = 0;
     // key 값 역할을 할 수 있도록 yearMonth
-    public String yearMonth = "";
 
     public GridAdapter(CalendarData mCalendarData, LayoutInflater inflater, OnTextChangedListener onTextChangedListener, OnCalendarChangedListener onCalendarChangedListener) {
         this.mOnTextChangedListener = onTextChangedListener;
         this.mCalendarData = mCalendarData;
         this.inflater = inflater;
         this.mOnCalendarChangedListener = onCalendarChangedListener;
-        yearMonth = mCalendarData.getYear() + Utils.CalendarUtil.getFormattedForCal(mCalendarData.getMonth());
     }
 
     @Override
@@ -177,14 +175,6 @@ public class GridAdapter extends BaseAdapter {
         public void setHolderPosition(int position) {
             this.position = position;
         }
-    }
-
-    public String getYearMonth() {
-        return yearMonth;
-    }
-
-    public void setYearMonth(String yearMonth) {
-        this.yearMonth = yearMonth;
     }
 
     public interface OnTextChangedListener {
