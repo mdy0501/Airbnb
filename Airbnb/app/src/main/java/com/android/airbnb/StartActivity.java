@@ -50,6 +50,10 @@ public class StartActivity extends AppCompatActivity {
                 android.support.v4.app.FragmentTransaction transaction = fm.beginTransaction();
                 transaction.add(R.id.start_layout, hostRoomRegisterAddress);
                 transaction.commit();
+
+                btnGoAddress.setVisibility(View.INVISIBLE);
+                btnGoMain.setVisibility(View.INVISIBLE);
+                btnGoWelcome.setVisibility(View.INVISIBLE);
             }
         });
     }
