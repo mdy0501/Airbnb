@@ -39,7 +39,7 @@ public interface IServerApi {
     @GET("apis/house/{pk}")
     Call<Host> readOneHost(@Path("pk") String pk);
 
-    @GET("apis/rservations/")
+    @GET("apis/reservations/")
     Call<List<Reservation>> readReservation(@Query("house") String housePk);
 
     // 회원가입 POST
