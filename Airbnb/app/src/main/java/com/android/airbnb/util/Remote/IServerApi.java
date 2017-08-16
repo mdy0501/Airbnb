@@ -4,6 +4,7 @@ import com.android.airbnb.domain.airbnb.Host;
 import com.android.airbnb.domain.airbnb.House;
 import com.android.airbnb.domain.airbnb.LoginResult;
 import com.android.airbnb.domain.airbnb.SignUpData;
+import com.android.airbnb.domain.reservation.Reservation;
 
 import java.util.List;
 
@@ -16,6 +17,7 @@ import retrofit2.http.Multipart;
 import retrofit2.http.POST;
 import retrofit2.http.Part;
 import retrofit2.http.Path;
+import retrofit2.http.Query;
 
 /**
  * Created by JunHee on 2017. 8. 3..
@@ -37,6 +39,8 @@ public interface IServerApi {
     @GET("apis/house/{pk}")
     Call<Host> readOneHost(@Path("pk") String pk);
 
+    @GET("apis/rservations/")
+    Call<List<Reservation>> readReservation(@Query("house") String housePk);
 
     // 회원가입 POST
     @Multipart
