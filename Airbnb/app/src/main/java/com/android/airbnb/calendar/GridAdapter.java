@@ -1,6 +1,7 @@
 package com.android.airbnb.calendar;
 
 import android.graphics.Color;
+import android.graphics.Paint;
 import android.graphics.Typeface;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -22,7 +23,6 @@ import java.util.List;
 public class GridAdapter extends BaseAdapter {
 
     public CalendarData mCalendarData;
-    private LayoutInflater inflater;
     public List<View> selectedConvertviews = new ArrayList<>();
     public List<Holder> selectedHolders = new ArrayList<>();
     private OnTextChangedListener mOnTextChangedListener;
@@ -32,12 +32,12 @@ public class GridAdapter extends BaseAdapter {
     public List<Holder> allHolders = new ArrayList<>();
     public List<View> allConvertviews = new ArrayList<>();
     public int selectedCount = 0;
+    public final static int IS_BOOKED = 1290712094;
     // key 값 역할을 할 수 있도록 yearMonth
 
-    public GridAdapter(CalendarData mCalendarData, LayoutInflater inflater, OnTextChangedListener onTextChangedListener, OnCalendarChangedListener onCalendarChangedListener) {
+    public GridAdapter(CalendarData mCalendarData, OnTextChangedListener onTextChangedListener, OnCalendarChangedListener onCalendarChangedListener) {
         this.mOnTextChangedListener = onTextChangedListener;
         this.mCalendarData = mCalendarData;
-        this.inflater = inflater;
         this.mOnCalendarChangedListener = onCalendarChangedListener;
     }
 
@@ -79,7 +79,6 @@ public class GridAdapter extends BaseAdapter {
                             case CustomCalendarAdapter.STATUS_CHECKIN:
                                 mOnCalendarChangedListener.resetAll();
                                 if (selectedConvertviews.size() > 0) {
-                                    mOnCalendarChangedListener.resetAll();
                                     CustomCalendar.beginDate = "";
                                     CustomCalendar.endDate = "";
                                     for (int i = 0; i < selectedConvertviews.size(); i++) {
@@ -116,30 +115,44 @@ public class GridAdapter extends BaseAdapter {
 
     // 클릭 시, 변화를 줘야하는 element들에 대해 함수로 빼서 정의
     public void setClickedView(View convertView, Holder holder, int position) {
+        Log.e("GridAdapter", "setClickedView ==== start");
         convertView.setBackgroundResource(R.color.DeepGreen);
         holder.calendarOneday.setTextColor(Color.WHITE);
         holder.calendarOneday.setTypeface(null, Typeface.BOLD);
         holder.setCalendarOneday(mCalendarData.getDays().get(position).toString());
         // 리스트에 추가되는 부분 또한 해당 함수에 넣어 놓았다.
+        Log.e("GridAdapter", "setClickedView ==== end");
+
     }
 
     public void resetAllGridAdapter() {
         Log.e("GridAdapter", "selectedCount : " + selectedCount);
         selectedCount = 0;
         for (View convertView : allConvertviews) {
-            convertView.setBackgroundResource(R.color.white);
+            if(convertView.getTag() == null)
+                convertView.setBackgroundResource(R.color.white);
         }
         for (Holder holder : allHolders) {
-            holder.calendarOneday.setTextColor(Color.BLACK);
-            holder.calendarOneday.setTypeface(null, Typeface.NORMAL);
-            holder.setCalendarOneday(mCalendarData.getDays().get(holder.getHolderPosition()).toString());
+            if (holder.isBooked() == false) {
+                holder.calendarOneday.setTextColor(Color.BLACK);
+                holder.calendarOneday.setTypeface(null, Typeface.NORMAL);
+                holder.setCalendarOneday(mCalendarData.getDays().get(holder.getHolderPosition()).toString());
+            }
         }
-        Log.e("GridAdapter", "resetAllGridAdapter done ====");
     }
 
     private void addList(View convertView, Holder holder) {
         selectedConvertviews.add(convertView);
         selectedHolders.add(holder);
+    }
+
+    public void setBooked(View convertView, Holder holder, int position) {
+        convertView.setBackgroundResource(R.color.white);
+        convertView.setClickable(false);
+        holder.calendarOneday.setTextColor(Color.GRAY);
+        holder.calendarOneday.setPaintFlags(Paint.STRIKE_THRU_TEXT_FLAG);
+        holder.calendarOneday.setTypeface(null, Typeface.BOLD_ITALIC);
+        holder.setCalendarOneday(mCalendarData.getDays().get(position).toString());
     }
 
     public void resetView(View convertView, Holder holder, int position) {
@@ -153,6 +166,7 @@ public class GridAdapter extends BaseAdapter {
 
         private TextView calendarOneday;
         private int position;
+        private boolean isBooked = false;
 
         public Holder(View itemView) {
             super(itemView);
@@ -174,6 +188,14 @@ public class GridAdapter extends BaseAdapter {
 
         public void setHolderPosition(int position) {
             this.position = position;
+        }
+
+        public boolean isBooked() {
+            return isBooked;
+        }
+
+        public void setBooked(boolean booked) {
+            isBooked = booked;
         }
     }
 

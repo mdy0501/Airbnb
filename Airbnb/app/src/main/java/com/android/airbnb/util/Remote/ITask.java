@@ -2,6 +2,7 @@ package com.android.airbnb.util.Remote;
 
 import com.android.airbnb.domain.airbnb.Host;
 import com.android.airbnb.domain.airbnb.House;
+import com.android.airbnb.domain.reservation.Reservation;
 
 import java.util.List;
 
@@ -25,6 +26,10 @@ public interface ITask {
 
     public interface oneHostList{
         public void doTask(Host host);
+    }
+
+    public interface oneReservation{
+        public void doTask(List<Reservation> reservations);
     }
 
     /*

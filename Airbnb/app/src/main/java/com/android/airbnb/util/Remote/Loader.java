@@ -4,6 +4,7 @@ import android.util.Log;
 
 import com.android.airbnb.domain.airbnb.Host;
 import com.android.airbnb.domain.airbnb.House;
+import com.android.airbnb.domain.reservation.Reservation;
 
 import java.util.List;
 
@@ -26,6 +27,7 @@ public class Loader {
     public static List<House> houseList;
     public static House house;
     public static Host host;
+    public static List<Reservation> reservations;
 
     public static void getOneHouse(String pk, final ITask.oneHouseList oneHouseList) {
         Retrofit client = new Retrofit.Builder()
@@ -115,7 +117,6 @@ public class Loader {
             public void onResponse(Call<List<Host>> call, Response<List<Host>> response) {
                 hostList = response.body();
                 Log.e("loader", "==== done ====");
-//                iTask.doTaskTotalHostList(hostList);
                 totalHostList.doTask(hostList);
             }
 
@@ -124,6 +125,32 @@ public class Loader {
                 t.printStackTrace();
             }
 
+        });
+    }
+
+    public static void getReservation(String housePk, final ITask.oneReservation oneReservation){
+        Retrofit client = new Retrofit.Builder()
+                .baseUrl(BASE_URL)
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+
+        IServerApi serverApi = client.create(IServerApi.class);
+        Call<List<Reservation>> call = serverApi.readReservation(housePk);
+        call.enqueue(new Callback<List<Reservation>>() {
+            @Override
+            public void onResponse(Call<List<Reservation>> call, Response<List<Reservation>> response) {
+                if(response.code() == 200){
+                    Log.e("Loader", "code : " + response.code());
+                    reservations = response.body();
+                    Log.e("Loader", "reservation : " + response.body().toString());
+                    oneReservation.doTask(reservations);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<Reservation>> call, Throwable t) {
+                t.printStackTrace();
+            }
         });
     }
 }

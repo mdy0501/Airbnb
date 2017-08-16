@@ -10,6 +10,9 @@ import android.widget.GridView;
 import android.widget.TextView;
 
 import com.android.airbnb.R;
+import com.android.airbnb.domain.reservation.Reservation;
+import com.android.airbnb.util.Remote.ITask;
+import com.android.airbnb.util.Remote.Loader;
 
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -20,24 +23,29 @@ import java.util.Set;
  * Created by JunHee on 2017. 8. 10..
  */
 
-public class CustomCalendarAdapter extends RecyclerView.Adapter<CustomCalendarAdapter.Holder> implements GridAdapter.OnCalendarChangedListener {
+public class CustomCalendarAdapter extends RecyclerView.Adapter<CustomCalendarAdapter.Holder> implements GridAdapter.OnCalendarChangedListener, ITask.oneReservation {
 
     private List<CalendarData> dateList;
+    private List<Reservation> reservations;
     private Context mContext;
     private GridAdapter.OnTextChangedListener mOnTextChangedListener;
     public Map<String, GridAdapter> adapters = new LinkedHashMap<>();
     private int position = 0;
-    GridAdapter gridAdapter = null;
+    private String housePk = "";
+    private GridAdapter gridAdapter = null;
 
     public final static String STATUS_CHECKIN = "status_check_in";
     public final static String STATUS_CHECKOUT = "status_check_out";
-    public final static String STATUS_NOTHING = "status_check_nothing";
     public static String status = STATUS_CHECKIN;
 
-    public CustomCalendarAdapter(List<CalendarData> dateList, GridAdapter.OnTextChangedListener mOnTextChangedListener, Context mContext) {
+    public CustomCalendarAdapter(List<CalendarData> dateList, String housePk, GridAdapter.OnTextChangedListener mOnTextChangedListener, Context mContext) {
         this.mOnTextChangedListener = mOnTextChangedListener;
         this.dateList = dateList;
         this.mContext = mContext;
+        this.housePk = housePk;
+
+        // reservation 통신
+        Loader.getReservation(housePk, this);
     }
 
     /**
@@ -45,17 +53,38 @@ public class CustomCalendarAdapter extends RecyclerView.Adapter<CustomCalendarAd
      */
     @Override
     public Holder onCreateViewHolder(ViewGroup parent, int viewType) {
-
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.calendar_item, parent, false);
+
         // 홀더 셋팅 후, 리턴하게 로직을 만듬
         Holder holder = new Holder(view);
         holder.setCalendarMonth(dateList.get(position).getYear() + "년 " + dateList.get(position).getMonth() + "월");
-        gridAdapter = new GridAdapter(dateList.get(position), (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE), mOnTextChangedListener, this);
-        adapters.put(gridAdapter.mCalendarData.getMonth(), gridAdapter);
+        gridAdapter = new GridAdapter(dateList.get(position), mOnTextChangedListener, this);
+        // key 수정
+        adapters.put(Utils.CalendarUtil.getFormattedForCal(gridAdapter.mCalendarData.getMonth()), gridAdapter);
         holder.getCalendarGridView().setAdapter(gridAdapter);
         position++;
-        Log.d("CustomCalendar", "adapters : " + adapters.size());
         return holder;
+    }
+
+    private void setReservedDates(){
+        for(int i=0; i < reservations.size(); i++){
+            Reservation reservation = reservations.get(i);
+            String[] splittedCheckin = reservation.getCheckin_date().split("-");
+            String[] splittedCheckout = reservation.getCheckout_date().split("-");
+            if(splittedCheckin[1].equals(splittedCheckout[1])){
+                GridAdapter adapter = adapters.get(splittedCheckin[1]);
+                int start = Integer.parseInt(splittedCheckin[2]) + adapter.mCalendarData.getFirstWeekDay()-2;
+                int end = Integer.parseInt(splittedCheckout[2]) + adapter.mCalendarData.getFirstWeekDay()-2;
+                for (int k = start ; k <= end; k++){
+                    View convertview = adapter.allConvertviews.get(k);
+                    GridAdapter.Holder holder = adapter.allHolders.get(k);
+                    convertview.setTag(GridAdapter.IS_BOOKED);
+                    holder.setBooked(true);
+                    adapter.setBooked(convertview, holder, holder.getHolderPosition());
+                }
+                adapter.notifyDataSetChanged();
+            }
+        }
     }
 
     @Override
@@ -65,9 +94,8 @@ public class CustomCalendarAdapter extends RecyclerView.Adapter<CustomCalendarAd
         }
     }
 
-    public Map<String ,GridAdapter> selectedAdapter = new LinkedHashMap<>();
-
-    public void findCheckIn() {
+    public Map<String, GridAdapter> selectedAdapter = new LinkedHashMap<>();
+    public void findSelectedGridAdapter() {
         // selelcted adapter clear 하는 구간 잘 선정하기
         selectedAdapter.clear();
         for (String key : adapters.keySet()) {
@@ -76,10 +104,12 @@ public class CustomCalendarAdapter extends RecyclerView.Adapter<CustomCalendarAd
                 selectedAdapter.put(adapter.mCalendarData.getMonth(), adapter);
             }
         }
-        setSelectedAdapter();
     }
 
-    public void setSelectedAdapter() {
+
+    // TODO 코드 정리하기
+    // 해 넘어가는 부분 오류났던 logic 해결 ok
+    public void setSelectedHolders() {
         Set<String> keys = selectedAdapter.keySet();
         String arrayKeys[] = keys.toArray(new String[keys.size()]);
         if (arrayKeys.length == 2) {
@@ -88,42 +118,75 @@ public class CustomCalendarAdapter extends RecyclerView.Adapter<CustomCalendarAd
             Log.e("CustomCalendarAdapter", "firstKey : " + firstKey + ", lastKey : " + lastKey);
             if (lastKey > firstKey) {
                 for (int i = firstKey; i <= lastKey; i++) {
+                    String formatted = i+"";
+                    if(formatted.length() != 2){
+                        formatted = "0" + i;
+                    }
                     if (i == firstKey) {
-                        GridAdapter adapter = adapters.get(i + "");
+                        GridAdapter adapter = adapters.get(formatted);
                         for (int k = adapter.selectedHolders.get(0).getHolderPosition(); k < adapter.allHolders.size(); k++) {
                             adapter.setClickedView(adapter.allConvertviews.get(k), adapter.allHolders.get(k), adapter.allHolders.get(k).getHolderPosition());
                         }
                     } else if (i == lastKey) {
-                        GridAdapter adapter = adapters.get(i + "");
+                        GridAdapter adapter = adapters.get(formatted);
                         for (int k = adapter.selectedHolders.get(0).getHolderPosition(); k >= 0; k--) {
                             adapter.setClickedView(adapter.allConvertviews.get(k), adapter.allHolders.get(k), adapter.allHolders.get(k).getHolderPosition());
                             Log.e("CustomCalendarAdapter", "adapters : " + adapter.isEmpty());
                         }
                     } else {
-                        GridAdapter adapter = adapters.get(i + "");
+                        GridAdapter adapter = adapters.get(formatted);
                         for (int k = 0; k < adapter.allHolders.size(); k++) {
                             adapter.setClickedView(adapter.allConvertviews.get(k), adapter.allHolders.get(k), adapter.allHolders.get(k).getHolderPosition());
                         }
                     }
                 }
-            } else if (lastKey < firstKey){
+            } else if (lastKey < firstKey) {
                 for (int i = firstKey; i <= 12; i++) {
-                    if(i == firstKey){
-                        GridAdapter adapter = adapters.get(i + "");
-                        for(int k = adapter.selectedHolders.get(0).getHolderPosition(); k< adapter.allHolders.size(); k++){
+                    String formatted = i+"";
+                    if(formatted.length() != 2){
+                        formatted = "0" + i;
+                    }
+                    GridAdapter adapter = adapters.get(formatted);
+                    if (i == firstKey) {
+                        for (int k = adapter.selectedHolders.get(0).getHolderPosition(); k < adapter.allHolders.size(); k++) {
+                            adapter.setClickedView(adapter.allConvertviews.get(k), adapter.allHolders.get(k), adapter.allHolders.get(k).getHolderPosition());
+                        }
+                    } else {
+                        for (int k = 0; k < adapter.allHolders.size(); k++) {
                             adapter.setClickedView(adapter.allConvertviews.get(k), adapter.allHolders.get(k), adapter.allHolders.get(k).getHolderPosition());
                         }
                     }
                 }
+                for (int i = 1; i <= lastKey; i++) {
+                    String formatted = i+"";
+                    if(formatted.length() != 2){
+                        formatted = "0" + i;
+                    }
+                    GridAdapter adapter = adapters.get(formatted);
+                    if (i == lastKey) {
+                        for (int k = 0; k < adapter.selectedHolders.get(0).getHolderPosition(); k++) {
+                            adapter.setClickedView(adapter.allConvertviews.get(k), adapter.allHolders.get(k), adapter.allHolders.get(k).getHolderPosition());
+                        }
+                    } else {
+                        for (int k = 0; k < adapter.allHolders.size(); k++) {
+                            adapter.setClickedView(adapter.allConvertviews.get(k), adapter.allHolders.get(k), adapter.allHolders.get(k).getHolderPosition());
+                        }
+                    }
+
+                }
             }
-        } else if(arrayKeys.length == 1)  {
+        } else if (arrayKeys.length == 1) {
             int firstKey = Integer.parseInt(arrayKeys[0]);
-            GridAdapter adapter = adapters.get(firstKey + "");
+            String formatted = firstKey+"";
+            if(formatted.length() != 2){
+                formatted = "0" + firstKey;
+            }
+            GridAdapter adapter = adapters.get(formatted);
             for (int i = adapter.selectedHolders.get(0).getHolderPosition(); i < adapter.selectedHolders.get(1).getHolderPosition(); i++) {
                 adapter.setClickedView(adapter.allConvertviews.get(i), adapter.allHolders.get(i), adapter.allHolders.get(i).getHolderPosition());
             }
         }
-        Log.e("CustomCalendarAdapter", "==================== setSelectedAdapter done!");
+        Log.e("CustomCalendarAdapter", "==================== setSelectedHolders done!");
     }
 
     // ==== 틀린 코드 ====
@@ -160,6 +223,16 @@ public class CustomCalendarAdapter extends RecyclerView.Adapter<CustomCalendarAd
 
         public void setCalendarMonth(String month) {
             this.calendarMonth.setText(month);
+        }
+    }
+
+    @Override
+    public void doTask(List<Reservation> reservations) {
+        if(reservations != null){
+            this.reservations = reservations;
+            Log.e("Custom calendar","reservation size : " + reservations.size());
+            setReservedDates();
+
         }
     }
 }
