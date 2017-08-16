@@ -81,19 +81,12 @@ public class GoogleMapViewPagerActivity extends FragmentActivity implements OnMa
         initView();
         progress.start();
         initArrayList();
-        // ==== 수정 코드 ==== //
         getExIntent();
-        // ====
-        // ======= 수정 //
         setAdapter();
         /* Async 처리 */
-
         setViewPager();
         setBtnOnClick();
         setBottomSheet(0);
-//        initMap();
-
-//        Loader.getHouseList(this);
     }
 
     private void getExIntent(){
