@@ -1,5 +1,6 @@
 package com.android.airbnb.calendar;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -11,7 +12,11 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.airbnb.DetailHouseActivity;
 import com.android.airbnb.R;
+import com.android.airbnb.domain.reservation.Reservation;
+import com.android.airbnb.util.Remote.ITask;
+import com.android.airbnb.util.Remote.Loader;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -19,7 +24,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-public class CustomCalendar extends AppCompatActivity implements View.OnClickListener, GridAdapter.OnTextChangedListener {
+public class CustomCalendar extends AppCompatActivity implements View.OnClickListener, GridAdapter.OnTextChangedListener, ITask.oneReservation {
 
     private ImageView calendarBtnClose;
     private TextView calendarDelete;
@@ -35,6 +40,8 @@ public class CustomCalendar extends AppCompatActivity implements View.OnClickLis
 
     public static String beginDate = "";
     public static String endDate = "";
+    private String housePk = "";
+    private List<Reservation> reservations = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,10 +50,18 @@ public class CustomCalendar extends AppCompatActivity implements View.OnClickLis
         calendarDatas = new ArrayList<>();
         getCalendarData();
         initView();
+        getHousePk();
+        Loader.getReservation(housePk, this);
         setOnClick();
         setAdapter();
         setOnScrollListener();
     }
+
+    private void getHousePk(){
+        Intent intent = getIntent();
+        housePk = intent.getStringExtra(DetailHouseActivity.HOUSE_PK);
+    }
+
 
     // 추후
     private void getCalendarData() {
@@ -212,5 +227,10 @@ public class CustomCalendar extends AppCompatActivity implements View.OnClickLis
     @Override
     public void calculatedDate(String result) {
         // TODO 불필요할 경우, 반드시 코드 제거하기!
+    }
+
+    @Override
+    public void doTask(List<Reservation> reservations) {
+        this.reservations = reservations;
     }
 }

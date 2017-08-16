@@ -65,7 +65,7 @@ public class CustomCalendarAdapter extends RecyclerView.Adapter<CustomCalendarAd
         }
     }
 
-    public Map<String ,GridAdapter> selectedAdapter = new LinkedHashMap<>();
+    public Map<String, GridAdapter> selectedAdapter = new LinkedHashMap<>();
 
     public void findCheckIn() {
         // selelcted adapter clear 하는 구간 잘 선정하기
@@ -79,6 +79,8 @@ public class CustomCalendarAdapter extends RecyclerView.Adapter<CustomCalendarAd
         setSelectedAdapter();
     }
 
+    // 코드 정리하기 
+    // 해결 ok
     public void setSelectedAdapter() {
         Set<String> keys = selectedAdapter.keySet();
         String arrayKeys[] = keys.toArray(new String[keys.size()]);
@@ -106,17 +108,34 @@ public class CustomCalendarAdapter extends RecyclerView.Adapter<CustomCalendarAd
                         }
                     }
                 }
-            } else if (lastKey < firstKey){
+            } else if (lastKey < firstKey) {
                 for (int i = firstKey; i <= 12; i++) {
-                    if(i == firstKey){
-                        GridAdapter adapter = adapters.get(i + "");
-                        for(int k = adapter.selectedHolders.get(0).getHolderPosition(); k< adapter.allHolders.size(); k++){
+                    GridAdapter adapter = adapters.get(i + "");
+                    if (i == firstKey) {
+                        for (int k = adapter.selectedHolders.get(0).getHolderPosition(); k < adapter.allHolders.size(); k++) {
+                            adapter.setClickedView(adapter.allConvertviews.get(k), adapter.allHolders.get(k), adapter.allHolders.get(k).getHolderPosition());
+                        }
+                    } else {
+                        for (int k = 0; k < adapter.allHolders.size(); k++) {
                             adapter.setClickedView(adapter.allConvertviews.get(k), adapter.allHolders.get(k), adapter.allHolders.get(k).getHolderPosition());
                         }
                     }
                 }
+                for (int i = 1; i <= lastKey; i++) {
+                    GridAdapter adapter = adapters.get(i + "");
+                    if (i == lastKey) {
+                        for (int k = 0; k < adapter.selectedHolders.get(0).getHolderPosition(); k++) {
+                            adapter.setClickedView(adapter.allConvertviews.get(k), adapter.allHolders.get(k), adapter.allHolders.get(k).getHolderPosition());
+                        }
+                    } else {
+                        for (int k = 0; k < adapter.allHolders.size(); k++) {
+                            adapter.setClickedView(adapter.allConvertviews.get(k), adapter.allHolders.get(k), adapter.allHolders.get(k).getHolderPosition());
+                        }
+                    }
+
+                }
             }
-        } else if(arrayKeys.length == 1)  {
+        } else if (arrayKeys.length == 1) {
             int firstKey = Integer.parseInt(arrayKeys[0]);
             GridAdapter adapter = adapters.get(firstKey + "");
             for (int i = adapter.selectedHolders.get(0).getHolderPosition(); i < adapter.selectedHolders.get(1).getHolderPosition(); i++) {
