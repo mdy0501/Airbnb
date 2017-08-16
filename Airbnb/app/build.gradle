@@ -52,7 +52,7 @@ dependencies {
     compile 'com.victor:lib:1.0.4'
     compile 'com.google.maps.android:android-maps-utils:0.4.+'
     compile 'com.facebook.android:facebook-android-sdk:4.+'
+    compile 'com.google.android.gms:play-services:11.0.4'
     testCompile 'junit:junit:4.12'
     annotationProcessor 'com.github.bumptech.glide:compiler:4.0.0'
-    compile 'com.google.android.gms:play-services:11.0.4'
 }

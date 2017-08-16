@@ -21,7 +21,9 @@ import com.google.android.gms.location.places.ui.PlaceSelectionListener;
  */
 public class StreetAddressFragment extends Fragment {
 
-    public FragmentManager fm;
+    private FragmentManager fm;
+    private OnResultCallBack mResultListener;
+    private View view = null;
 
     PlaceAutocompleteFragment autocompleteFragment;
     public StreetAddressFragment() {
@@ -36,8 +38,9 @@ public class StreetAddressFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_blank, container, false);
+        // Inflate the layout for this fragment]
+        if(view == null)
+            view = inflater.inflate(R.layout.fragment_blank, container, false);
         autocompleteFragment = (PlaceAutocompleteFragment)
                 getActivity().getFragmentManager().findFragmentById(R.id.place_autocomplete_fragment);
         setListener();
@@ -48,6 +51,7 @@ public class StreetAddressFragment extends Fragment {
         autocompleteFragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {
             @Override
             public void onPlaceSelected(Place place) {
+                mResultListener.resultCallBack(place);
                 // TODO: Get info about the selected place.
                 Log.i("StreetAddressFragment", "Place name : " + place.getName());
                 Log.i("StreetAddressFragment", "Place latlng : " + place.getLatLng());
@@ -56,6 +60,7 @@ public class StreetAddressFragment extends Fragment {
                 Log.i("StreetAddressFragment", "Place locale : " + place.getLocale());
                 Log.i("StreetAddressFragment", "Place attributions : " + place.getViewport());
                 Log.i("StreetAddressFragment", "Place place price : " + place.getPriceLevel());
+                finishFragment();
             }
 
             @Override
@@ -64,8 +69,33 @@ public class StreetAddressFragment extends Fragment {
                 Log.i("StreetAddressFragment", "An error occurred: " + status);
             }
         });
+    }
 
+    private void finishFragment(){
+        fm.beginTransaction().remove(this).commit();
+        fm.popBackStack();
+    }
 
+    public OnResultCallBack getmResultListener() {
+        return mResultListener;
+    }
+
+    public FragmentManager getFm() {
+        return fm;
+    }
+
+    public void setFm(FragmentManager fm) {
+        this.fm = fm;
+    }
+
+    public void setmResultListener(OnResultCallBack mResultListener) {
+        this.mResultListener = mResultListener;
+        Log.e("StreetAddressFragment", "end setmResultListener");
+    }
+
+    // HostRoomRegisterAddress fragment에 결과로 받은 객체 전달하기 위해 callback 리스너 작성
+    public interface OnResultCallBack{
+        public void resultCallBack(Place place);
     }
 
 }
