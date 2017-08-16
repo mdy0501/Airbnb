@@ -42,7 +42,6 @@
         app:layout_constraintTop_toBottomOf="@+id/textView19">
 
         <fragment
-
             android:id="@+id/place_autocomplete_fragment"
             android:name="com.google.android.gms.location.places.ui.PlaceAutocompleteFragment"
             android:layout_width="match_parent"
