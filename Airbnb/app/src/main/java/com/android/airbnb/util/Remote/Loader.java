@@ -139,8 +139,12 @@ public class Loader {
         call.enqueue(new Callback<List<Reservation>>() {
             @Override
             public void onResponse(Call<List<Reservation>> call, Response<List<Reservation>> response) {
-                reservations = response.body();
-                oneReservation.doTask(reservations);
+                if(response.code() == 200){
+                    Log.e("Loader", "code : " + response.code());
+                    reservations = response.body();
+                    Log.e("Loader", "reservation : " + response.body().toString());
+                    oneReservation.doTask(reservations);
+                }
             }
 
             @Override
