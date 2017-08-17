@@ -20,6 +20,7 @@ import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
+import com.android.airbnb.adapter.BottomSheetAdapter;
 import com.android.airbnb.adapter.DetailImgPager;
 import com.android.airbnb.adapter.MapPagerAdapter;
 import com.android.airbnb.calendar.CustomCalendar;
@@ -162,6 +163,7 @@ public class DetailHouseActivity extends AppCompatActivity implements OnMapReady
     private void getExIntent() {
         Intent intent = getIntent();
         Bundle extra = intent.getExtras();
+
         if (extra.getString("key").equals("roomsHouse")) {
             house = extra.getParcelable("roomsHouse");
             houseImages = house.getHouse_images();
@@ -169,6 +171,11 @@ public class DetailHouseActivity extends AppCompatActivity implements OnMapReady
 
         } else if (extra.getString("key").equals(MapPagerAdapter.HOUSE_OBJ)) {
             house = extra.getParcelable(MapPagerAdapter.HOUSE_OBJ);
+            houseImages = house.getHouse_images();
+            amenities = house.getAmenities();
+
+        } else if (extra.get("key").equals(BottomSheetAdapter.BOTTOM_SHEET_ADAPTER_PK)){
+            house = extra.getParcelable(BottomSheetAdapter.BOTTOM_SHEET_ADAPTER_PK);
             houseImages = house.getHouse_images();
             amenities = house.getAmenities();
         }
