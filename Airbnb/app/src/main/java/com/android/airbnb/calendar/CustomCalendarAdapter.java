@@ -38,7 +38,7 @@ public class CustomCalendarAdapter extends RecyclerView.Adapter<CustomCalendarAd
     public final static String STATUS_CHECKOUT = "status_check_out";
     public static String status = STATUS_CHECKIN;
 
-    public CustomCalendarAdapter(List<CalendarData> dateList, String housePk, GridAdapter.OnTextChangedListener mOnTextChangedListener, Context mContext) {
+    public CustomCalendarAdapter(List<CalendarData> dateList, Map<String, GridAdapter> maps, String housePk, GridAdapter.OnTextChangedListener mOnTextChangedListener, Context mContext) {
         this.mOnTextChangedListener = mOnTextChangedListener;
         this.dateList = dateList;
         this.mContext = mContext;
@@ -59,31 +59,108 @@ public class CustomCalendarAdapter extends RecyclerView.Adapter<CustomCalendarAd
         Holder holder = new Holder(view);
         holder.setCalendarMonth(dateList.get(position).getYear() + "년 " + dateList.get(position).getMonth() + "월");
         gridAdapter = new GridAdapter(dateList.get(position), mOnTextChangedListener, this);
+
         // key 수정
+        Log.e("CustomCalendarAdapter", "formatted key(month)" + Utils.CalendarUtil.getFormattedForCal(gridAdapter.mCalendarData.getMonth()));
         adapters.put(Utils.CalendarUtil.getFormattedForCal(gridAdapter.mCalendarData.getMonth()), gridAdapter);
         holder.getCalendarGridView().setAdapter(gridAdapter);
         position++;
         return holder;
     }
 
-    private void setReservedDates(){
-        for(int i=0; i < reservations.size(); i++){
+    // TODO 코드 정리하기
+    private void setReservedDates() {
+        for (int i = 0; i < reservations.size(); i++) {
             Reservation reservation = reservations.get(i);
-            String[] splittedCheckin = reservation.getCheckin_date().split("-");
-            String[] splittedCheckout = reservation.getCheckout_date().split("-");
-            if(splittedCheckin[1].equals(splittedCheckout[1])){
-                GridAdapter adapter = adapters.get(splittedCheckin[1]);
-                int start = Integer.parseInt(splittedCheckin[2]) + adapter.mCalendarData.getFirstWeekDay()-2;
-                int end = Integer.parseInt(splittedCheckout[2]) + adapter.mCalendarData.getFirstWeekDay()-2;
-                for (int k = start ; k <= end; k++){
-                    View convertview = adapter.allConvertviews.get(k);
-                    GridAdapter.Holder holder = adapter.allHolders.get(k);
-                    convertview.setTag(GridAdapter.IS_BOOKED);
-                    holder.setBooked(true);
-                    adapter.setBooked(convertview, holder, holder.getHolderPosition());
+            // 1. 통신을 통해 받아온 reservation 객체가 품고 있는 'yyyy-MM-dd'형태의 string을 split한다
+            String[] splitedCheckin = reservation.getCheckin_date().split("-");
+            String[] splitedCheckout = reservation.getCheckout_date().split("-");
+            // 2. [1] 배열이 '월'에 해당됨으로 이를 먼저 비교한다.
+            if (splitedCheckin[1].equals(splitedCheckout[1])) {
+
+                GridAdapter adapter = adapters.get(splitedCheckin[1]);
+
+                // 2.1 [2] 배열의 '일'이 해당됨으로 integer로 파싱하여 for문을 돌린다.
+                int startDay = Integer.parseInt(splitedCheckin[2]) + adapter.mCalendarData.getFirstWeekDay() - 2;
+                int endDay = Integer.parseInt(splitedCheckout[2]) + adapter.mCalendarData.getFirstWeekDay() - 2;
+                setBookedDate(adapter, startDay, endDay);
+
+            } else {
+                // 아래와 같이 key값의 크기 비교 해줘야 한다.
+                Log.e("CustomCalendarAdapter", "start ~~~~~");
+
+                int startMonth = Integer.parseInt(splitedCheckin[1]);
+                int lastMonth = Integer.parseInt(splitedCheckout[1]);
+                Log.e("CustomCalendarAdapter", "start month : " + startMonth + ", last month : " + lastMonth);
+
+                if (lastMonth < startMonth) {
+                    for (int k = startMonth; k <= 12; k++) {
+                        String formatted = formatNum(i);
+                        GridAdapter adapter = adapters.get(formatted);
+                        if (k == startMonth) {
+                            Log.e("CustomCalendarAdapter", ", adapters size : " + adapters.size());
+                            int startDay = Integer.parseInt(splitedCheckin[2]) + adapter.mCalendarData.getFirstWeekDay() - 2;
+                            int endDay = Integer.parseInt(splitedCheckout[2]) + adapter.mCalendarData.getFirstWeekDay() - 2;
+
+                            for (int j = startDay; j < adapter.allHolders.size(); j++) {
+                                adapter.setClickedView(adapter.allConvertviews.get(j), adapter.allHolders.get(j), adapter.allHolders.get(j).getHolderPosition());
+                            }
+                        } else {
+                            for (int j = 0; k < adapter.allHolders.size(); j++) {
+                                adapter.setClickedView(adapter.allConvertviews.get(j), adapter.allHolders.get(j), adapter.allHolders.get(j).getHolderPosition());
+                            }
+                        }
+                    }
+                    for (int k = 1; k <= lastMonth; i++) {
+                        String formatted = i + "";
+                        if (formatted.length() != 2) {
+                            formatted = "0" + i;
+                        }
+                        GridAdapter adapter = adapters.get(formatted);
+                        if (i == lastMonth) {
+                            for (int j = 0; j < adapter.selectedHolders.get(0).getHolderPosition(); j++) {
+                                adapter.setClickedView(adapter.allConvertviews.get(j), adapter.allHolders.get(j), adapter.allHolders.get(j).getHolderPosition());
+                            }
+                        } else {
+                            for (int j = 0; j < adapter.allHolders.size(); j++) {
+                                adapter.setClickedView(adapter.allConvertviews.get(j), adapter.allHolders.get(j), adapter.allHolders.get(j).getHolderPosition());
+                            }
+                        }
+
+                    }
                 }
-                adapter.notifyDataSetChanged();
+
+
+                for (int k = startMonth; k <= lastMonth; k++) {
+                    String formattedNum = formatNum(k);
+                    Log.e("CustomCalendarAdapter", "formattedNum : " + formattedNum);
+                    GridAdapter adapter = adapters.get(formattedNum);
+                    Log.e("CustomCalendarAdapter", "adapter is empty?" + adapters.get("10").isEmpty());
+                    Log.e("CustomCalendarAdapter", "adapter is empty?" + adapter.isEmpty());
+                    int startDay = Integer.parseInt(splitedCheckin[2]) + adapter.mCalendarData.getFirstWeekDay() - 2;
+                    int endDay = Integer.parseInt(splitedCheckout[2]) + adapter.mCalendarData.getFirstWeekDay() - 2;
+
+                    if (k == startMonth) {
+                        setBookedDate(adapter, startDay, adapter.allHolders.size());
+                    } else if (k == lastMonth) {
+                        setBookedDate(adapter, 0, lastMonth);
+                    } else {
+                        for (int j = 0; j < adapter.allHolders.size(); j++) {
+                            setBookedDate(adapter, 0, adapter.allHolders.size());
+                        }
+                    }
+                }
             }
+        }
+    }
+
+    private void setBookedDate(GridAdapter adapter, int start, int end) {
+        for (int i = start; i < end; i++) {
+            View convertview = adapter.allConvertviews.get(i);
+            GridAdapter.Holder holder = adapter.allHolders.get(i);
+            convertview.setTag(GridAdapter.IS_BOOKED);
+            holder.setBooked(true);
+            adapter.setBooked(convertview, holder, holder.getHolderPosition());
         }
     }
 
@@ -95,6 +172,7 @@ public class CustomCalendarAdapter extends RecyclerView.Adapter<CustomCalendarAd
     }
 
     public Map<String, GridAdapter> selectedAdapter = new LinkedHashMap<>();
+
     public void findSelectedGridAdapter() {
         // selelcted adapter clear 하는 구간 잘 선정하기
         selectedAdapter.clear();
@@ -106,9 +184,18 @@ public class CustomCalendarAdapter extends RecyclerView.Adapter<CustomCalendarAd
         }
     }
 
+    private String formatNum(int key) {
+        String formatted = key + "";
+        if (formatted.length() != 2) {
+            formatted = "0" + key;
+        }
+        return formatted;
+    }
 
     // TODO 코드 정리하기
     // 해 넘어가는 부분 오류났던 logic 해결 ok
+    // 재사용가능할 듯
+    // booked처럼 정리 다시 하기 .. 로직이 똑같을 것 같음 오히려 더 쉬울 지도 ... 
     public void setSelectedHolders() {
         Set<String> keys = selectedAdapter.keySet();
         String arrayKeys[] = keys.toArray(new String[keys.size()]);
@@ -118,10 +205,7 @@ public class CustomCalendarAdapter extends RecyclerView.Adapter<CustomCalendarAd
             Log.e("CustomCalendarAdapter", "firstKey : " + firstKey + ", lastKey : " + lastKey);
             if (lastKey > firstKey) {
                 for (int i = firstKey; i <= lastKey; i++) {
-                    String formatted = i+"";
-                    if(formatted.length() != 2){
-                        formatted = "0" + i;
-                    }
+                    String formatted = formatNum(i);
                     if (i == firstKey) {
                         GridAdapter adapter = adapters.get(formatted);
                         for (int k = adapter.selectedHolders.get(0).getHolderPosition(); k < adapter.allHolders.size(); k++) {
@@ -131,7 +215,6 @@ public class CustomCalendarAdapter extends RecyclerView.Adapter<CustomCalendarAd
                         GridAdapter adapter = adapters.get(formatted);
                         for (int k = adapter.selectedHolders.get(0).getHolderPosition(); k >= 0; k--) {
                             adapter.setClickedView(adapter.allConvertviews.get(k), adapter.allHolders.get(k), adapter.allHolders.get(k).getHolderPosition());
-                            Log.e("CustomCalendarAdapter", "adapters : " + adapter.isEmpty());
                         }
                     } else {
                         GridAdapter adapter = adapters.get(formatted);
@@ -142,10 +225,7 @@ public class CustomCalendarAdapter extends RecyclerView.Adapter<CustomCalendarAd
                 }
             } else if (lastKey < firstKey) {
                 for (int i = firstKey; i <= 12; i++) {
-                    String formatted = i+"";
-                    if(formatted.length() != 2){
-                        formatted = "0" + i;
-                    }
+                    String formatted = formatNum(i);
                     GridAdapter adapter = adapters.get(formatted);
                     if (i == firstKey) {
                         for (int k = adapter.selectedHolders.get(0).getHolderPosition(); k < adapter.allHolders.size(); k++) {
@@ -158,8 +238,8 @@ public class CustomCalendarAdapter extends RecyclerView.Adapter<CustomCalendarAd
                     }
                 }
                 for (int i = 1; i <= lastKey; i++) {
-                    String formatted = i+"";
-                    if(formatted.length() != 2){
+                    String formatted = i + "";
+                    if (formatted.length() != 2) {
                         formatted = "0" + i;
                     }
                     GridAdapter adapter = adapters.get(formatted);
@@ -177,8 +257,8 @@ public class CustomCalendarAdapter extends RecyclerView.Adapter<CustomCalendarAd
             }
         } else if (arrayKeys.length == 1) {
             int firstKey = Integer.parseInt(arrayKeys[0]);
-            String formatted = firstKey+"";
-            if(formatted.length() != 2){
+            String formatted = firstKey + "";
+            if (formatted.length() != 2) {
                 formatted = "0" + firstKey;
             }
             GridAdapter adapter = adapters.get(formatted);
@@ -189,16 +269,8 @@ public class CustomCalendarAdapter extends RecyclerView.Adapter<CustomCalendarAd
         Log.e("CustomCalendarAdapter", "==================== setSelectedHolders done!");
     }
 
-    // ==== 틀린 코드 ====
-    // 로그 한 번 찍어보면 알겠지만 adapter가 계속 생기는 건 상식적으로 말이 안됨...
     @Override
     public void onBindViewHolder(Holder holder, int position) {
-//        this.position = position;
-//        holder.setCalendarMonth(dateList.get(position).getMonth() + "월");
-//        gridAdapter = new GridAdapter(dateList.get(position).getDays(), (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE), mOnTextChangedListener);
-//        adapters.add(gridAdapter);
-//        Log.d("CustomCalendar", "grid adapter size :: " + adapters.size());
-//        holder.getCalendarGridView().setAdapter(gridAdapter);
     }
 
     @Override
@@ -228,9 +300,10 @@ public class CustomCalendarAdapter extends RecyclerView.Adapter<CustomCalendarAd
 
     @Override
     public void doTask(List<Reservation> reservations) {
-        if(reservations != null){
+        if (reservations != null) {
             this.reservations = reservations;
-            Log.e("Custom calendar","reservation size : " + reservations.size());
+            Log.e("Custom calendar", "reservation size : " + reservations.size());
+            Log.e("Custom calendar", "adapters size : " + adapters.size());
             setReservedDates();
 
         }

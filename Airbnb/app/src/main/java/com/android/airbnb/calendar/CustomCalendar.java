@@ -20,7 +20,9 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 public class CustomCalendar extends AppCompatActivity implements View.OnClickListener, GridAdapter.OnTextChangedListener {
 
@@ -33,32 +35,37 @@ public class CustomCalendar extends AppCompatActivity implements View.OnClickLis
     private Button calendarBtnSave;
     private CalendarData data;
     private List<CalendarData> calendarDatas;
-    private EndlessScrollListener scrollListener;
     private CustomCalendarAdapter calendarAdapter;
+    private Map<String, GridAdapter> gridAdapters;
+
 
     public static String beginDate = "";
     public static String endDate = "";
     private String housePk = "";
-    private List<Reservation> reservations = new ArrayList<>();
+    private List<Reservation> reservations;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_custom_calendar);
         calendarDatas = new ArrayList<>();
+        reservations = new ArrayList<>();
+        gridAdapters = new LinkedHashMap<>();
         getCalendarData();
         initView();
         getHousePk();
         setOnClick();
+        // +++++
+//        setGridAdapters();
         setAdapter();
-        setOnScrollListener();
     }
+
+
 
     private void getHousePk() {
         Intent intent = getIntent();
         housePk = intent.getStringExtra(DetailHouseActivity.HOUSE_PK);
     }
-
 
     // 추후
     private void getCalendarData() {
@@ -72,7 +79,7 @@ public class CustomCalendar extends AppCompatActivity implements View.OnClickLis
         int tempMonth = 0;
         // Utils로 추후에 빼기
         // 12월 넘을 경우, 년도 ++ 처리 및 월 reset
-        for (int i = currentMonth; i <= currentMonth + 12; i++) {
+        for (int i = currentMonth; i <= currentMonth + 11; i++) {
             tempMonth = i;
             if (i > 12) {
                 tempMonth = i - 12;
@@ -102,45 +109,26 @@ public class CustomCalendar extends AppCompatActivity implements View.OnClickLis
         }
     }
 
+//    // +++++ 수정
+//    private void setGridAdapters() {
+//        for (int i = 0; i < calendarDatas.size(); i++) {
+//            CalendarData data = calendarDatas.get(i);
+//            GridAdapter adapter = new GridAdapter(data);
+//            String key = Utils.CalendarUtil.getFormattedForCal(data.getMonth());
+//            Log.e("CustomCalendar", "key :: " + key);
+//            gridAdapters.put(key, adapter);
+//        }
+//    }
+
     private LinearLayoutManager manager = new LinearLayoutManager(this);
 
     private void setAdapter() {
-        calendarAdapter = new CustomCalendarAdapter(calendarDatas, housePk, this, this);
+        calendarAdapter = new CustomCalendarAdapter(calendarDatas, gridAdapters, housePk, this, this);
         calendarRecycler.setAdapter(calendarAdapter);
         calendarRecycler.setLayoutManager(manager);
         calendarRecycler.setItemViewCacheSize(12);
     }
 
-    // ========================== [ scrollListener code ] ========================================
-    // 위쪽 혹은 아래쪽에 새로운 달력 데이터를 로드해야할 경우, setOnScrollListener를 통해 이벤트를 감지한다.
-    private void setOnScrollListener() {
-        scrollListener = new EndlessScrollListener(manager) {
-            @Override
-            public void onLoadMore(int page, int totalItemsCount, RecyclerView view) {
-                loadNextDataFromApi(page);
-            }
-        };
-        calendarRecycler.addOnScrollListener(scrollListener);
-    }
-
-    public void loadNextDataFromApi(int offset) {
-        // Send an API request to retrieve appropriate paginated data
-        //  --> Send the request including an offset value (i.e `page`) as a query parameter.
-        //  --> Deserialize and construct new model objects from the API response
-        //  --> Append the new data objects to the existing set of items inside the array of items
-        //  --> Notify the adapter of the new items made with `notifyItemRangeInserted()`
-    }
-
-    private void sadjflkjsdlfkj() {
-        // 1. First, clear the array of data
-        calendarDatas.clear();
-        // 2. Notify the adapter of the update
-        calendarAdapter.notifyDataSetChanged(); // or notifyItemRangeRemoved
-        // 3. Reset endless scroll listener when performing a new search
-        scrollListener.resetState();
-    }
-
-    // ================================================================================================
     private void initView() {
         calendarBtnClose = (ImageView) findViewById(R.id.calendar_btn_close);
         calendarDelete = (TextView) findViewById(R.id.calendar_delete);
@@ -153,12 +141,13 @@ public class CustomCalendar extends AppCompatActivity implements View.OnClickLis
 
     private void setOnClick() {
         calendarBtnClose.setClickable(true);
-        calendarDelete.setClickable(true);
-        calendarDelete.setClickable(true);
-
         calendarBtnClose.setOnClickListener(this);
-        calendarBtnSave.setOnClickListener(this);
+
+        calendarDelete.setClickable(true);
         calendarDelete.setOnClickListener(this);
+
+        calendarBtnSave.setClickable(true);
+        calendarBtnSave.setOnClickListener(this);
     }
 
     @Override
@@ -220,10 +209,5 @@ public class CustomCalendar extends AppCompatActivity implements View.OnClickLis
         calendarAdapter.setSelectedHolders();
         calendarResultTxt.setText(result + "박을 선택했습니다.");
         flag = true;
-    }
-
-    @Override
-    public void calculatedDate(String result) {
-        // TODO 불필요할 경우, 반드시 코드 제거하기!
     }
 }

@@ -64,10 +64,8 @@ public class Utils {
         public static String getFormattedForCal(String date) {
             String result = date;
             if (date.length() != 2)
-                result = "0" + date;
+                return "0" + date;
             else
-                return result;
-
                 return result;
             }
         }

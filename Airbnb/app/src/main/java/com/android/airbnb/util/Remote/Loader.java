@@ -6,6 +6,7 @@ import com.android.airbnb.domain.airbnb.Host;
 import com.android.airbnb.domain.airbnb.House;
 import com.android.airbnb.domain.reservation.Reservation;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import retrofit2.Call;
@@ -152,5 +153,60 @@ public class Loader {
                 t.printStackTrace();
             }
         });
+    }
+
+    private static List<House> wishList = new ArrayList<>();
+
+    public static void getWishList(String userToken, final ITask.allWishList allWishList){
+        Retrofit client = new Retrofit.Builder()
+                .baseUrl(BASE_URL)
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+
+        IServerApi serverApi = client.create(IServerApi.class);
+        Call<List<House>> call = serverApi.getWishList(userToken);
+        call.enqueue(new Callback<List<House>>() {
+            @Override
+            public void onResponse(Call<List<House>> call, Response<List<House>> response) {
+                if(response.code() == 200){
+                    Log.e("Loader", "wishlist : " + response.body().toString());
+                    wishList = response.body();
+                    allWishList.doTask(wishList);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<House>> call, Throwable t) {
+                t.printStackTrace();
+            }
+        });
+    }
+
+    public static void postWishList(String token, String housePk, final ITask.postWishList postWishList){
+        Retrofit client = new Retrofit.Builder()
+                .baseUrl(BASE_URL)
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+
+        IServerApi serverApi = client.create(IServerApi.class);
+        Call<String> call = serverApi.postWishList(token, housePk);
+        call.enqueue(new Callback<String>() {
+            @Override
+            public void onResponse(Call<String> call, Response<String> response) {
+                if (response.code() == 200){
+                    postWishList.getResponse(response.body().toString());
+                } else {
+                    Log.e("Loader", "문제 : " + response.code());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<String> call, Throwable t) {
+
+            }
+        });
+
+
+
     }
 }

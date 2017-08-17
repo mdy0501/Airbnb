@@ -26,6 +26,9 @@ import android.widget.Toast;
 import com.android.airbnb.adapter.BottomSheetAdapter;
 import com.android.airbnb.adapter.MapPagerAdapter;
 import com.android.airbnb.domain.airbnb.House;
+import com.android.airbnb.util.PreferenceUtil;
+import com.android.airbnb.util.Remote.ITask;
+import com.android.airbnb.util.Remote.Loader;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapsInitializer;
@@ -43,7 +46,7 @@ import java.util.List;
 import java.util.Map;
 
 
-public class GoogleMapViewPagerActivity extends FragmentActivity implements OnMapReadyCallback, MapPagerAdapter.OnMapPagerListener {
+public class GoogleMapViewPagerActivity extends FragmentActivity implements OnMapReadyCallback, MapPagerAdapter.OnMapPagerListener, ITask.allWishList {
 
     private GoogleMap mMap;
 
@@ -82,11 +85,11 @@ public class GoogleMapViewPagerActivity extends FragmentActivity implements OnMa
         progress.start();
         initArrayList();
         getExIntent();
+        Log.e("mapactivity", "user token : " + PreferenceUtil.getToken(this));
+        Loader.getWishList("Token " + PreferenceUtil.getToken(this), this);
         setAdapter();
         /* Async 처리 */
         setViewPager();
-        setBtnOnClick();
-        setBottomSheet(0);
     }
 
     private void getExIntent(){
@@ -174,6 +177,10 @@ public class GoogleMapViewPagerActivity extends FragmentActivity implements OnMa
         mapListPager.setPageMargin(getResources().getDisplayMetrics().widthPixels / -9);
     }
 
+    private void getWishList(){
+
+    }
+
     private void setViewPager() {
         mapListPager.addOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
             @Override
@@ -186,7 +193,13 @@ public class GoogleMapViewPagerActivity extends FragmentActivity implements OnMa
                 mMap.animateCamera(CameraUpdateFactory.zoomTo(15));
             }
         });
-        bottomSheetAdapter = new BottomSheetAdapter(houseList, this);
+//        bottomSheetAdapter = new BottomSheetAdapter(houseList, this);
+//        wishBottomRecycler.setAdapter(bottomSheetAdapter);
+//        wishBottomRecycler.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
+    }
+
+    private void setBottomSheetAdapter(List<House> wishlist){
+        bottomSheetAdapter = new BottomSheetAdapter(wishlist, this);
         wishBottomRecycler.setAdapter(bottomSheetAdapter);
         wishBottomRecycler.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
     }
@@ -321,10 +334,12 @@ public class GoogleMapViewPagerActivity extends FragmentActivity implements OnMa
      */
     @Override
     public void btnWishClicked(boolean btnIsChecked) {
+        // 다시 생각하기
+        Loader.getWishList("Token " + PreferenceUtil.getToken(this), this);
         bottomSheetAdapter.notifyDataSetChanged();
         wishBottomRecycler.smoothScrollToPosition(0);
         if (btnIsChecked) {
-            Snackbar.make(snackbarPlace, "[위시리스트 이름]에 저장됨.", Snackbar.LENGTH_LONG).setAction("변경", new View.OnClickListener() {
+            Snackbar.make(snackbarPlace, "[위시리스트]에 저장됨.", Snackbar.LENGTH_LONG).setAction("위시리스트", new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     setBottomSheet(300.f);
@@ -335,7 +350,7 @@ public class GoogleMapViewPagerActivity extends FragmentActivity implements OnMa
             Snackbar.make(snackbarPlace, "[위시리스트 이름]에 삭제됨.", Snackbar.LENGTH_LONG).setAction("실행취소", new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Snackbar.make(snackbarPlace, "[위시리스트 이름]에 저장됨.", Snackbar.LENGTH_LONG).setAction("변경", new View.OnClickListener() {
+                    Snackbar.make(snackbarPlace, "[위시리스트]에 저장됨.", Snackbar.LENGTH_LONG).setAction("위시리스트", new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
                             setBottomSheet(300.f);
@@ -344,5 +359,18 @@ public class GoogleMapViewPagerActivity extends FragmentActivity implements OnMa
                 }
             }).show();
         }
+    }
+
+    private List<House> wishlist;
+
+    @Override
+    public void doTask(List<House> houses) {
+        Log.e("MapActivity", "start doTask ============ ");
+        wishlist = houses;
+        Log.e("MapActivity", "houses : " + houses.toString());
+        setBottomSheet(0);
+        setBottomSheetAdapter(wishlist);
+        setBtnOnClick();
+        Log.e("MapActivity", "start doTask ============ ");
     }
 }
