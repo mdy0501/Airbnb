@@ -1,6 +1,7 @@
 package com.android.airbnb.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -8,8 +9,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
+import com.android.airbnb.DetailHouseActivity;
 import com.android.airbnb.R;
 import com.android.airbnb.domain.airbnb.House;
 import com.android.airbnb.domain.airbnb.House_images;
@@ -27,11 +28,16 @@ public class BottomSheetAdapter extends RecyclerView.Adapter<BottomSheetAdapter.
     List<House> wishList = new ArrayList<>();
     private Context mContext;
     private View view = null;
+    public static final String BOTTOM_SHEET_ADAPTER_PK = "BOTTOM_SHEET_ADAPTER_PK";
 
 
     public BottomSheetAdapter(List<House> wishList, Context context) {
         this.wishList = wishList;
         this.mContext = context;
+    }
+
+    public void refreshWishList(List<House> wishList){
+        this.wishList = wishList;
     }
 
     @Override
@@ -56,18 +62,21 @@ public class BottomSheetAdapter extends RecyclerView.Adapter<BottomSheetAdapter.
             GlideApp
                     .with(mContext)
                     .load(houseImages[0].getImage())
+                    .fallback(R.mipmap.dummy_host_img)
                     .centerCrop()
                     .into(holder.listImg1);
 
             GlideApp
                     .with(mContext)
-                    .load(R.mipmap.dummy_host_img)
+                    .load(houseImages[1].getImage())
+                    .fallback(R.mipmap.dummy_host_img)
                     .centerCrop()
                     .into(holder.listImg2);
 
             GlideApp
                     .with(mContext)
-                    .load(R.mipmap.dummy_host_img)
+                    .load(houseImages[2].getImage())
+                    .fallback(R.mipmap.dummy_host_img)
                     .centerCrop()
                     .into(holder.listImg3);
         }
@@ -79,6 +88,8 @@ public class BottomSheetAdapter extends RecyclerView.Adapter<BottomSheetAdapter.
     }
 
     class Holder extends RecyclerView.ViewHolder {
+
+
 
         private ImageView listImg1;
         private ImageView listImg2;
@@ -106,7 +117,11 @@ public class BottomSheetAdapter extends RecyclerView.Adapter<BottomSheetAdapter.
             view.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Toast.makeText(mContext, "[" + position + "] 클릭", Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent(mContext, DetailHouseActivity.class);
+                    // Intent에 담아서 pk 보내기
+                    intent.putExtra(BOTTOM_SHEET_ADAPTER_PK, wishList.get(position));
+                    intent.putExtra("key", BOTTOM_SHEET_ADAPTER_PK);
+                    v.getContext().startActivity(intent);
                 }
             });
         }

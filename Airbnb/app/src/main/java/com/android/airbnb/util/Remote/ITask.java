@@ -32,6 +32,14 @@ public interface ITask {
         public void doTask(List<Reservation> reservations);
     }
 
+    public interface allWishList{
+        public void doTask(List<House> houses);
+    }
+
+    public interface postWishList{
+        public void getResponse(String message);
+    }
+
     /*
     public void doTaskTotalHostList(List<Host> hostList);
     public void doTaskTotalHouseList(List<House> houseList);

@@ -15,12 +15,16 @@ import android.widget.ImageView;
 
 import android.widget.RatingBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.android.airbnb.DetailHouseActivity;
 import com.android.airbnb.R;
 import com.android.airbnb.domain.airbnb.House;
 import com.android.airbnb.domain.airbnb.House_images;
 import com.android.airbnb.util.GlideApp;
+import com.android.airbnb.util.PreferenceUtil;
+import com.android.airbnb.util.Remote.ITask;
+import com.android.airbnb.util.Remote.Loader;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,7 +33,7 @@ import java.util.List;
  * Created by JunHee on 2017. 8. 3..
  */
 
-public class MapPagerAdapter extends PagerAdapter {
+public class MapPagerAdapter extends PagerAdapter implements ITask.postWishList {
 
     private List<House> houseList = new ArrayList<>();
     private Context mContext;
@@ -91,10 +95,12 @@ public class MapPagerAdapter extends PagerAdapter {
                 // 실제
                 if (isChecked) {
                     setBtnWish(buttonView, R.drawable.icon_wish_full, true);
+                    Loader.postWishList("Token " + PreferenceUtil.getToken(mContext), houseList.get(currentPostition).getPk(), MapPagerAdapter.this);
                     mPagerListner.btnWishClicked(isChecked);
 
                 } else {
                     setBtnWish(buttonView, R.drawable.icon_wish_empty, false);
+                    Loader.postWishList("Token " + PreferenceUtil.getToken(mContext), houseList.get(currentPostition).getPk(), MapPagerAdapter.this);
                     mPagerListner.btnWishClicked(isChecked);
                 }
             }
@@ -151,6 +157,11 @@ public class MapPagerAdapter extends PagerAdapter {
     @Override
     public float getPageWidth(int position) {
         return (0.9f);
+    }
+
+    @Override
+    public void getResponse(String message) {
+        Toast.makeText(mContext, "message : " + message, Toast.LENGTH_SHORT).show();
     }
 
     public interface OnMapPagerListener {

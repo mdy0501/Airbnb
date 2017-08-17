@@ -70,4 +70,10 @@ public interface IServerApi {
     // Key : Authorization  ,  Value : Token xxxxxxxxxxxxxxx
     @GET("apis/user/logout/")
     Call<ResponseBody> getLogout(@Header("Authorization") String token);
+
+    @GET("apis/like/")
+    Call<List<House>> getWishList(@Header("Authorization") String token);
+
+    @POST("apis/like/")
+    Call<String> postWishList(@Header("Authorization") String token, @Query("house") String housePk);
 }
