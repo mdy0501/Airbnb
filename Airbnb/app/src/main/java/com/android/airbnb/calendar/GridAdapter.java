@@ -129,7 +129,7 @@ public class GridAdapter extends BaseAdapter {
         Log.e("GridAdapter", "selectedCount : " + selectedCount);
         selectedCount = 0;
         for (View convertView : allConvertviews) {
-            if(convertView.getTag() == null)
+            if (convertView.getTag() == null)
                 convertView.setBackgroundResource(R.color.white);
         }
         for (Holder holder : allHolders) {
@@ -203,8 +203,6 @@ public class GridAdapter extends BaseAdapter {
         public void checkInChanged(String selectedCheckInDate);
 
         public void checkOutChanged(String selectedCheckOutDate);
-
-        public void calculatedDate(String result);
     }
 
     public interface OnCalendarChangedListener {
