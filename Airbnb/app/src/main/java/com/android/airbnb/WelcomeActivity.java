@@ -11,6 +11,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.airbnb.data.ApiService;
+import com.android.airbnb.domain.airbnb.FacebookLoginResult;
 import com.android.airbnb.login.LoginActivity;
 import com.android.airbnb.main.GuestMainActivity;
 import com.android.airbnb.signup.SignUpActivity;
@@ -111,12 +112,23 @@ public class WelcomeActivity extends AppCompatActivity implements View.OnClickLi
 
         RequestBody token = RequestBody.create(MediaType.parse("text/plain"), facebookToken);
 
-        Call<com.android.airbnb.domain.airbnb.LoginResult> postFacebookLoginData = iServerApi.postFacebookLoginData(token);
-        postFacebookLoginData.enqueue(new Callback<com.android.airbnb.domain.airbnb.LoginResult>() {
+        Call<FacebookLoginResult> postFacebookLoginData = iServerApi.postFacebookLoginData(token);
+        postFacebookLoginData.enqueue(new Callback<FacebookLoginResult>() {
             @Override
-            public void onResponse(Call<com.android.airbnb.domain.airbnb.LoginResult> call, Response<com.android.airbnb.domain.airbnb.LoginResult> response) {
+            public void onResponse(Call<FacebookLoginResult> call, Response<FacebookLoginResult> response) {
                 Log.e("===============", "로그인 데이터 전송");
                 Log.e("response.code()", response.code()+"");
+                Log.e("response.body() 1  :: ", response.body().toString());
+
+//                Log.e("response.body() 2  :: ", response.body().User);
+//                FacebookLoginResult.User user1 = new FacebookLoginResult.User();
+
+
+                //TODO - body 내부 안에 있는 객체의 값을 어떻게 꺼내야하는지? (FacebookLoginResult)
+
+                Log.e("response body Token ", "Success : " + response.body().getToken());
+                PreferenceUtil.setToken(WelcomeActivity.this, response.body().getToken());
+
 
                 // 로그인 완료 후 메인화면으로 이동
                 Toast.makeText(WelcomeActivity.this, "Facebook 으로\n정상 로그인 되었습니다.\nMain 화면으로 이동합니다.", Toast.LENGTH_SHORT).show();
@@ -126,7 +138,7 @@ public class WelcomeActivity extends AppCompatActivity implements View.OnClickLi
 
 
 
-                // TODO - 서버에서 작업이 끝나면 respone 코드에 따라 처리해줘야함.
+                // TODO - 서버에서 작업이 끝나면 response 코드에 따라 처리해줘야함.
                 /*
 
                 // 로그인시 예외처리
@@ -151,7 +163,7 @@ public class WelcomeActivity extends AppCompatActivity implements View.OnClickLi
             }
 
             @Override
-            public void onFailure(Call<com.android.airbnb.domain.airbnb.LoginResult> call, Throwable t) {
+            public void onFailure(Call<FacebookLoginResult> call, Throwable t) {
 
             }
         });
