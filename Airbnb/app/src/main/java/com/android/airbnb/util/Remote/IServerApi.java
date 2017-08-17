@@ -1,5 +1,6 @@
 package com.android.airbnb.util.Remote;
 
+import com.android.airbnb.domain.airbnb.FacebookLoginResult;
 import com.android.airbnb.domain.airbnb.Host;
 import com.android.airbnb.domain.airbnb.House;
 import com.android.airbnb.domain.airbnb.LoginResult;
@@ -62,8 +63,8 @@ public interface IServerApi {
 
     // 페이스북 로그인 POST
     @Multipart
-    @POST("facebook-login/")
-    Call<LoginResult> postFacebookLoginData(@Part("token") RequestBody token);
+    @POST("apis/user/facebook-login/")
+    Call<FacebookLoginResult> postFacebookLoginData(@Part("token") RequestBody token);
 
 
     // 로그아웃 GET
