@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- UNSELECTED -->
+    <item android:state_checked="false">
+        <layer-list>
+            <!-- 이미지 영역 -->
+            <item android:drawable="@drawable/unchecked" android:top="4dp" android:right="4dp" android:bottom="4dp" android:left="4dp" />
+        </layer-list>
+    </item>
+    <!-- SELECTED -->
+    <item android:state_checked="true">
+        <layer-list>
+            <!-- 이미지 영역 -->
+            <item android:drawable="@drawable/checked" android:top="4dp" android:right="4dp" android:bottom="4dp" android:left="4dp" />
+        </layer-list>
+    </item>
+</selector>

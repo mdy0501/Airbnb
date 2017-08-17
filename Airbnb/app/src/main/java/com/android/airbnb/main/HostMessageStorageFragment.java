@@ -49,7 +49,7 @@ public class HostMessageStorageFragment extends Fragment implements View.OnClick
         txtTitle = (TextView) view.findViewById(R.id.txtTitle);
         txtContent1 = (TextView) view.findViewById(R.id.txtContent1);
         txtContent2 = (TextView) view.findViewById(R.id.txtContent2);
-        imgBtnBack = (ImageButton) view.findViewById(R.id.imgBtnBack);
+        imgBtnBack = (ImageButton) view.findViewById(R.id.ImgBtnCancel);
     }
 
     private void setListeners(){
@@ -63,7 +63,7 @@ public class HostMessageStorageFragment extends Fragment implements View.OnClick
     @Override
     public void onClick(View v) {
         switch (v.getId()){
-            case R.id.imgBtnBack :
+            case R.id.ImgBtnCancel:
                 hostMainActivity.getSupportFragmentManager().beginTransaction()
                         .replace(host_main_container, hostMessageFragment)
                         .commit();

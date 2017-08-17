@@ -16,7 +16,8 @@
             android:name="com.facebook.sdk.ApplicationId"
             android:value="@string/facebook_app_id" />
 
-        <activity android:name=".StartActivity"
+        <activity
+            android:name=".StartActivity"
             android:windowSoftInputMode="adjustResize">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -64,6 +65,7 @@
             android:name=".DetailMapActivity"
             android:label="@string/title_activity_detail_map"
             android:theme="@style/NoActioinBarTheme" />
+        <activity android:name=".main.registerrooms.HostRoomsRegisterBasicActivity"></activity>
     </application>
 
 </manifest>
