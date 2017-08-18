@@ -7,6 +7,7 @@ package com.android.airbnb.domain.airbnb;
 public class FacebookLoginResult {
 
     private String token;
+    public User user;
 
     public String getToken() {
         return token;
