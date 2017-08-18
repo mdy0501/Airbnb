@@ -13,6 +13,7 @@ public class HostRoomsRegisterBasicActivity extends AppCompatActivity {
     HostRoomsRegisterBasicBedDetailFragment hostRoomsRegisterBasicBedDetailFragment;
     HostRoomsRegisterBasicBathFragment hostRoomsRegisterBasicBathFragment;
     HostRoomsRegisterBasicAddressFragment hostRoomsRegisterBasicAddressFragment;
+    HostRoomsRegisterBasicStreetAddressFragment hostRoomsRegisterBasicStreetAddressFragment;
     HostRoomsRegisterBasicLocationFragment hostRoomsRegisterBasicLocationFragment;
     HostRoomsRegisterBasicAmenitiesFragment hostRoomsRegisterBasicAmenitiesFragment;
     HostRoomsRegisterBasicSpaceFragment hostRoomsRegisterBasicSpaceFragment;
@@ -32,6 +33,7 @@ public class HostRoomsRegisterBasicActivity extends AppCompatActivity {
         hostRoomsRegisterBasicBedDetailFragment = new HostRoomsRegisterBasicBedDetailFragment();
         hostRoomsRegisterBasicBathFragment = new HostRoomsRegisterBasicBathFragment();
         hostRoomsRegisterBasicAddressFragment = new HostRoomsRegisterBasicAddressFragment();
+        hostRoomsRegisterBasicStreetAddressFragment = new HostRoomsRegisterBasicStreetAddressFragment();
         hostRoomsRegisterBasicLocationFragment = new HostRoomsRegisterBasicLocationFragment();
         hostRoomsRegisterBasicAmenitiesFragment = new HostRoomsRegisterBasicAmenitiesFragment();
         hostRoomsRegisterBasicSpaceFragment = new HostRoomsRegisterBasicSpaceFragment();
