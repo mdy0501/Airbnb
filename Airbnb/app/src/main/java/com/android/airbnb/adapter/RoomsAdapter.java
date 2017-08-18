@@ -30,7 +30,7 @@ public class RoomsAdapter extends RecyclerView.Adapter<RoomsAdapter.Holder> {
     LayoutInflater inflater;
     int count = 0;
 
-    public RoomsAdapter(Context context, List<House> data){
+    public RoomsAdapter(Context context, List<House> data) {
         this.data = data;
         inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
@@ -49,19 +49,15 @@ public class RoomsAdapter extends RecyclerView.Adapter<RoomsAdapter.Holder> {
         holder.setRoomType(house.getRoom_type());
         holder.setRatingBar("4");
         holder.setReviewCount("110개");
-
-
         holder.setPosition(position);
-
-//        House_images[] images = house.getHouse_images();
         House_images[] images = house.getHouse_images();
+
         GlideApp
                 .with(inflater.getContext())
                 .load(images.length > 0 ? images[0].getImage() : null)
                 .centerCrop()
                 .fallback(R.drawable.question_mark)
                 .into(holder.img);
-
     }
 
     @Override
@@ -69,11 +65,11 @@ public class RoomsAdapter extends RecyclerView.Adapter<RoomsAdapter.Holder> {
         return data.size();
     }
 
-    class Holder extends RecyclerView.ViewHolder{
+    class Holder extends RecyclerView.ViewHolder {
         int position = -1;
         TextView txtPrice, txtTitle, txtRoomType, txtReview, txtReviewCount;
         ImageView img;
-        ImageButton imgBtnHeart;
+        ImageButton btnSave;
         RatingBar ratingBar;
 
         public Holder(View itemView) {
@@ -84,40 +80,42 @@ public class RoomsAdapter extends RecyclerView.Adapter<RoomsAdapter.Holder> {
             txtReview = (TextView) itemView.findViewById(R.id.txtReview);
             txtReviewCount = (TextView) itemView.findViewById(R.id.txtReviewCount);
             img = (ImageView) itemView.findViewById(R.id.img);
-            imgBtnHeart = (ImageButton) itemView.findViewById(R.id.imgBtnHeart);
+            btnSave = (ImageButton) itemView.findViewById(R.id.imgBtnHeart);
             ratingBar = (RatingBar) itemView.findViewById(R.id.ratingBar);
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     Intent intent = new Intent(v.getContext(), DetailHouseActivity.class);
-                     House roomsHouse = data.get(position);
+                    House roomsHouse = data.get(position);
                     Bundle extra = new Bundle();
                     extra.putString("key", "roomsHouse");
                     extra.putParcelable("roomsHouse", roomsHouse);
-//                     intent.putExtra("roomsHouse", roomsHouse);
-//                    intent.putExtra("key", "roomsHouse");
                     intent.putExtras(extra);
-                     v.getContext().startActivity(intent);
+                    v.getContext().startActivity(intent);
                 }
             });
-
         }
 
-        private void setPrice(String price){
+        private void setPrice(String price) {
             txtPrice.setText(price + " 원");
         }
-        private void setTitle(String title){
+
+        private void setTitle(String title) {
             txtTitle.setText(title);
         }
-        private void setRoomType(String roomType){
+
+        private void setRoomType(String roomType) {
             txtRoomType.setText(roomType);
         }
-        private void setPosition(int position){
+
+        private void setPosition(int position) {
             this.position = position;
         }
+
         private void setRatingBar(String ratingBar) {
             this.ratingBar.setRating(Float.parseFloat(ratingBar));
         }
+
         private void setReviewCount(String reviewCount) {
             this.txtReviewCount.setText(reviewCount);
         }

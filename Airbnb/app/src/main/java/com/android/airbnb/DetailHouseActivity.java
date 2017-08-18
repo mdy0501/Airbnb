@@ -174,7 +174,7 @@ public class DetailHouseActivity extends AppCompatActivity implements OnMapReady
             houseImages = house.getHouse_images();
             amenities = house.getAmenities();
 
-        } else if (extra.get("key").equals(BottomSheetAdapter.BOTTOM_SHEET_ADAPTER_PK)){
+        } else if (extra.getString("key").equals(BottomSheetAdapter.BOTTOM_SHEET_ADAPTER_PK)){
             house = extra.getParcelable(BottomSheetAdapter.BOTTOM_SHEET_ADAPTER_PK);
             houseImages = house.getHouse_images();
             amenities = house.getAmenities();

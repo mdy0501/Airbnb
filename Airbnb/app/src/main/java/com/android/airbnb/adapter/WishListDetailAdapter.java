@@ -53,6 +53,7 @@ public class WishListDetailAdapter extends RecyclerView.Adapter<WishListDetailAd
         holder.setPrice("₩" + house.getPrice_per_day());
         holder.setRatingBar("4");
         holder.setReviewCount("40");
+        holder.setBtnSave(true);
     }
 
     @Override
@@ -70,8 +71,8 @@ public class WishListDetailAdapter extends RecyclerView.Adapter<WishListDetailAd
                     .into(houseImg);
         }
 
-        public void setBtnSave(CheckBox btnSave) {
-            this.btnSave = btnSave;
+        public void setBtnSave(boolean isSaved) {
+            this.btnSave.setChecked(isSaved);
         }
 
         public void setPrice(String price) {
@@ -103,15 +104,15 @@ public class WishListDetailAdapter extends RecyclerView.Adapter<WishListDetailAd
         private TextView reviewCount;
 
 
-        public Holder(View v) {
-            super(v);
-            houseImg = (ImageView) v.findViewById(R.id.wishlist_img);
-            btnSave = (CheckBox) v.findViewById(R.id.wishlist_btnSave);
-            price = (TextView) v.findViewById(R.id.wishlist_house_price);
-            title = (TextView) v.findViewById(R.id.wishlist_house_title);
-            houseType = (TextView) v.findViewById(R.id.wishlist_house_type);
-            ratingBar = (RatingBar) v.findViewById(R.id.wishlist_house_ratingbar);
-            reviewCount = (TextView) v.findViewById(R.id.wishlist_review_count);
+        public Holder(View view) {
+            super(view);
+            houseImg = (ImageView) view.findViewById(R.id.wishlist_img);
+            btnSave = (CheckBox) view.findViewById(R.id.wishlist_btnSave);
+            price = (TextView) view.findViewById(R.id.wishlist_house_price);
+            title = (TextView) view.findViewById(R.id.wishlist_house_title);
+            houseType = (TextView) view.findViewById(R.id.wishlist_house_type);
+            ratingBar = (RatingBar) view.findViewById(R.id.wishlist_house_ratingbar);
+            reviewCount = (TextView) view.findViewById(R.id.wishlist_review_count);
 
             btnSave.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                 @Override
@@ -120,7 +121,7 @@ public class WishListDetailAdapter extends RecyclerView.Adapter<WishListDetailAd
                 }
             });
 
-            v.setOnClickListener(new View.OnClickListener() {
+            view.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     Toast.makeText(mContext, "item clicked ======= done! ", Toast.LENGTH_SHORT).show();
