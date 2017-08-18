@@ -21,6 +21,7 @@ public class HostRoomsRegisterBasicBedFragment extends Fragment implements View.
     private TextView txtDetailTitle, txtDetailContent, txtAddBed, txtContent;
     private ImageButton ImgBtnNext;
     private ImageButton ImgBtnBack;
+    private View view = null;
 
     public HostRoomsRegisterBasicBedFragment() {
         // Required empty public constructor
@@ -35,7 +36,9 @@ public class HostRoomsRegisterBasicBedFragment extends Fragment implements View.
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_host_rooms_register_basic_bed, container, false);
+        if(view == null){
+            view = inflater.inflate(R.layout.fragment_host_rooms_register_basic_bed, container, false);
+        }
         setViews(view);
         setListeners();
         return view;

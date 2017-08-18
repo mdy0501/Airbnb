@@ -28,6 +28,7 @@ public class HostRoomsRegisterBasicBathFragment extends Fragment implements View
     private RadioButton radioButtonPrivate, radioButtonPublic;
     private TextView txtTitle, txtBathTitle, txtPrivateBath, txtPublicBath;
     private Spinner spinnerBath;
+    private View view = null;
 
     ArrayAdapter bathAdapter;
 
@@ -44,7 +45,9 @@ public class HostRoomsRegisterBasicBathFragment extends Fragment implements View
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_host_rooms_register_basic_bath, container, false);
+        if(view == null){
+            view = inflater.inflate(R.layout.fragment_host_rooms_register_basic_bath, container, false);
+        }
         setViews(view);
         setListeners();
         setSpinner();

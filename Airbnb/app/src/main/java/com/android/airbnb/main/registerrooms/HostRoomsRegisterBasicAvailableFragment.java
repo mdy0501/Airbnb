@@ -28,6 +28,7 @@ public class HostRoomsRegisterBasicAvailableFragment extends Fragment implements
     private Spinner spinnerPerson, spinnerBedroom, spinnerBed;
 
     ArrayAdapter personAdapter, bedroomAdapter, bedAdapter;
+    private View view = null;
 
 
     public HostRoomsRegisterBasicAvailableFragment() {
@@ -44,7 +45,9 @@ public class HostRoomsRegisterBasicAvailableFragment extends Fragment implements
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_host_rooms_register_basic_available, container, false);
+        if(view == null){
+            view = inflater.inflate(R.layout.fragment_host_rooms_register_basic_available, container, false);
+        }
         setViews(view);
         setListeners();
         setSpinners();
