@@ -30,6 +30,7 @@ public class HostRoomsRegisterBasicTypeFragment extends Fragment implements View
     private Spinner spinnerType;
     private RadioButton radioButtonAll, radioButtonPrivateRoom, radioButtonMultiRoom;
     private ConstraintLayout layoutTitle, layoutDescription, layoutTypeOfBuilding;
+    private View view = null;
 
     /*String spinnerData[] = {"아파트", "주택", "베드 앤 브랙퍼스트(B&B", "로프트", "오두막", "별장", "성", "기숙사", "트리하우스",
             "보트", "비행기", "캠핑카", "이글루", "등대", "유르트 (몽골의 전통 텐트)", "티피 (원뿔형 천막)", "동굴", "섬",
@@ -51,7 +52,9 @@ public class HostRoomsRegisterBasicTypeFragment extends Fragment implements View
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_host_rooms_register_basic_type, container, false);
+        if(view == null){
+            view = inflater.inflate(R.layout.fragment_host_rooms_register_basic_type, container, false);
+        }
         setViews(view);
         setListeners();
         setSpinner();

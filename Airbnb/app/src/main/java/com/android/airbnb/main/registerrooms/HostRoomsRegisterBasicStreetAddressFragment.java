@@ -1,14 +1,14 @@
-package com.android.airbnb.main.registerrooms.activity;
+package com.android.airbnb.main.registerrooms;
 
 
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.android.airbnb.R;
 import com.google.android.gms.common.api.Status;
@@ -19,40 +19,48 @@ import com.google.android.gms.location.places.ui.PlaceSelectionListener;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class StreetAddressFragment extends Fragment {
+public class HostRoomsRegisterBasicStreetAddressFragment extends Fragment {
 
-    private FragmentManager fm;
-    private OnResultCallBack mResultListener;
+    private HostRoomsRegisterBasicActivity hostRoomsRegisterBasicActivity;
+//    private android.widget.fragment placeAutocompleteFragment;
+    private TextView txtTitle;
+
+
+    private OnStreetAddressCallBack mStreetAddressListener;
+    PlaceAutocompleteFragment autocompleteFragment;
+
     private View view = null;
 
-    PlaceAutocompleteFragment autocompleteFragment;
-    public StreetAddressFragment() {
+    public HostRoomsRegisterBasicStreetAddressFragment() {
         // Required empty public constructor
     }
 
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
+        hostRoomsRegisterBasicActivity = (HostRoomsRegisterBasicActivity) context;
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment]
-        if(view == null)
-            view = inflater.inflate(R.layout.fragment_blank, container, false);
-        autocompleteFragment = (PlaceAutocompleteFragment)
-                getActivity().getFragmentManager().findFragmentById(R.id.place_autocomplete_fragment);
-        setListener();
-        return view;
+        if(view == null) {
+            view = inflater.inflate(R.layout.fragment_host_rooms_register_basic_street_address, container, false);
         }
+        setViews(view);
+        setListeners();
+        return view;
+    }
 
-    private void setListener(){
+    private void setViews(View view) {
+        autocompleteFragment = (PlaceAutocompleteFragment) getActivity().getFragmentManager().findFragmentById(R.id.place_autocomplete_fragment);
+        txtTitle = (TextView) view.findViewById(R.id.txtTitle);
+    }
+
+    private void setListeners(){
         autocompleteFragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {
             @Override
             public void onPlaceSelected(Place place) {
-                mResultListener.resultCallBack(place);
-                // TODO: Get info about the selected place.
                 Log.i("StreetAddressFragment", "Place name : " + place.getName());
                 Log.i("StreetAddressFragment", "Place latlng : " + place.getLatLng());
                 Log.i("StreetAddressFragment", "Place id : " + place.getId());
@@ -60,42 +68,27 @@ public class StreetAddressFragment extends Fragment {
                 Log.i("StreetAddressFragment", "Place locale : " + place.getLocale());
                 Log.i("StreetAddressFragment", "Place attributions : " + place.getViewport());
                 Log.i("StreetAddressFragment", "Place place price : " + place.getPriceLevel());
-                finishFragment();
+
+
+                mStreetAddressListener.streetAddressCallBack(place);
+//                hostRoomsRegisterBasicActivity.getSupportFragmentManager().beginTransaction().remove(HostRoomsRegisterBasicStreetAddressFragment.this).commit();
+                hostRoomsRegisterBasicActivity.getSupportFragmentManager().popBackStack();
+
             }
 
             @Override
             public void onError(Status status) {
-                // TODO: Handle the error.
                 Log.i("StreetAddressFragment", "An error occurred: " + status);
             }
         });
     }
 
-    private void finishFragment(){
-        fm.beginTransaction().remove(this).commit();
-        fm.popBackStack();
+    public void setmStreetAddressListener(OnStreetAddressCallBack mStreetAddressListener){
+        this.mStreetAddressListener = mStreetAddressListener;
     }
 
-    public OnResultCallBack getmResultListener() {
-        return mResultListener;
+    // HostRoomsRegisterBasicAddressFragment에 결과로 받은 객체 전달하기 위해 인터페이스 작성
+    public interface OnStreetAddressCallBack{
+        public void streetAddressCallBack(Place place);
     }
-
-    public FragmentManager getFm() {
-        return fm;
-    }
-
-    public void setFm(FragmentManager fm) {
-        this.fm = fm;
-    }
-
-    public void setmResultListener(OnResultCallBack mResultListener) {
-        this.mResultListener = mResultListener;
-        Log.e("StreetAddressFragment", "end setmResultListener");
-    }
-
-    // HostRoomRegisterAddress fragment에 결과로 받은 객체 전달하기 위해 callback 리스너 작성
-    public interface OnResultCallBack{
-        public void resultCallBack(Place place);
-    }
-
 }

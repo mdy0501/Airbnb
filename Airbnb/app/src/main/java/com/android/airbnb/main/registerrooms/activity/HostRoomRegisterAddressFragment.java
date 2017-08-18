@@ -80,16 +80,16 @@ public class HostRoomRegisterAddressFragment extends Fragment implements View.On
 
     private void initView(View view) {
         roomRegisterToolbar = (Toolbar) view.findViewById(R.id.room_register_toolbar);
-        layoutRoomRegisterNation = (ConstraintLayout) view.findViewById(R.id.layout_room_register_nation);
-        layoutRoomRegisterSiDo = (ConstraintLayout) view.findViewById(R.id.layout_room_register_si_do);
-        hostRegisterSiDo = (EditText) view.findViewById(R.id.host_register_si_do);
-        layoutRoomRegisterSiGunGo = (ConstraintLayout) view.findViewById(R.id.layout_room_register_si_gun_go);
-        hostRegisterSiGunGu = (EditText) view.findViewById(R.id.host_register_si_gun_gu);
-        layoutRoomRegisterStreetAddress = (ConstraintLayout) view.findViewById(R.id.layout_room_register_street_address);
-        layoutRoomRegisterDongHosu = (ConstraintLayout) view.findViewById(R.id.layout_room_register_dong_hosu);
-        hostRegisterDongHosu = (EditText) view.findViewById(R.id.host_register_dong_hosu);
-        layoutRoomRegisterZipCode = (ConstraintLayout) view.findViewById(R.id.layout_room_register_zip_code);
-        hostRegisterZipCode = (EditText) view.findViewById(R.id.host_register_zip_code);
+        layoutRoomRegisterNation = (ConstraintLayout) view.findViewById(R.id.layoutNation);
+        layoutRoomRegisterSiDo = (ConstraintLayout) view.findViewById(R.id.layoutSi);
+        hostRegisterSiDo = (EditText) view.findViewById(R.id.editSi);
+        layoutRoomRegisterSiGunGo = (ConstraintLayout) view.findViewById(R.id.layoutGu);
+        hostRegisterSiGunGu = (EditText) view.findViewById(R.id.editGu);
+        layoutRoomRegisterStreetAddress = (ConstraintLayout) view.findViewById(R.id.layoutDoromyung);
+        layoutRoomRegisterDongHosu = (ConstraintLayout) view.findViewById(R.id.layoutDong);
+        hostRegisterDongHosu = (EditText) view.findViewById(R.id.editDong);
+        layoutRoomRegisterZipCode = (ConstraintLayout) view.findViewById(R.id.layoutZipCode);
+        hostRegisterZipCode = (EditText) view.findViewById(R.id.editZipCode);
         clickAddress = (RelativeLayout) view.findViewById(R.id.layout_room_register_street_address_click);
         clickAddress.setClickable(true);
         clickAddress.setOnClickListener(this);
