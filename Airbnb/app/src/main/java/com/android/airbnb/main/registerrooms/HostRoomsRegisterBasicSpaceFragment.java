@@ -2,17 +2,14 @@ package com.android.airbnb.main.registerrooms;
 
 
 import android.content.Context;
-import android.graphics.Color;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
+import android.widget.CheckBox;
 import android.widget.ImageButton;
-import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.android.airbnb.R;
@@ -20,14 +17,14 @@ import com.android.airbnb.R;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class HostRoomsRegisterBasicSpaceFragment extends Fragment implements View.OnClickListener{
+public class HostRoomsRegisterBasicSpaceFragment extends Fragment implements View.OnClickListener {
 
     private HostRoomsRegisterBasicActivity hostRoomsRegisterBasicActivity;
-    private ImageButton ImgBtnBack, ImgBtnNext;
-    private TextView txtPerson, txtTitle, txtBed, txtBedroom;
-    private Spinner spinnerPerson, spinnerBedroom, spinnerBed;
+    private CheckBox checkBox1, checkBox3, checkBox5, checkBox7, checkBox8, checkBox9, checkBox11, checkBox12;
+    private ImageButton ImgBtnNext, ImgBtnBack;
+    private TextView txtTitle, textView1, textView2, textView3, textView4, textView5, textView6, textView7, textView8, textView9, textView10, textView11, textView12, textView13;
+    private View view = null;
 
-    ArrayAdapter personAdapter, bedroomAdapter, bedAdapter;
 
     public HostRoomsRegisterBasicSpaceFragment() {
         // Required empty public constructor
@@ -42,104 +39,56 @@ public class HostRoomsRegisterBasicSpaceFragment extends Fragment implements Vie
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_host_rooms_register_basic_space, container, false);
+        if(view == null){
+            view = inflater.inflate(R.layout.fragment_host_rooms_register_basic_space, container, false);
+        }
         setViews(view);
         setListeners();
-        setSpinners();
         return view;
     }
 
     private void setViews(View view) {
-        ImgBtnNext = (ImageButton) view.findViewById(R.id.ImgBtnSave);
-        spinnerBed = (Spinner) view.findViewById(R.id.spinnerBed);
-        txtBed = (TextView) view.findViewById(R.id.txtBed);
-        spinnerBedroom = (Spinner) view.findViewById(R.id.spinnerBedroom);
-        txtBedroom = (TextView) view.findViewById(R.id.txtBedroom);
-        spinnerPerson = (Spinner) view.findViewById(R.id.spinnerPerson);
-        txtPerson = (TextView) view.findViewById(R.id.txtKingTitle);
-        ImgBtnBack = (ImageButton) view.findViewById(R.id.ImgBtnCancel);
+        checkBox1 = (CheckBox) view.findViewById(R.id.checkBox1);
+        textView1 = (TextView) view.findViewById(R.id.textView1);
+        textView2 = (TextView) view.findViewById(R.id.textView2);
+        textView3 = (TextView) view.findViewById(R.id.textView3);
+        checkBox3 = (CheckBox) view.findViewById(R.id.checkBox3);
+        textView4 = (TextView) view.findViewById(R.id.textView4);
+        textView5 = (TextView) view.findViewById(R.id.textView5);
+        checkBox5 = (CheckBox) view.findViewById(R.id.checkBox5);
+        textView6 = (TextView) view.findViewById(R.id.textView6);
+        textView7 = (TextView) view.findViewById(R.id.textView7);
+        checkBox7 = (CheckBox) view.findViewById(R.id.checkBox7);
+        textView8 = (TextView) view.findViewById(R.id.textView8);
+        checkBox8 = (CheckBox) view.findViewById(R.id.checkBox8);
+        textView9 = (TextView) view.findViewById(R.id.textView9);
+        textView10 = (TextView) view.findViewById(R.id.textView10);
+        checkBox9 = (CheckBox) view.findViewById(R.id.checkBox9);
+        textView11 = (TextView) view.findViewById(R.id.textView11);
+        checkBox11 = (CheckBox) view.findViewById(R.id.checkBox11);
+        textView12 = (TextView) view.findViewById(R.id.textView12);
+        checkBox12 = (CheckBox) view.findViewById(R.id.checkBox12);
+        textView13 = (TextView) view.findViewById(R.id.textView13);
+        ImgBtnNext = (ImageButton) view.findViewById(R.id.ImgBtnNext);
+        ImgBtnBack = (ImageButton) view.findViewById(R.id.ImgBtnBack);
         txtTitle = (TextView) view.findViewById(R.id.txtTitle);
     }
 
-    private void setListeners(){
-        ImgBtnBack.setOnClickListener(this);
+    private void setListeners() {
         ImgBtnNext.setOnClickListener(this);
-    }
-
-    private void setSpinners(){
-        // 숙박 가능 인원 Adapter 및 Spinner
-        personAdapter = ArrayAdapter.createFromResource(getActivity(), R.array.availablePerson, android.R.layout.simple_spinner_item);
-        personAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinnerPerson.setAdapter(personAdapter);
-        spinnerPerson.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                Log.e("position ", position + "");
-                Log.e("id ", id + "");
-                ((TextView)parent.getChildAt(0)).setTextColor(Color.BLACK);
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-
-            }
-        });
-
-        // 게스트용 침실 Adapter 및 Spinner
-        bedroomAdapter = ArrayAdapter.createFromResource(getActivity(), R.array.bedroom, android.R.layout.simple_spinner_item);
-        bedroomAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinnerBedroom.setAdapter(bedroomAdapter);
-        spinnerBedroom.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                Log.e("position ", position + "");
-                Log.e("id ", id + "");
-                ((TextView)parent.getChildAt(0)).setTextColor(Color.BLACK);
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-
-            }
-        });
-
-
-        // 게스트용 침대 Adapter 및 Spinner
-        bedAdapter = ArrayAdapter.createFromResource(getActivity(), R.array.bed, android.R.layout.simple_spinner_item);
-        bedAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinnerBed.setAdapter(bedAdapter);
-        spinnerBed.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                Log.e("position ", position + "");
-                Log.e("id ", id + "");
-                ((TextView)parent.getChildAt(0)).setTextColor(Color.BLACK);
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-
-            }
-        });
-
+        ImgBtnBack.setOnClickListener(this);
     }
 
     @Override
     public void onClick(View v) {
-        switch (v.getId()){
-            case R.id.ImgBtnCancel:
+        switch (v.getId()) {
+            case R.id.ImgBtnBack:
                 hostRoomsRegisterBasicActivity.onBackPressed();
                 break;
-            case R.id.ImgBtnSave:
-                goHostRoomsRegisterBasicBedFragment();
+            case R.id.ImgBtnNext:
+                Intent intent = new Intent(getActivity(), HostRoomsRegisterActivity.class);
+                startActivity(intent);
                 break;
         }
-    }
-
-    private void goHostRoomsRegisterBasicBedFragment(){
-        hostRoomsRegisterBasicActivity.getSupportFragmentManager().beginTransaction()
-                .add(R.id.container, hostRoomsRegisterBasicActivity.hostRoomsRegisterBasicBedFragment)
-                .addToBackStack(null)
-                .commit();
     }
 }
