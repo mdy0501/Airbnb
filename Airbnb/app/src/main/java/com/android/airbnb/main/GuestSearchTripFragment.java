@@ -54,7 +54,7 @@ public class GuestSearchTripFragment extends Fragment implements ITask.totalHous
 
 
     @Override
-    public void doTask(List<House> houseList) {
+    public void doTotalHouseList(List<House> houseList) {
         dataList = houseList;
         tripAdapter = new TripAdapter(guestMainActivity.getBaseContext(), dataList);
         recyclerTrip.setAdapter(tripAdapter);

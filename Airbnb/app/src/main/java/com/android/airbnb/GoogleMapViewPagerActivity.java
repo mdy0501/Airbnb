@@ -26,6 +26,8 @@ import android.widget.Toast;
 import com.android.airbnb.adapter.BottomSheetAdapter;
 import com.android.airbnb.adapter.MapPagerAdapter;
 import com.android.airbnb.domain.airbnb.House;
+import com.android.airbnb.main.GuestSearchRoomsFragment;
+import com.android.airbnb.main.GuestWishListDetailFragment;
 import com.android.airbnb.util.PreferenceUtil;
 import com.android.airbnb.util.Remote.ITask;
 import com.android.airbnb.util.Remote.Loader;
@@ -54,21 +56,22 @@ public class GoogleMapViewPagerActivity extends FragmentActivity implements OnMa
     private List<House> houseList;
     private List<MarkerOptions> markerOptList;
     private List<Marker> markerList;
-    private Marker currentMarker;
 
+    /* widget setting */
     private FloatingActionButton fabMap;
     private SupportMapFragment mapFragment;
     private ViewPager mapListPager;
     private RotateLoading progress;
-    private MapPagerAdapter adapter;
+    private ImageView btnAddList;
 
     /* bottom sheet settings */
     private LinearLayout llBottomSheet;
+    private MapPagerAdapter adapter;
     private BottomSheetBehavior behavior;
     private RecyclerView wishBottomRecycler;
     private BottomSheetAdapter bottomSheetAdapter;
-    private ImageView btnAddList;
     private CoordinatorLayout snackbarPlace;
+    private String userToken = "";
 
     /* google map utils settings */
     public static final float BOTTOM_UP = 300.f;
@@ -81,21 +84,29 @@ public class GoogleMapViewPagerActivity extends FragmentActivity implements OnMa
         mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.detail_house_mapFragment);
         mapFragment.getMapAsync(GoogleMapViewPagerActivity.this);
+        userToken = "Token " + PreferenceUtil.getToken(this);
+
         initView();
         progress.start();
         initArrayList();
         getExIntent();
-        Log.e("mapactivity", "user token : " + PreferenceUtil.getToken(this));
-        Loader.getWishList("Token " + PreferenceUtil.getToken(this), this);
+        Loader.getWishList(userToken, this);
         setAdapter();
         /* Async 처리 */
         setViewPager();
+        setBottomSheet(0);
+        setBottomSheetAdapter(wishlist);
+        setBtnOnClick();
     }
 
-    private void getExIntent(){
+    private void getExIntent() {
         Intent intent = getIntent();
-        houseList = intent.getParcelableArrayListExtra("roomsHouseList");
-        Log.e("MapActivity", "houseLIst :: " + houseList.size());
+        String objKey = intent.getStringExtra("key");
+        if (objKey.equals(GuestWishListDetailFragment.WISHLIST_HOUSES)) {
+            houseList = intent.getParcelableArrayListExtra(GuestWishListDetailFragment.WISHLIST_HOUSES);
+        } else if(objKey.equals(GuestSearchRoomsFragment.GUEST_SEARCH_ROOMS_FRAGMENT)) {
+            houseList = intent.getParcelableArrayListExtra(GuestSearchRoomsFragment.GUEST_SEARCH_ROOMS_FRAGMENT);
+        }
     }
 
     private void initArrayList() {
@@ -177,10 +188,6 @@ public class GoogleMapViewPagerActivity extends FragmentActivity implements OnMa
         mapListPager.setPageMargin(getResources().getDisplayMetrics().widthPixels / -9);
     }
 
-    private void getWishList(){
-
-    }
-
     private void setViewPager() {
         mapListPager.addOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
             @Override
@@ -193,12 +200,9 @@ public class GoogleMapViewPagerActivity extends FragmentActivity implements OnMa
                 mMap.animateCamera(CameraUpdateFactory.zoomTo(15));
             }
         });
-//        bottomSheetAdapter = new BottomSheetAdapter(houseList, this);
-//        wishBottomRecycler.setAdapter(bottomSheetAdapter);
-//        wishBottomRecycler.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
     }
 
-    private void setBottomSheetAdapter(List<House> wishlist){
+    private void setBottomSheetAdapter(List<House> wishlist) {
         bottomSheetAdapter = new BottomSheetAdapter(wishlist, this);
         wishBottomRecycler.setAdapter(bottomSheetAdapter);
         wishBottomRecycler.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
@@ -221,6 +225,7 @@ public class GoogleMapViewPagerActivity extends FragmentActivity implements OnMa
             }
         });
     }
+
     public String selectedMarkerID = "";
     public Map<String, Marker> markerMap = new HashMap<>();
 
@@ -269,23 +274,8 @@ public class GoogleMapViewPagerActivity extends FragmentActivity implements OnMa
         });
     }
 
-    // 1. houselist response 받아온다.
-    // 셋팅할 것들 셋팅한다.
-//    @Override
-//    public void doTaskTotalHouseList(List<House> houseList) {
-//        this.houseList = houseList;
-//        setAdapter();
-//        /* Async 처리 */
-//        progress.start();
-//        setMarkers(mMap);
-//        setMarkerOnClick();
-//        setViewPager();
-//        initMap();
-//    }
-
     private void initMap() {
         /* 바꿈 */
-        Log.e("MapActivity", "initmap houselist ::" + houseList.size());
         mMap.moveCamera(CameraUpdateFactory
                 .newLatLng(houseList.get(0).getLatLng()));
         mMap.animateCamera(CameraUpdateFactory.zoomTo(15));
@@ -342,35 +332,41 @@ public class GoogleMapViewPagerActivity extends FragmentActivity implements OnMa
             Snackbar.make(snackbarPlace, "[위시리스트]에 저장됨.", Snackbar.LENGTH_LONG).setAction("위시리스트", new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    Loader.getWishList(userToken, GoogleMapViewPagerActivity.this);
                     setBottomSheet(300.f);
                 }
             }).show();
 
         } else {
-            Snackbar.make(snackbarPlace, "[위시리스트 이름]에 삭제됨.", Snackbar.LENGTH_LONG).setAction("실행취소", new View.OnClickListener() {
+            Snackbar.make(snackbarPlace, "[위시리스트 이름]에 삭제됨.", Snackbar.LENGTH_LONG).setAction("위시리스트", new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Snackbar.make(snackbarPlace, "[위시리스트]에 저장됨.", Snackbar.LENGTH_LONG).setAction("위시리스트", new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            setBottomSheet(300.f);
-                        }
-                    }).show();
+                    Loader.getWishList(userToken, GoogleMapViewPagerActivity.this);
+                    setBottomSheet(300.f);
                 }
             }).show();
         }
     }
 
-    private List<House> wishlist;
+    private List<House> wishlist = new ArrayList<>();
+
+    private void findWishHouses() {
+        for (House house : houseList) {
+            for (House wishHouse : wishlist) {
+                if (house.getPk().equals(wishHouse.getPk())) {
+                    house.setWished(true);
+                }
+            }
+        }
+    }
 
     @Override
-    public void doTask(List<House> houses) {
-        Log.e("MapActivity", "start doTask ============ ");
+    public void doAllWishList(List<House> houses) {
+        Log.e("MapActivity", "start doTotalHouseList ============ ");
         wishlist = houses;
         Log.e("MapActivity", "houses : " + houses.toString());
-        setBottomSheet(0);
-        setBottomSheetAdapter(wishlist);
-        setBtnOnClick();
-        Log.e("MapActivity", "start doTask ============ ");
+        bottomSheetAdapter.refreshWishList(wishlist);
+        Log.e("MapActivity", "start doTotalHouseList ============ ");
+        findWishHouses();
     }
 }

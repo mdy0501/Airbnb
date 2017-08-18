@@ -13,27 +13,27 @@ import java.util.List;
 public interface ITask {
 
     public interface totalHouseList{
-        public void doTask(List<House> houseList);
+        public void doTotalHouseList(List<House> houseList);
     }
 
     public interface totalHostList{
-        public void doTask(List<Host> hostList);
+        public void doTotalHostList(List<Host> hostList);
     }
 
     public interface oneHouseList{
-        public void doTask(House house);
+        public void doOneHouseList(House house);
     }
 
     public interface oneHostList{
-        public void doTask(Host host);
+        public void doOneHostList(Host host);
     }
 
     public interface oneReservation{
-        public void doTask(List<Reservation> reservations);
+        public void doOneReservation(List<Reservation> reservations);
     }
 
     public interface allWishList{
-        public void doTask(List<House> houses);
+        public void doAllWishList(List<House> houses);
     }
 
     public interface postWishList{

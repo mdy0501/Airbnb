@@ -299,7 +299,7 @@ public class CustomCalendarAdapter extends RecyclerView.Adapter<CustomCalendarAd
     }
 
     @Override
-    public void doTask(List<Reservation> reservations) {
+    public void doOneReservation(List<Reservation> reservations) {
         if (reservations != null) {
             this.reservations = reservations;
             Log.e("Custom calendar", "reservation size : " + reservations.size());

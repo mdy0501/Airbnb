@@ -60,8 +60,6 @@ public class CustomCalendar extends AppCompatActivity implements View.OnClickLis
         setAdapter();
     }
 
-
-
     private void getHousePk() {
         Intent intent = getIntent();
         housePk = intent.getStringExtra(DetailHouseActivity.HOUSE_PK);

@@ -41,7 +41,6 @@ public class GuestWistListFragment extends Fragment {
         super.onAttach(context);
         if (context instanceof GuestMainActivity){
             guestMainActivity = (GuestMainActivity) context;
-
         }
     }
 
