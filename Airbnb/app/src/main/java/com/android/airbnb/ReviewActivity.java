@@ -44,7 +44,7 @@ public class ReviewActivity extends AppCompatActivity implements ITask.totalHost
     }
 
     @Override
-    public void doTask(List<Host> hostList) {
+    public void doTotalHostList(List<Host> hostList) {
         this.dummyHostList = hostList;
         setAdapter();
     }

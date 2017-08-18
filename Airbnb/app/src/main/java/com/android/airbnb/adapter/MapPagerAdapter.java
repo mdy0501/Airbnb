@@ -45,7 +45,7 @@ public class MapPagerAdapter extends PagerAdapter implements ITask.postWishList 
     private CheckBox btnWish;
     public static final String HOUSE_OBJ = "house obj";
     public static final String HOUSE_IMG = "house img";
-    View view = null;
+    private View view = null;
     private int currentPostition = 0;
     public OnMapPagerListener mPagerListner;
     private CoordinatorLayout snackPlace;
@@ -110,6 +110,7 @@ public class MapPagerAdapter extends PagerAdapter implements ITask.postWishList 
     private void setBtnWish(CompoundButton buttonView, int resId, boolean isChecked) {
         buttonView.setBackgroundResource(resId);
         buttonView.setChecked(isChecked);
+        houseList.get(currentPostition).setWished(isChecked);
     }
 
     private void connectDate(int position) {
@@ -121,6 +122,8 @@ public class MapPagerAdapter extends PagerAdapter implements ITask.postWishList 
         // dummy, 추후 수정 요망
         ratingBar.setRating(/* 하우스 별점 넣기 */ 3.5f);
         houseReviewCount.setText(/* 리뷰 카운트 넣기*/ "123");
+        if(house.isWished())
+            setBtnWish(btnWish, R.drawable.icon_wish_full, true);
 
         /* house_images.length 체크 */
         GlideApp.with(mContext)

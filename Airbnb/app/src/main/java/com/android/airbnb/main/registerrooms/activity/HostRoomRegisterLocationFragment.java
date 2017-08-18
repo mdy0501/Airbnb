@@ -74,8 +74,9 @@ public class HostRoomRegisterLocationFragment extends Fragment implements OnMapR
         this.map = googleMap;
 
         // draw circle using CircleOptions
-        map.addCircle(new CircleOptions().center(place.getLatLng()).fillColor(R.color.colorLightGray).strokeColor(R.color.black).radius(100).strokeWidth(5f));
-        map.moveCamera(CameraUpdateFactory.newLatLngZoom(place.getLatLng(), 13f));
+        map.addCircle(new CircleOptions().center(place.getLatLng()).strokeColor(R.color.black).radius(150)
+                .strokeWidth(7f).fillColor(getActivity().getResources().getColor(R.color.map_circle)));
+        map.moveCamera(CameraUpdateFactory.newLatLngZoom(place.getLatLng(), 15f));
     }
 
     private void initView(View view) {
@@ -113,9 +114,9 @@ public class HostRoomRegisterLocationFragment extends Fragment implements OnMapR
                 break;
 
             case R.id.btn_back:
+                // TODO fragment간 통신 Error 생김
                 Toast.makeText(v.getContext(), "back clicked", Toast.LENGTH_SHORT).show();
-                fm.beginTransaction().remove(HostRoomRegisterLocationFragment.this).commit();
-                fm.popBackStack();
+                fm.beginTransaction().remove(this).commit();
                 break;
         }
     }

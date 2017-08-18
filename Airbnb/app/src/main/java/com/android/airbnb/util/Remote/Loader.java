@@ -43,7 +43,7 @@ public class Loader {
             public void onResponse(Call<House> call, Response<House> response) {
                 house = response.body();
 //                iTask.doTaskOneHouseList(house);
-                oneHouseList.doTask(house);
+                oneHouseList.doOneHouseList(house);
             }
 
             @Override
@@ -69,7 +69,7 @@ public class Loader {
                     houseList = response.body();
 //                    iTask.doTaskTotalHouseList(houseList);
 //                    totalHouseList(houseList);
-                    totalHouseList.doTask(houseList);
+                    totalHouseList.doTotalHouseList(houseList);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -94,7 +94,7 @@ public class Loader {
             @Override
             public void onResponse(Call<Host> call, Response<Host> response) {
                 host = response.body();
-                oneHostList.doTask(host);
+                oneHostList.doOneHostList(host);
             }
 
             @Override
@@ -118,7 +118,7 @@ public class Loader {
             public void onResponse(Call<List<Host>> call, Response<List<Host>> response) {
                 hostList = response.body();
                 Log.e("loader", "==== done ====");
-                totalHostList.doTask(hostList);
+                totalHostList.doTotalHostList(hostList);
             }
 
             @Override
@@ -144,7 +144,7 @@ public class Loader {
                     Log.e("Loader", "code : " + response.code());
                     reservations = response.body();
                     Log.e("Loader", "reservation : " + response.body().toString());
-                    oneReservation.doTask(reservations);
+                    oneReservation.doOneReservation(reservations);
                 }
             }
 
@@ -171,7 +171,7 @@ public class Loader {
                 if(response.code() == 200){
                     Log.e("Loader", "wishlist : " + response.body().toString());
                     wishList = response.body();
-                    allWishList.doTask(wishList);
+                    allWishList.doAllWishList(wishList);
                 }
             }
 
@@ -195,8 +195,10 @@ public class Loader {
             public void onResponse(Call<String> call, Response<String> response) {
                 if (response.code() == 200){
                     postWishList.getResponse(response.body().toString());
+                } else if(response.code() == 201) {
+                    postWishList.getResponse(response.body().toString());
                 } else {
-                    Log.e("Loader", "문제 : " + response.code());
+                    postWishList.getResponse(response.body().toString());
                 }
             }
 
@@ -205,8 +207,5 @@ public class Loader {
 
             }
         });
-
-
-
     }
 }

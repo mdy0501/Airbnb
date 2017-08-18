@@ -26,6 +26,9 @@ public class House implements Parcelable {
     private String cleaning_fee;
     private Amenities[] amenities;
 
+
+    private boolean isWished = false;
+
     public House(){
 
     }
@@ -57,6 +60,8 @@ public class House implements Parcelable {
         price_per_day = in.readString();
         pk = in.readString();
         space_info = in.readString();
+        // boolean 값 int(byte)로 주고 받음
+        isWished = in.readInt() != 0;
     }
 
     public static final Creator<House> CREATOR = new Creator<House>() {
@@ -295,6 +300,15 @@ public class House implements Parcelable {
         this.space_info = space_info;
     }
 
+    public boolean isWished() {
+        return isWished;
+    }
+
+    public void setWished(boolean wished) {
+        isWished = wished;
+    }
+
+
     @Override
     public String toString() {
         return "ClassPojo [host = " + host + ", cleaning_fee = " + cleaning_fee + ", amenities = " + amenities + ", modified_date = " + modified_date + ", guest_access = " + guest_access + ", bathrooms = " + bathrooms + ", introduce = " + introduce + ", bedrooms = " + bedrooms + ", room_type = " + room_type + ", weekly_discount = " + weekly_discount + ", title = " + title + ", beds = " + beds + ", create_date = " + create_date + ", extra_people_fee = " + extra_people_fee + ", address = " + address + ", accommodates = " + accommodates + ", house_images = " + house_images + ", longitude = " + longitude + ", latitude = " + latitude + ", price_per_day = " + price_per_day + ", pk = " + pk + ", space_info = " + space_info + "]";
@@ -333,6 +347,8 @@ public class House implements Parcelable {
         dest.writeString(price_per_day);
         dest.writeString(pk);
         dest.writeString(space_info);
+        // boolean 값 int(byte)로 주고 받음
+        dest.writeInt(isWished ? 1 : 0);
     }
 }
 

@@ -22,6 +22,8 @@
     <color name="selected_day_background">#247c83</color>
     <color name="selected_day_text">#ffffff</color>
     <color name="normal_day">#AE000000</color>
+    <color name="map_circle">#6cef6a6a</color>
+
     <color name="calendar_booked_textColor">#414040</color>
 
 

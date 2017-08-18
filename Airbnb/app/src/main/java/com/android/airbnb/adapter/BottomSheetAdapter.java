@@ -3,7 +3,6 @@ package com.android.airbnb.adapter;
 import android.content.Context;
 import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -38,6 +37,7 @@ public class BottomSheetAdapter extends RecyclerView.Adapter<BottomSheetAdapter.
 
     public void refreshWishList(List<House> wishList){
         this.wishList = wishList;
+        notifyDataSetChanged();
     }
 
     @Override
@@ -49,15 +49,11 @@ public class BottomSheetAdapter extends RecyclerView.Adapter<BottomSheetAdapter.
     @Override
     public void onBindViewHolder(Holder holder, int position) {
         House house = wishList.get(position);
-        Log.e("BottomSheet", "pos :: " + position);
-//        List<House> houseList = list.getWishList();
-//        holder.setListImg1();
         House_images[] houseImages = house.getHouse_images();
         holder.setListName(house.getTitle());
         holder.setPosition(position);
         if (houseImages.length > 0) {
             holder.setItemCount(houseImages.length + "");
-            holder.setListImg1(houseImages[0].getImage());
 
             GlideApp
                     .with(mContext)
@@ -131,20 +127,6 @@ public class BottomSheetAdapter extends RecyclerView.Adapter<BottomSheetAdapter.
                     .with(mContext)
                     .load(imgUrl)
                     .into(listImg1);
-        }
-
-        public void setListImg2(String imgUrl) {
-            GlideApp
-                    .with(mContext)
-                    .load(imgUrl)
-                    .into(listImg2);
-        }
-
-        public void setListImg3(String imgUrl) {
-            GlideApp
-                    .with(mContext)
-                    .load(imgUrl)
-                    .into(listImg3);
         }
 
         public void setListName(String name) {

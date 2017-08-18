@@ -19,13 +19,13 @@ import com.android.airbnb.util.GlideApp;
 
 public class DetailImgPager extends PagerAdapter {
 
-    private House_images[] mimgUrl;
+    private House_images[] mImgUrl;
     private Context mContext;
 
     public DetailImgPager(House_images[] imgUrl, Context mContext) {
         Log.e("imgpager", "img size" + imgUrl.length);
         this.mContext = mContext;
-        this.mimgUrl = imgUrl;
+        this.mImgUrl = imgUrl;
     }
 
     @Override
@@ -36,7 +36,7 @@ public class DetailImgPager extends PagerAdapter {
         ImageView imageView = (ImageView) viewItem.findViewById(R.id.detail_viewpager_img);
         GlideApp
                 .with(mContext)
-                .load(mimgUrl.length > 0 ? mimgUrl[position].getImage() : null)
+                .load(mImgUrl.length > 0 ? mImgUrl[position].getImage() : null)
                 .fallback(R.mipmap.dummy_room)
                 .into(imageView);
         ((ViewPager) container).addView(viewItem);
@@ -46,7 +46,7 @@ public class DetailImgPager extends PagerAdapter {
     /* image count check 하기 */
     @Override
     public int getCount() {
-        return mimgUrl.length;
+        return mImgUrl.length;
     }
 
     @Override

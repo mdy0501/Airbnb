@@ -60,7 +60,7 @@ public class GuestSearchPlaceFragment extends Fragment implements ITask.totalHou
 
 
     @Override
-    public void doTask(List<House> houseList) {
+    public void doTotalHouseList(List<House> houseList) {
         dataList = houseList;
         // Place(장소) 첫번째 ViewPager
         placeFirstAdapter = new PlaceFirstAdapter(guestMainActivity.getBaseContext(), dataList);

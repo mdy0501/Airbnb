@@ -2,7 +2,9 @@ package com.android.airbnb.main;
 
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
@@ -20,18 +22,21 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.airbnb.GoogleMapViewPagerActivity;
 import com.android.airbnb.R;
 import com.android.airbnb.adapter.WishListDetailAdapter;
 import com.android.airbnb.domain.airbnb.House;
+import com.android.airbnb.util.PreferenceUtil;
 import com.android.airbnb.util.Remote.ITask;
 import com.android.airbnb.util.Remote.Loader;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
  * A simple {@link Fragment} subclass.
  */
-public class GuestWishListDetailFragment extends Fragment implements ITask.totalHouseList {
+public class GuestWishListDetailFragment extends Fragment implements ITask.allWishList {
 
     private GuestMainActivity guestMainActivity;
     private TextView txtTitle;
@@ -39,15 +44,15 @@ public class GuestWishListDetailFragment extends Fragment implements ITask.total
     private ImageView btnBack;
     private ImageView btnMenu;
     private TextView title;
-    private TextView filteredResult;
     private TextView houseCount;
     private RecyclerView wishRecycler;
     private FloatingActionButton fabMap;
     private Context mContext;
     private WishListDetailAdapter adapter;
-    private List<House> houseList;
+    private List<House> wishlist;
     private ImageView btnFilter;
     private GuestWistListFragment wishListFragment;
+    public static final String WISHLIST_HOUSES = "Wcom.android.airbnb.main.ISHLIST_HOUSES";
 
     public GuestWishListDetailFragment() {
         // Required empty public constructor
@@ -81,7 +86,6 @@ public class GuestWishListDetailFragment extends Fragment implements ITask.total
         ((AppCompatActivity)getActivity()).setSupportActionBar(toolbar);
         ((AppCompatActivity)getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-
         ActionBar actionBar = ((AppCompatActivity) getActivity()).getSupportActionBar();
         actionBar.setDisplayShowCustomEnabled(true); //커스터마이징 하기 위해 필요
         actionBar.setDisplayShowTitleEnabled(false);
@@ -105,17 +109,21 @@ public class GuestWishListDetailFragment extends Fragment implements ITask.total
             case R.id.wishlist_menu_filter:
                 Toast.makeText(mContext, "필터로 갑니다.", Toast.LENGTH_SHORT).show();
                 break;
+
+            case android.R.id.home:
+                getFragmentManager().popBackStack();
+                break;
         }
         return super.onOptionsItemSelected(item);
 
     }
 
     private void getData() {
-        Loader.getTotalHouse(this);
+        Loader.getWishList("Token " + PreferenceUtil.getToken(mContext), this);
     }
 
     private void setAdapter() {
-        adapter = new WishListDetailAdapter(houseList, mContext);
+        adapter = new WishListDetailAdapter(wishlist, mContext);
         wishRecycler.setAdapter(adapter);
         wishRecycler.setLayoutManager(new LinearLayoutManager(mContext));
 
@@ -125,19 +133,15 @@ public class GuestWishListDetailFragment extends Fragment implements ITask.total
         txtTitle = (TextView) view.findViewById(R.id.txtTitle1);
         toolbar = (android.support.v7.widget.Toolbar) view.findViewById(R.id.content);
         title = (TextView) view.findViewById(R.id.wishlist_title);
-        filteredResult = (TextView) view.findViewById(R.id.filtered_result);
         houseCount = (TextView) view.findViewById(R.id.reservation_house_count);
         wishRecycler = (RecyclerView) view.findViewById(R.id.wish_recycler);
         fabMap = (FloatingActionButton) view.findViewById(R.id.floatingActionButton);
-
-
-//        View viewToolbar = getActivity().getLayoutInflater().inflate(R.layout.tt, null)
     }
 
 
 
     private void connectData() {
-        houseCount.setText("예약 가능한 숙소 " + /* data 양 */houseList.size() + "개");
+        houseCount.setText("예약 가능한 숙소 " + wishlist.size() + "개");
 
     }
 
@@ -145,14 +149,17 @@ public class GuestWishListDetailFragment extends Fragment implements ITask.total
         fabMap.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                Intent intent = new Intent(v.getContext(), GoogleMapViewPagerActivity.class);
+                intent.putExtra("key", WISHLIST_HOUSES);
+                intent.putParcelableArrayListExtra(WISHLIST_HOUSES, (ArrayList<? extends Parcelable>) wishlist);
+                v.getContext().startActivity(intent);
             }
         });
     }
 
     @Override
-    public void doTask(List<House> houseList) {
-        this.houseList = houseList;
+    public void doAllWishList(List<House> wishlist) {
+        this.wishlist = wishlist;
         setAdapter();
         connectData();
     }
