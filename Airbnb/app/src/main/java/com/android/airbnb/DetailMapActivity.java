@@ -1,5 +1,6 @@
 package com.android.airbnb;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -17,6 +18,7 @@ import com.google.android.gms.maps.MapsInitializer;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
+import com.tsengvn.typekit.TypekitContextWrapper;
 
 public class DetailMapActivity extends AppCompatActivity implements OnMapReadyCallback {
 
@@ -91,5 +93,10 @@ public class DetailMapActivity extends AppCompatActivity implements OnMapReadyCa
 
         ss.setSpan(new AbsoluteSizeSpan(50), 0, info.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
         sps.append(ss);
+    }
+
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(TypekitContextWrapper.wrap(newBase));
     }
 }
