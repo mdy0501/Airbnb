@@ -49,7 +49,7 @@ public class CalendarActivity extends AppCompatActivity implements CalendarItem.
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_junhee_calendar);
+        setContentView(R.layout.activity_calendar);
         items = new ArrayList<>();
         getCalendarDate();
         initView();
