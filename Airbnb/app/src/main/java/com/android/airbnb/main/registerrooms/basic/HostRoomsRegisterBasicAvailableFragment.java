@@ -1,4 +1,4 @@
-package com.android.airbnb.main.registerrooms;
+package com.android.airbnb.main.registerrooms.basic;
 
 
 import android.content.Context;
