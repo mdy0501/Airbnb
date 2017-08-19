@@ -23,7 +23,6 @@ import static com.android.airbnb.util.Remote.IServerApi.BASE_URL;
 
 public class Loader {
 
-
     public static List<Host> hostList;
     public static List<House> houseList;
     public static House house;
@@ -42,7 +41,6 @@ public class Loader {
             @Override
             public void onResponse(Call<House> call, Response<House> response) {
                 house = response.body();
-//                iTask.doTaskOneHouseList(house);
                 oneHouseList.doOneHouseList(house);
             }
 
@@ -67,8 +65,6 @@ public class Loader {
             public void onResponse(Call<List<House>> call, Response<List<House>> response) {
                 try {
                     houseList = response.body();
-//                    iTask.doTaskTotalHouseList(houseList);
-//                    totalHouseList(houseList);
                     totalHouseList.doTotalHouseList(houseList);
                 } catch (Exception e) {
                     e.printStackTrace();

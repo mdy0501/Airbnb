@@ -8,8 +8,8 @@ import java.util.List;
 
 public class CalendarData {
 
-    private String month = "";
     private String year = "";
+    private String month = "";
     private List<String> days;
     private int weekDaysCount;
     private int firstWeekDay = 0;

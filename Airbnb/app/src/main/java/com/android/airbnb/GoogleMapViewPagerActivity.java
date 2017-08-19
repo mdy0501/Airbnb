@@ -1,5 +1,6 @@
 package com.android.airbnb;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.res.TypedArray;
 import android.graphics.Color;
@@ -40,6 +41,7 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.maps.android.ui.IconGenerator;
+import com.tsengvn.typekit.TypekitContextWrapper;
 import com.victor.loading.rotate.RotateLoading;
 
 import java.util.ArrayList;
@@ -368,5 +370,10 @@ public class GoogleMapViewPagerActivity extends FragmentActivity implements OnMa
         bottomSheetAdapter.refreshWishList(wishlist);
         Log.e("MapActivity", "start doTotalHouseList ============ ");
         findWishHouses();
+    }
+
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(TypekitContextWrapper.wrap(newBase));
     }
 }

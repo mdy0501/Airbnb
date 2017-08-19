@@ -34,6 +34,7 @@ public class GuestSearchRoomsFragment extends Fragment implements ITask.totalHou
     private RecyclerView recyclerRooms;
     private RoomsAdapter roomsAdapter;
     private FloatingActionButton fabGoogleMapViewPager;
+    private Context context;
     public static final String GUEST_SEARCH_ROOMS_FRAGMENT = "com.android.airbnb.main.GuestSearchRoomsFragment";
 
 
@@ -44,6 +45,7 @@ public class GuestSearchRoomsFragment extends Fragment implements ITask.totalHou
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
+        this.context = context;
         guestMainActivity = (GuestMainActivity) context;
     }
 
@@ -57,7 +59,7 @@ public class GuestSearchRoomsFragment extends Fragment implements ITask.totalHou
         return view;
     }
 
-    private void setWishlist(){
+    private void setWishlist() {
         Loader.getWishList("Token " + PreferenceUtil.getToken(getActivity().getBaseContext()), this);
     }
 
@@ -82,18 +84,35 @@ public class GuestSearchRoomsFragment extends Fragment implements ITask.totalHou
         }
     }
 
-    @Override
-    public void doTotalHouseList(List<House> houseList) {
-        // FloatingActionButton을 통해 데이터를 넘겨주기 위해 houseList값을 dataList에 저장한다.
-        dataList = houseList;
-        roomsAdapter = new RoomsAdapter(guestMainActivity.getBaseContext(), houseList);
-        recyclerRooms.setAdapter(roomsAdapter);
-        recyclerRooms.setLayoutManager(new LinearLayoutManager(guestMainActivity.getBaseContext()));
+    private List<House> wishlist = new ArrayList<>();
+
+    private void findWishHouses() {
+        for (House house : dataList) {
+            for (House wishHouse : wishlist) {
+                if (house.getPk().equals(wishHouse.getPk())) {
+                    house.setWished(true);
+                }
+            }
+        }
     }
 
     @Override
     public void doAllWishList(List<House> houses) {
+        wishlist = houses;
+        findWishHouses();
+        setAdapter();
+    }
 
+    @Override
+    public void doTotalHouseList(List<House> houseList) {
+        // FloatingActionButton을 통해 데이터를 넘겨주기 위해 houseList값을 dataList에 저장한다.
+        dataList = houseList;
+        Loader.getWishList("Token " + PreferenceUtil.getToken(context), this);
+    }
 
+    private void setAdapter() {
+        roomsAdapter = new RoomsAdapter(guestMainActivity.getBaseContext(), dataList);
+        recyclerRooms.setAdapter(roomsAdapter);
+        recyclerRooms.setLayoutManager(new LinearLayoutManager(guestMainActivity.getBaseContext()));
     }
 }
