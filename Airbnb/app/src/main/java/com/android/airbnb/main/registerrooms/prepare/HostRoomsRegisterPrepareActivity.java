@@ -10,9 +10,25 @@ import com.android.airbnb.R;
  */
 public class HostRoomsRegisterPrepareActivity extends AppCompatActivity {
 
+    HostRoomsRegisterPrepareRequisiteFragment hostRoomsRegisterPrepareRequisiteFragment;
+    HostRoomsRegisterPreparePriceFragment hostRoomsRegisterPreparePriceFragment;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_host_rooms_register_prepare);
+        setFragments();
+        addFirstFragment();
+    }
+
+    private void setFragments(){
+        hostRoomsRegisterPrepareRequisiteFragment = new HostRoomsRegisterPrepareRequisiteFragment();
+        hostRoomsRegisterPreparePriceFragment = new HostRoomsRegisterPreparePriceFragment();
+    }
+
+    private void addFirstFragment(){
+        getSupportFragmentManager().beginTransaction()
+                .add(R.id.prepareRoomsRegisterContainer, hostRoomsRegisterPrepareRequisiteFragment)
+                .commit();
     }
 }
