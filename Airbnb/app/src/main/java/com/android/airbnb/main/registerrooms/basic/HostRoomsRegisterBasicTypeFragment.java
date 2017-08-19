@@ -4,6 +4,7 @@ package com.android.airbnb.main.registerrooms.basic;
 import android.content.Context;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.support.annotation.IdRes;
 import android.support.constraint.ConstraintLayout;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -14,6 +15,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
 import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.TextView;
 
@@ -22,12 +24,13 @@ import com.android.airbnb.R;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class HostRoomsRegisterBasicTypeFragment extends Fragment implements View.OnClickListener {
+public class HostRoomsRegisterBasicTypeFragment extends Fragment implements View.OnClickListener, RadioGroup.OnCheckedChangeListener {
 
     private HostRoomsRegisterBasicActivity hostRoomsRegisterBasicActivity;
     private ImageButton ImgBtnBack, ImgBtnNext;
     private TextView txtTypeDescription, txtTypeTitle, txtAllHouse, txtPrivateRoom, txtMultiRoom, txtTitle;
     private Spinner spinnerType;
+    private RadioGroup radioGroupType;
     private RadioButton radioButtonAll, radioButtonPrivateRoom, radioButtonMultiRoom;
     private ConstraintLayout layoutTitle, layoutDescription, layoutTypeOfBuilding;
     private View view = null;
@@ -77,11 +80,13 @@ public class HostRoomsRegisterBasicTypeFragment extends Fragment implements View
         ImgBtnBack = (ImageButton) view.findViewById(R.id.ImgBtnCancel);
         txtTitle = (TextView) view.findViewById(R.id.txtTitle);
         spinnerType = (Spinner) view.findViewById(R.id.spinnerType);
+        radioGroupType = (RadioGroup) view.findViewById(R.id.radioGroupType);
     }
 
     private void setListeners() {
         ImgBtnNext.setOnClickListener(this);
         ImgBtnBack.setOnClickListener(this);
+        radioGroupType.setOnCheckedChangeListener(this);
     }
 
     private void setSpinner(){
@@ -93,6 +98,8 @@ public class HostRoomsRegisterBasicTypeFragment extends Fragment implements View
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 Log.e("position ", position + "");
                 Log.e("id ", id + "");
+                Log.e("SelectedItem", parent.getSelectedItem()+ "");
+
                 ((TextView)parent.getChildAt(0)).setTextColor(Color.BLACK);
             }
 
@@ -122,5 +129,24 @@ public class HostRoomsRegisterBasicTypeFragment extends Fragment implements View
                 .add(R.id.basicRoomsRegisterContainer, hostRoomsRegisterBasicActivity.hostRoomsRegisterBasicAvailableFragment)
                 .addToBackStack(null)
                 .commit();
+    }
+
+    @Override
+    public void onCheckedChanged(RadioGroup group, @IdRes int checkedId) {
+        switch (checkedId){
+            case R.id.radioButtonAll:
+                hostRoomsRegisterBasicActivity.hostingHouse.setRoom_type("House");
+                Log.e("R_B_All :: ", hostRoomsRegisterBasicActivity.hostingHouse.getRoom_type());
+                break;
+            case R.id.radioButtonPrivateRoom:
+                hostRoomsRegisterBasicActivity.hostingHouse.setRoom_type("Individual");
+                Log.e("R_B_PrivateRoom :: ", hostRoomsRegisterBasicActivity.hostingHouse.getRoom_type());
+                break;
+            case R.id.radioButtonMultiRoom:
+                hostRoomsRegisterBasicActivity.hostingHouse.setRoom_type("Shared_Room");
+                Log.e("R_B_MultiRoom :: ", hostRoomsRegisterBasicActivity.hostingHouse.getRoom_type());
+                break;
+        }
+
     }
 }
