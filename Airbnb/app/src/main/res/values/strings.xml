@@ -1,6 +1,6 @@
 <resources>
     <string name="app_name">Airbnb</string>
-    <string name="facebook_app_id">119275832057276</string>
+    <string name="facebook_app_id">1622345861171632</string>
     <string name="title_activity_google_map_view_pager">Map</string>
 
     <!-- TODO: Remove or change this placeholder text -->
@@ -30,4 +30,104 @@
     <string name="address_pin_checker">핀이 놓인 위치가 정확한가요?</string>
 
 
+    <!-- 숙소 유형 선택 Spinner 항목 -->
+    <string-array name="typeOfBuilding">
+        <item>아파트</item>
+        <item>주택</item>
+        <item>베드 앤 브랙퍼스트</item>
+        <item>로프트</item>
+        <item>오두막</item>
+        <item>별장</item>
+        <item>성</item>
+        <item>기숙사</item>
+        <item>트리하우스</item>
+        <item>보트</item>
+        <item>비행기</item>
+        <item>캠핑카</item>
+        <item>이글루</item>
+        <item>등대</item>
+        <item>유르트 (몽골의 전통 텐트)</item>
+        <item>티피 (원뿔형 천막)</item>
+        <item>동굴</item>
+        <item>섬</item>
+        <item>스위스식 오두막</item>
+        <item>기차</item>
+        <item>텐트</item>
+        <item>기타</item>
+    </string-array>
+
+    <!-- 숙박 가능 인원 -->
+    <string-array name="availablePerson">
+        <item>게스트 1명</item>
+        <item>게스트 2명</item>
+        <item>게스트 3명</item>
+        <item>게스트 4명</item>
+        <item>게스트 5명</item>
+        <item>게스트 6명</item>
+        <item>게스트 7명</item>
+        <item>게스트 8명</item>
+        <item>게스트 9명</item>
+        <item>게스트 10명</item>
+        <item>게스트 11명</item>
+        <item>게스트 12명</item>
+        <item>게스트 13명</item>
+        <item>게스트 14명</item>
+        <item>게스트 15명</item>
+        <item>게스트 16+명</item>
+    </string-array>
+
+    <!-- 숙박 가능 인원 (게스트용 침실) -->
+    <string-array name="bedroom">
+        <item>원룸</item>
+        <item>침실 1개</item>
+        <item>침실 2개</item>
+        <item>침실 3개</item>
+        <item>침실 4개</item>
+        <item>침실 5개</item>
+        <item>침실 6개</item>
+        <item>침실 7개</item>
+        <item>침실 8개</item>
+        <item>침실 9개</item>
+        <item>침실 10개</item>
+    </string-array>
+
+    <!-- 숙박 가능 인원 (게스트용 침대) -->
+    <string-array name="bed">
+        <item>침대 1개</item>
+        <item>침대 2개</item>
+        <item>침대 3개</item>
+        <item>침대 4개</item>
+        <item>침대 5개</item>
+        <item>침대 6개</item>
+        <item>침대 7개</item>
+        <item>침대 8개</item>
+        <item>침대 9개</item>
+        <item>침대 10개</item>
+        <item>침대 11개</item>
+        <item>침대 12개</item>
+        <item>침대 13개</item>
+        <item>침대 14개</item>
+        <item>침대 15개</item>
+        <item>침대 16개 이상</item>
+    </string-array>
+
+    <!-- 욕실 개수 -->
+    <string-array name="bath">
+        <item>욕실 0개</item>
+        <item>욕실 0.5개</item>
+        <item>욕실 1개</item>
+        <item>욕실 1.5개</item>
+        <item>욕실 2개</item>
+        <item>욕실 2.5개</item>
+        <item>욕실 3개</item>
+        <item>욕실 3.5개</item>
+        <item>욕실 4개</item>
+        <item>욕실 4.5개</item>
+        <item>욕실 5개</item>
+        <item>욕실 5.5개</item>
+        <item>욕실 6개</item>
+        <item>욕실 6.5개</item>
+        <item>욕실 7개</item>
+        <item>욕실 8개 이상</item>
+    </string-array>
 </resources>

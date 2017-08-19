@@ -8,7 +8,7 @@
 
 
     <ImageButton
-        android:id="@+id/imgBtnBack"
+        android:id="@+id/ImgBtnCancel"
         android:layout_width="30dp"
         android:layout_height="30dp"
         android:layout_marginLeft="24dp"
@@ -28,7 +28,7 @@
         android:textSize="40sp"
         android:textStyle="bold"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imgBtnBack" />
+        app:layout_constraintTop_toBottomOf="@+id/ImgBtnCancel" />
 
     <TextView
         android:id="@+id/txtContent1"
