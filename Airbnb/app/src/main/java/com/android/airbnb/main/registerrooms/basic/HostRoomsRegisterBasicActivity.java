@@ -1,4 +1,4 @@
-package com.android.airbnb.main.registerrooms;
+package com.android.airbnb.main.registerrooms.basic;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;

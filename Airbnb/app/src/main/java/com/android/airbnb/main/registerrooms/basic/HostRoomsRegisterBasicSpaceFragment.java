@@ -1,4 +1,4 @@
-package com.android.airbnb.main.registerrooms;
+package com.android.airbnb.main.registerrooms.basic;
 
 
 import android.content.Context;
@@ -13,6 +13,7 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.android.airbnb.R;
+import com.android.airbnb.main.registerrooms.HostRoomsRegisterActivity;
 
 /**
  * A simple {@link Fragment} subclass.

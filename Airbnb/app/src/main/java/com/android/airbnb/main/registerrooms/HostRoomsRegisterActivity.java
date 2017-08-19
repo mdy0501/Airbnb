@@ -10,6 +10,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.airbnb.R;
+import com.android.airbnb.main.registerrooms.basic.HostRoomsRegisterBasicActivity;
 
 public class HostRoomsRegisterActivity extends AppCompatActivity implements View.OnClickListener{
 
