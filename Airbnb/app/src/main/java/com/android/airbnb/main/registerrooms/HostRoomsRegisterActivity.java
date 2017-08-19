@@ -7,10 +7,11 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.android.airbnb.R;
 import com.android.airbnb.main.registerrooms.basic.HostRoomsRegisterBasicActivity;
+import com.android.airbnb.main.registerrooms.detail.HostRoomsRegisterDetailActivity;
+import com.android.airbnb.main.registerrooms.prepare.HostRoomsRegisterPrepareActivity;
 
 public class HostRoomsRegisterActivity extends AppCompatActivity implements View.OnClickListener{
 
@@ -56,19 +57,22 @@ public class HostRoomsRegisterActivity extends AppCompatActivity implements View
 
     @Override
     public void onClick(View v) {
+        Intent intent;
         switch (v.getId()){
             case R.id.ImgBtnCancel:
                 finish();
                 break;
             case R.id.imgBtnBasic:
-                Intent intent = new Intent(this, HostRoomsRegisterBasicActivity.class);
+                intent = new Intent(this, HostRoomsRegisterBasicActivity.class);
                 startActivity(intent);
                 break;
             case R.id.imgBtnDetail:
-                Toast.makeText(this, "상세정보입력 버튼 클릭", Toast.LENGTH_SHORT).show();
+                intent = new Intent(this, HostRoomsRegisterDetailActivity.class);
+                startActivity(intent);
                 break;
             case R.id.imgBtnPrepare:
-                Toast.makeText(this, "게스트준비 버튼 클릭", Toast.LENGTH_SHORT).show();
+                intent = new Intent(this, HostRoomsRegisterPrepareActivity.class);
+                startActivity(intent);
                 break;
         }
     }
