@@ -3,8 +3,10 @@ package com.android.airbnb.calendar;
 import android.util.Log;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 
 /**
  * Created by JunHee on 2017. 8. 10..
@@ -40,6 +42,69 @@ public class Utils {
                 default:
                     throw new IllegalArgumentException("Invalid Month");
             }
+        }
+
+        public static String formatNum(int key) {
+            String formatted = key + "";
+            if (formatted.length() != 2) {
+                formatted = "0" + key;
+            }
+            return formatted;
+        }
+
+        public static List<CalendarData> getCalendarData() {
+
+            List<CalendarData> calendarDatas = new ArrayList<>();
+            List<String> days;
+            CalendarData calendarData;
+            int dayCount = 0;
+            int currentYear = Integer.parseInt(Utils.DateUtil.getCurrentYear());
+            int currentMonth = Integer.parseInt(Utils.DateUtil.getCurrentMonth());
+            Log.e("CustomCalendar", "current month : " + currentMonth);
+
+            int tempMonth = 0;
+            // Utils로 추후에 빼기
+            // 12월 넘을 경우, 년도 ++ 처리 및 월 reset
+            for (int i = currentMonth; i <= currentMonth + 11; i++) {
+                calendarData = new CalendarData();
+                tempMonth = i;
+                if (i > 12) {
+                    tempMonth = i - 12;
+                    if (i % 12 == 1) {
+                        currentYear++;
+                    }
+                }
+                days = new ArrayList<>();
+                dayCount = Utils.CalendarUtil.getDaysInMonth(currentYear, tempMonth);
+                calendarData.setFirstWeekDay(Utils.CalendarUtil.getFirstWeekDay(currentYear, tempMonth));
+
+                for (int k = 1; k < calendarData.getFirstWeekDay(); k++) {
+                    days.add("");
+                }
+
+                for (int j = 1; j <= dayCount; j++) {
+                    days.add(j + "");
+                }
+
+                if(days.size()%7 != 0){
+                    int temp = days.size()%7;
+                    Log.e("utls", "temp : " + temp);
+                    for(int k=0; k < 7-temp; k++){
+                        days.add("");
+                    }
+                }
+
+                calendarData.setYear(currentYear + "");
+                calendarData.setDays(days);
+                calendarData.setMonth(tempMonth + "");
+                calendarData.setWeekDaysCount(Utils.CalendarUtil.getWeekCount(currentYear, tempMonth));
+                Log.e("Utils", calendarData.toString());
+                String formattedMonth = ((tempMonth + "").length() == 2) ? tempMonth + "" : "0" + tempMonth ;
+                String key = currentYear + "-" + formattedMonth;
+                calendarDatas.add(calendarData);
+                Log.e("Utils", "month :: " + key + ", data size :: " + calendarDatas.size());
+            }
+            return calendarDatas;
         }
 
         public static int getWeekCount(int yyyy, int month) {
