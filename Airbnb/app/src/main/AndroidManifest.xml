@@ -6,6 +6,7 @@
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
 
     <application
+        android:name=".util.App"
         android:allowBackup="true"
         android:icon="@drawable/airbnb_black"
         android:label="@string/app_name"
@@ -16,7 +17,8 @@
             android:name="com.facebook.sdk.ApplicationId"
             android:value="@string/facebook_app_id" />
 
-        <activity android:name=".StartActivity"
+        <activity
+            android:name=".StartActivity"
             android:windowSoftInputMode="adjustResize">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -56,7 +58,6 @@
             android:name=".MakeWishListActivity"
             android:theme="@style/NoActioinBarTheme" />
         <activity android:name=".main.SettingActivity" />
-        <activity android:name=".calendar.CustomCalendar" />
         <activity android:name=".main.HostMainActivity" />
         <activity android:name=".main.registerrooms.HostRoomsRegisterActivity" />
         <activity android:name=".canvas_calendar.CalendarActivity" />
@@ -64,6 +65,7 @@
             android:name=".DetailMapActivity"
             android:label="@string/title_activity_detail_map"
             android:theme="@style/NoActioinBarTheme" />
+        <activity android:name=".calendar.CalendarActivity"></activity>
     </application>
 
 </manifest>
