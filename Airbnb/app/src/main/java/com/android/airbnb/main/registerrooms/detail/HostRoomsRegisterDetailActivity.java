@@ -10,9 +10,32 @@ import com.android.airbnb.R;
  */
 public class HostRoomsRegisterDetailActivity extends AppCompatActivity {
 
+    HostRoomsRegisterDetailImageFragment hostRoomsRegisterDetailImageFragment;
+    HostRoomsRegisterDetailIntroduceFragment hostRoomsRegisterDetailIntroduceFragment;
+    HostRoomsRegisterDetailTitleFragment hostRoomsRegisterDetailTitleFragment;
+    HostRoomsRegisterDetailSpaceInfoFragment hostRoomsRegisterDetailSpaceInfoFragment;
+    HostRoomsRegisterDetailGuestAccessFragment hostRoomsRegisterDetailGuestAccessFragment;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_host_rooms_register_detail);
+        setFragments();
+        addFirstFragment();
     }
+
+    private void setFragments(){
+        hostRoomsRegisterDetailImageFragment = new HostRoomsRegisterDetailImageFragment();
+        hostRoomsRegisterDetailIntroduceFragment = new HostRoomsRegisterDetailIntroduceFragment();
+        hostRoomsRegisterDetailTitleFragment = new HostRoomsRegisterDetailTitleFragment();
+        hostRoomsRegisterDetailSpaceInfoFragment = new HostRoomsRegisterDetailSpaceInfoFragment();
+        hostRoomsRegisterDetailGuestAccessFragment = new HostRoomsRegisterDetailGuestAccessFragment();
+    }
+
+    private void addFirstFragment(){
+        getSupportFragmentManager().beginTransaction()
+                .add(R.id.detailRoomsRegisterContainer, hostRoomsRegisterDetailImageFragment)
+                .commit();
+    }
+
 }
