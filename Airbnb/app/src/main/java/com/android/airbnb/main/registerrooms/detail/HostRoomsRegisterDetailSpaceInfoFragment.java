@@ -13,13 +13,15 @@ import android.widget.TextView;
 
 import com.android.airbnb.R;
 
+import static com.android.airbnb.main.registerrooms.HostRoomsRegisterActivity.hostingHouse;
+
 /**
  * 숙소등록 2-4단계 (숙소내부소개 등록)
  */
 public class HostRoomsRegisterDetailSpaceInfoFragment extends Fragment implements View.OnClickListener{
 
     private HostRoomsRegisterDetailActivity hostRoomsRegisterDetailActivity;
-    private EditText editTitle;
+    private EditText editSpaceInfo;
     private ImageButton ImgBtnBack, ImgBtnNext;
     private TextView txtTitle, txtLimit;
     private View view = null;
@@ -46,7 +48,7 @@ public class HostRoomsRegisterDetailSpaceInfoFragment extends Fragment implement
     }
 
     private void setViews(View view) {
-        editTitle = (EditText) view.findViewById(R.id.editTitle);
+        editSpaceInfo = (EditText) view.findViewById(R.id.editSpaceInfo);
         txtLimit = (TextView) view.findViewById(R.id.txtLimit);
         ImgBtnNext = (ImageButton) view.findViewById(R.id.ImgBtnNext);
         ImgBtnBack = (ImageButton) view.findViewById(R.id.ImgBtnBack);
@@ -65,6 +67,7 @@ public class HostRoomsRegisterDetailSpaceInfoFragment extends Fragment implement
                 hostRoomsRegisterDetailActivity.onBackPressed();
                 break;
             case R.id.ImgBtnNext:
+                hostingHouse.setSpace_info(editSpaceInfo.getText().toString());
                 goHostRoomsRegisterDetailGuestAccessFragment();
                 break;
         }
