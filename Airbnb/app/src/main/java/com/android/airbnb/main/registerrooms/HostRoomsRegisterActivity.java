@@ -9,6 +9,7 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.android.airbnb.R;
+import com.android.airbnb.domain.airbnb.HostingHouse;
 import com.android.airbnb.main.registerrooms.basic.HostRoomsRegisterBasicActivity;
 import com.android.airbnb.main.registerrooms.detail.HostRoomsRegisterDetailActivity;
 import com.android.airbnb.main.registerrooms.prepare.HostRoomsRegisterPrepareActivity;
@@ -19,6 +20,8 @@ public class HostRoomsRegisterActivity extends AppCompatActivity implements View
     private ImageButton imgBtnBack, imgBtnBasic, imgBtnDetail, imgBtnPrepare;
     private TextView txtTitle, txtBasicTitle, txtBasicContent, txtDetailTitle, txtDetailContent, txtPrepareTitle, txtPrepareContent;
 
+    // HostingHouse Singleton으로 인스턴스 생성
+    public static HostingHouse hostingHouse = HostingHouse.getInstance();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,6 +29,8 @@ public class HostRoomsRegisterActivity extends AppCompatActivity implements View
         setContentView(R.layout.activity_host_rooms_register);
         setViews();
         setListeners();
+
+
     }
 
     private void setViews() {
