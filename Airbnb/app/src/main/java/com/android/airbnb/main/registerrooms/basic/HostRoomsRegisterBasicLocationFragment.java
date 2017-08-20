@@ -83,11 +83,10 @@ public class HostRoomsRegisterBasicLocationFragment extends Fragment implements 
     public void onMapReady(GoogleMap googleMap) {
         this.map = googleMap;
 
-        // draw circle using CircleOptions
-        map.addCircle(new CircleOptions().center(place.getLatLng()).strokeColor(R.color.black).radius(150)
-                .strokeWidth(7f).fillColor(getActivity().getResources().getColor(R.color.map_circle)));
-        map.moveCamera(CameraUpdateFactory.newLatLngZoom(place.getLatLng(), 15f));
-
+            // draw circle using CircleOptions
+            map.addCircle(new CircleOptions().center(place.getLatLng()).strokeColor(R.color.black).radius(150)
+                    .strokeWidth(7f).fillColor(getActivity().getResources().getColor(R.color.map_circle)));
+            map.moveCamera(CameraUpdateFactory.newLatLngZoom(place.getLatLng(), 15f));
     }
 
     @Override
