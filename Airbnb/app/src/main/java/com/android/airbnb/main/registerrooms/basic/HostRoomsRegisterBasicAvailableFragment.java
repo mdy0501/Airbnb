@@ -17,6 +17,8 @@ import android.widget.TextView;
 
 import com.android.airbnb.R;
 
+import static com.android.airbnb.main.registerrooms.HostRoomsRegisterActivity.hostingHouse;
+
 /**
  * A simple {@link Fragment} subclass.
  */
@@ -79,8 +81,76 @@ public class HostRoomsRegisterBasicAvailableFragment extends Fragment implements
         spinnerPerson.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                Log.e("position ", position + "");
+                /*Log.e("position ", position + "");
                 Log.e("id ", id + "");
+                Log.e("SelectedItem", parent.getSelectedItem()+ "");*/
+                // 숙박 가능 인원 저장
+                switch (position){
+                    case 0:
+                        hostingHouse.setAccommodates("1");
+                        Log.e("숙박 가능 인원 :: ", hostingHouse.getAccommodates()+"");
+                        break;
+                    case 1:
+                        hostingHouse.setAccommodates("2");
+                        Log.e("숙박 가능 인원 :: ", hostingHouse.getAccommodates()+"");
+                        break;
+                    case 2:
+                        hostingHouse.setAccommodates("3");
+                        Log.e("숙박 가능 인원 :: ", hostingHouse.getAccommodates()+"");
+                        break;
+                    case 3:
+                        hostingHouse.setAccommodates("4");
+                        Log.e("숙박 가능 인원 :: ", hostingHouse.getAccommodates()+"");
+                        break;
+                    case 4:
+                        hostingHouse.setAccommodates("5");
+                        Log.e("숙박 가능 인원 :: ", hostingHouse.getAccommodates()+"");
+                        break;
+                    case 5:
+                        hostingHouse.setAccommodates("6");
+                        Log.e("숙박 가능 인원 :: ", hostingHouse.getAccommodates()+"");
+                        break;
+                    case 6:
+                        hostingHouse.setAccommodates("7");
+                        Log.e("숙박 가능 인원 :: ", hostingHouse.getAccommodates()+"");
+                        break;
+                    case 7:
+                        hostingHouse.setAccommodates("8");
+                        Log.e("숙박 가능 인원 :: ", hostingHouse.getAccommodates()+"");
+                        break;
+                    case 8:
+                        hostingHouse.setAccommodates("9");
+                        Log.e("숙박 가능 인원 :: ", hostingHouse.getAccommodates()+"");
+                        break;
+                    case 9:
+                        hostingHouse.setAccommodates("10");
+                        Log.e("숙박 가능 인원 :: ", hostingHouse.getAccommodates()+"");
+                        break;
+                    case 10:
+                        hostingHouse.setAccommodates("11");
+                        Log.e("숙박 가능 인원 :: ", hostingHouse.getAccommodates()+"");
+                        break;
+                    case 11:
+                        hostingHouse.setAccommodates("12");
+                        Log.e("숙박 가능 인원 :: ", hostingHouse.getAccommodates()+"");
+                        break;
+                    case 12:
+                        hostingHouse.setAccommodates("13");
+                        Log.e("숙박 가능 인원 :: ", hostingHouse.getAccommodates()+"");
+                        break;
+                    case 13:
+                        hostingHouse.setAccommodates("14");
+                        Log.e("숙박 가능 인원 :: ", hostingHouse.getAccommodates()+"");
+                        break;
+                    case 14:
+                        hostingHouse.setAccommodates("15");
+                        Log.e("숙박 가능 인원 :: ", hostingHouse.getAccommodates()+"");
+                        break;
+                    case 15:
+                        hostingHouse.setAccommodates("16");
+                        Log.e("숙박 가능 인원 :: ", hostingHouse.getAccommodates()+"");
+                        break;
+                }
                 ((TextView)parent.getChildAt(0)).setTextColor(Color.BLACK);
             }
 
@@ -97,8 +167,79 @@ public class HostRoomsRegisterBasicAvailableFragment extends Fragment implements
         spinnerBedroom.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                Log.e("position ", position + "");
+                /*Log.e("position ", position + "");
                 Log.e("id ", id + "");
+                Log.e("SelectedItem", parent.getSelectedItem()+ "");*/
+                // 게스트용 침실 개수 저장
+                switch (position){
+                    case 0:
+                        hostingHouse.setBedrooms("1");
+                        Log.e("게스트용 침실 개수 :: ", hostingHouse.getBedrooms()+"");
+                        break;
+                    case 1:
+                        hostingHouse.setBedrooms("2");
+                        Log.e("게스트용 침실 개수 :: ", hostingHouse.getBedrooms()+"");
+                        break;
+                    case 2:
+                        hostingHouse.setBedrooms("3");
+                        Log.e("게스트용 침실 개수 :: ", hostingHouse.getBedrooms()+"");
+                        break;
+                    case 3:
+                        hostingHouse.setBedrooms("4");
+                        Log.e("게스트용 침실 개수 :: ", hostingHouse.getBedrooms()+"");
+                        break;
+                    case 4:
+                        hostingHouse.setBedrooms("5");
+                        Log.e("게스트용 침실 개수 :: ", hostingHouse.getBedrooms()+"");
+                        break;
+                    case 5:
+                        hostingHouse.setBedrooms("6");
+                        Log.e("게스트용 침실 개수 :: ", hostingHouse.getBedrooms()+"");
+                        break;
+                    case 6:
+                        hostingHouse.setBedrooms("7");
+                        Log.e("게스트용 침실 개수 :: ", hostingHouse.getBedrooms()+"");
+                        break;
+                    case 7:
+                        hostingHouse.setBedrooms("8");
+                        Log.e("게스트용 침실 개수 :: ", hostingHouse.getBedrooms()+"");
+                        break;
+                    case 8:
+                        hostingHouse.setBedrooms("9");
+                        Log.e("게스트용 침실 개수 :: ", hostingHouse.getBedrooms()+"");
+                        break;
+                    case 9:
+                        hostingHouse.setBedrooms("10");
+                        Log.e("게스트용 침실 개수 :: ", hostingHouse.getBedrooms()+"");
+                        break;
+                    case 10:
+                        hostingHouse.setBedrooms("11");
+                        Log.e("게스트용 침실 개수 :: ", hostingHouse.getBedrooms()+"");
+                        break;
+                    case 11:
+                        hostingHouse.setBedrooms("12");
+                        Log.e("게스트용 침실 개수 :: ", hostingHouse.getBedrooms()+"");
+                        break;
+                    case 12:
+                        hostingHouse.setBedrooms("13");
+                        Log.e("게스트용 침실 개수 :: ", hostingHouse.getBedrooms()+"");
+                        break;
+                    case 13:
+                        hostingHouse.setBedrooms("14");
+                        Log.e("게스트용 침실 개수 :: ", hostingHouse.getBedrooms()+"");
+                        break;
+                    case 14:
+                        hostingHouse.setBedrooms("15");
+                        Log.e("게스트용 침실 개수 :: ", hostingHouse.getBedrooms()+"");
+                        break;
+                    case 15:
+                        hostingHouse.setBedrooms("16");
+                        Log.e("게스트용 침실 개수 :: ", hostingHouse.getBedrooms()+"");
+                        break;
+                }
+
+
+
                 ((TextView)parent.getChildAt(0)).setTextColor(Color.BLACK);
             }
 
@@ -115,8 +256,76 @@ public class HostRoomsRegisterBasicAvailableFragment extends Fragment implements
         spinnerBed.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                Log.e("position ", position + "");
+                /*Log.e("position ", position + "");
                 Log.e("id ", id + "");
+                Log.e("SelectedItem", parent.getSelectedItem()+ "");*/
+                // 게스트용 침대 개수 저장
+                switch (position){
+                    case 0:
+                        hostingHouse.setBeds("1");
+                        Log.e("게스트용 침대 개수 :: ", hostingHouse.getBeds()+"");
+                        break;
+                    case 1:
+                        hostingHouse.setBeds("2");
+                        Log.e("게스트용 침대 개수 :: ", hostingHouse.getBeds()+"");
+                        break;
+                    case 2:
+                        hostingHouse.setBeds("3");
+                        Log.e("게스트용 침대 개수 :: ", hostingHouse.getBeds()+"");
+                        break;
+                    case 3:
+                        hostingHouse.setBeds("4");
+                        Log.e("게스트용 침대 개수 :: ", hostingHouse.getBeds()+"");
+                        break;
+                    case 4:
+                        hostingHouse.setBeds("5");
+                        Log.e("게스트용 침대 개수 :: ", hostingHouse.getBeds()+"");
+                        break;
+                    case 5:
+                        hostingHouse.setBeds("6");
+                        Log.e("게스트용 침대 개수 :: ", hostingHouse.getBeds()+"");
+                        break;
+                    case 6:
+                        hostingHouse.setBeds("7");
+                        Log.e("게스트용 침대 개수 :: ", hostingHouse.getBeds()+"");
+                        break;
+                    case 7:
+                        hostingHouse.setBeds("8");
+                        Log.e("게스트용 침대 개수 :: ", hostingHouse.getBeds()+"");
+                        break;
+                    case 8:
+                        hostingHouse.setBeds("9");
+                        Log.e("게스트용 침대 개수 :: ", hostingHouse.getBeds()+"");
+                        break;
+                    case 9:
+                        hostingHouse.setBeds("10");
+                        Log.e("게스트용 침대 개수 :: ", hostingHouse.getBeds()+"");
+                        break;
+                    case 10:
+                        hostingHouse.setBeds("11");
+                        Log.e("게스트용 침대 개수 :: ", hostingHouse.getBeds()+"");
+                        break;
+                    case 11:
+                        hostingHouse.setBeds("12");
+                        Log.e("게스트용 침대 개수 :: ", hostingHouse.getBeds()+"");
+                        break;
+                    case 12:
+                        hostingHouse.setBeds("13");
+                        Log.e("게스트용 침대 개수 :: ", hostingHouse.getBeds()+"");
+                        break;
+                    case 13:
+                        hostingHouse.setBeds("14");
+                        Log.e("게스트용 침대 개수 :: ", hostingHouse.getBeds()+"");
+                        break;
+                    case 14:
+                        hostingHouse.setBeds("15");
+                        Log.e("게스트용 침대 개수 :: ", hostingHouse.getBeds()+"");
+                        break;
+                    case 15:
+                        hostingHouse.setBeds("16");
+                        Log.e("게스트용 침대 개수 :: ", hostingHouse.getBeds()+"");
+                        break;
+                }
                 ((TextView)parent.getChildAt(0)).setTextColor(Color.BLACK);
             }
 
