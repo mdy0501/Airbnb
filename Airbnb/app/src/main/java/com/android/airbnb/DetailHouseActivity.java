@@ -54,7 +54,7 @@ public class DetailHouseActivity extends AppCompatActivity implements OnMapReady
     private Button detailHouseBtnCheckReserve;
     public static final String HOUSE_LATLNG = "detail_house_latlng";
     public static final String HOUSE_ADDRESS = "detail_house_address";
-    public static final String HOUSE_PK = "detail_house_pk";
+    public static final String DETAIL_HOUSE = "com.google.android.gms.maps.model.detailHouse";
 
     public void setHousePricePerDay(TextView housePricePerDay) {
         this.housePricePerDay = housePricePerDay;
@@ -301,7 +301,7 @@ public class DetailHouseActivity extends AppCompatActivity implements OnMapReady
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(v.getContext(), CalendarActivity.class);
-//                intent.putExtra(HOUSE_PK, house.getPk());
+                intent.putExtra(DETAIL_HOUSE, house);
                 v.getContext().startActivity(intent);
                 // activity 전환효과를 위해 anim에 전환효과 설정값 셋팅
                 // 아래 메소드를 통해 전환효과 설정
