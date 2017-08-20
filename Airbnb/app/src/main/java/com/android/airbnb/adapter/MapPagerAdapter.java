@@ -163,7 +163,7 @@ public class MapPagerAdapter extends PagerAdapter implements ITask.postWishList 
     }
 
     @Override
-    public void getResponse(String message) {
+    public void getWishResponse(String message) {
         Toast.makeText(mContext, "message : " + message, Toast.LENGTH_SHORT).show();
     }
 

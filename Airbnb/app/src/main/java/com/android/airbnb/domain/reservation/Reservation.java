@@ -7,6 +7,7 @@ import com.android.airbnb.domain.airbnb.House;
  */
 
 public class Reservation {
+
     private String created_date;
 
     private String message_to_host;
