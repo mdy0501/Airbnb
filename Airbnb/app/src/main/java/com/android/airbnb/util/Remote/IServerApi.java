@@ -76,4 +76,12 @@ public interface IServerApi {
 
     @POST("apis/like/")
     Call<String> postWishList(@Header("Authorization") String token, @Query("house") String housePk);
+
+    @Multipart
+    @POST("apis/reservations/{pk}")
+    /*restful 방식에 어긋난 쿼리형태로 인해 retrofit 2.0 을 custom 해야하는 상황임.. ㅜㅜ*/
+    Call<Reservation> postReservation(@Header("Authorization") String token,
+                                      @Path(value = "pk", encoded = true) String pk,
+                                      @Part("checkin_date") RequestBody checkin,
+                                      @Part("checkout_date") RequestBody checkout);
 }
