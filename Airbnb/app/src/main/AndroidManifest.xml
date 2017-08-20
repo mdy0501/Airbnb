@@ -4,6 +4,7 @@
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
     <application
         android:name=".util.App"
@@ -66,6 +67,9 @@
             android:label="@string/title_activity_detail_map"
             android:theme="@style/NoActioinBarTheme" />
         <activity android:name=".calendar.CalendarActivity"></activity>
+        <activity android:name=".main.registerrooms.basic.HostRoomsRegisterBasicActivity" />
+        <activity android:name=".main.registerrooms.detail.HostRoomsRegisterDetailActivity" />
+        <activity android:name=".main.registerrooms.prepare.HostRoomsRegisterPrepareActivity"></activity>
     </application>
 
 </manifest>

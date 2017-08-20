@@ -45,7 +45,7 @@ public class StreetAddressFragment extends Fragment {
                 getActivity().getFragmentManager().findFragmentById(R.id.place_autocomplete_fragment);
         setListener();
         return view;
-    }
+        }
 
     private void setListener(){
         autocompleteFragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {
