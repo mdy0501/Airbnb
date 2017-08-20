@@ -162,7 +162,6 @@ public class CalendarItem extends LinearLayout {
                 Log.e("JunheeCalendarItem", "check in : " + CalendarActivity.checkinDate + ", check out : " + CalendarActivity.checkoutDate);
                 setSelected(tv);
                 selectedTvs.add(tv);
-
                 break;
         }
     }

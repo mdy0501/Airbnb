@@ -1,6 +1,7 @@
 package com.android.airbnb.calendar;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.constraint.ConstraintLayout;
 import android.support.v7.app.AppCompatActivity;
@@ -11,18 +12,24 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
-import android.widget.Toast;
 
+import com.android.airbnb.DetailHouseActivity;
 import com.android.airbnb.R;
+import com.android.airbnb.domain.airbnb.House;
+import com.android.airbnb.domain.reservation.Reservation;
+import com.android.airbnb.util.PreferenceUtil;
+import com.android.airbnb.util.Remote.Loader;
+import com.google.gson.Gson;
 import com.tsengvn.typekit.TypekitContextWrapper;
 
+import java.io.UnsupportedEncodingException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-public class CalendarActivity extends AppCompatActivity implements CalendarItem.OnCalendarChangedListener, View.OnClickListener{
+public class CalendarActivity extends AppCompatActivity implements CalendarItem.OnCalendarChangedListener, View.OnClickListener {
 
     private List<CalendarData> calendarDatas;
     private ImageView calendarBtnClose;
@@ -45,6 +52,7 @@ public class CalendarActivity extends AppCompatActivity implements CalendarItem.
     public static String checkoutDate = "";
 
     private List<CalendarItem> items;
+    private House house;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,9 +60,15 @@ public class CalendarActivity extends AppCompatActivity implements CalendarItem.
         setContentView(R.layout.activity_calendar);
         items = new ArrayList<>();
         getCalendarDate();
+        getData();
         initView();
         setOnClick();
         setCalendar();
+    }
+
+    private void getData(){
+        Intent intent = getIntent();
+        house = intent.getParcelableExtra(DetailHouseActivity.DETAIL_HOUSE);
     }
 
     private void resetAllCalendar() {
@@ -155,8 +169,6 @@ public class CalendarActivity extends AppCompatActivity implements CalendarItem.
 
         calendarBtnSave.setClickable(true);
         calendarBtnSave.setOnClickListener(this);
-
-
     }
 
     @Override
@@ -167,7 +179,6 @@ public class CalendarActivity extends AppCompatActivity implements CalendarItem.
     @Override
     public void checkInChanged(String date) {
         checkinDateTxt.setText("Check in" + "\n" + date);
-
     }
 
     @Override
@@ -177,7 +188,6 @@ public class CalendarActivity extends AppCompatActivity implements CalendarItem.
         calendarResultTxt.setText(calculatePeriod(checkinDate, checkoutDate));
         setRange(checkinDate, checkoutDate);
     }
-
 
     @Override
     protected void attachBaseContext(Context newBase) {
@@ -211,15 +221,25 @@ public class CalendarActivity extends AppCompatActivity implements CalendarItem.
                 break;
 
             case R.id.calendar_btn_Save:
-                Toast.makeText(v.getContext(), "save licked", Toast.LENGTH_SHORT).show();
+                Log.e("CalendarActivity", "house pk : " + house.getPk());
+                Reservation reservation = new Reservation();
+                reservation.setCheckout_date(checkoutDate);
+                reservation.setCheckin_date(checkinDate);
+                Gson gson = new Gson();
+                String jsonString = gson.toJson(reservation);
+                String queryString = "?house=" + house.getPk();
+                Log.e("CalendarAct", "query : " + queryString);
+                try {
+                    Loader.postReservation("Token" + PreferenceUtil.getToken(this), queryString, checkinDate, checkoutDate);
+                } catch (UnsupportedEncodingException e) {
+                    e.printStackTrace();
+                }
                 break;
 
             case R.id.calendar_delete:
-                Toast.makeText(v.getContext(), "dele clicked", Toast.LENGTH_SHORT).show();
+                resetAllCalendar();
                 break;
-
-
-
         }
     }
+
 }

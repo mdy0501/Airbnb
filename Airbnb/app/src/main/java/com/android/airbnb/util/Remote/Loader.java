@@ -6,9 +6,13 @@ import com.android.airbnb.domain.airbnb.Host;
 import com.android.airbnb.domain.airbnb.House;
 import com.android.airbnb.domain.reservation.Reservation;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
 
+import okhttp3.MediaType;
+import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -125,7 +129,7 @@ public class Loader {
         });
     }
 
-    public static void getReservation(String housePk, final ITask.oneReservation oneReservation){
+    public static void getReservation(String housePk, final ITask.oneReservation oneReservation) {
         Retrofit client = new Retrofit.Builder()
                 .baseUrl(BASE_URL)
                 .addConverterFactory(GsonConverterFactory.create())
@@ -136,7 +140,7 @@ public class Loader {
         call.enqueue(new Callback<List<Reservation>>() {
             @Override
             public void onResponse(Call<List<Reservation>> call, Response<List<Reservation>> response) {
-                if(response.code() == 200){
+                if (response.code() == 200) {
                     Log.e("Loader", "code : " + response.code());
                     reservations = response.body();
                     Log.e("Loader", "reservation : " + response.body().toString());
@@ -153,7 +157,7 @@ public class Loader {
 
     private static List<House> wishList = new ArrayList<>();
 
-    public static void getWishList(String userToken, final ITask.allWishList allWishList){
+    public static void getWishList(String userToken, final ITask.allWishList allWishList) {
         Retrofit client = new Retrofit.Builder()
                 .baseUrl(BASE_URL)
                 .addConverterFactory(GsonConverterFactory.create())
@@ -164,7 +168,7 @@ public class Loader {
         call.enqueue(new Callback<List<House>>() {
             @Override
             public void onResponse(Call<List<House>> call, Response<List<House>> response) {
-                if(response.code() == 200){
+                if (response.code() == 200) {
                     Log.e("Loader", "wishlist : " + response.body().toString());
                     wishList = response.body();
                     allWishList.doAllWishList(wishList);
@@ -178,7 +182,7 @@ public class Loader {
         });
     }
 
-    public static void postWishList(String token, String housePk, final ITask.postWishList postWishList){
+    public static void postWishList(String token, String housePk, final ITask.postWishList postWishList) {
         Retrofit client = new Retrofit.Builder()
                 .baseUrl(BASE_URL)
                 .addConverterFactory(GsonConverterFactory.create())
@@ -189,12 +193,12 @@ public class Loader {
         call.enqueue(new Callback<String>() {
             @Override
             public void onResponse(Call<String> call, Response<String> response) {
-                if (response.code() == 200){
-                    postWishList.getResponse(response.body().toString());
-                } else if(response.code() == 201) {
-                    postWishList.getResponse(response.body().toString());
+                if (response.code() == 200) {
+                    postWishList.getWishResponse(response.body().toString());
+                } else if (response.code() == 201) {
+                    postWishList.getWishResponse(response.body().toString());
                 } else {
-                    postWishList.getResponse(response.body().toString());
+                    postWishList.getWishResponse(response.body().toString());
                 }
             }
 
@@ -203,5 +207,43 @@ public class Loader {
 
             }
         });
+    }
+
+    public static void postReservation(String token, String query, String checkin, String checkout) throws UnsupportedEncodingException {
+        Retrofit client = new Retrofit.Builder()
+                .baseUrl(BASE_URL)
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+        IServerApi serverApi = client.create(IServerApi.class);
+        RequestBody checkinBody = RequestBody.create(MediaType.parse("text/plain"), checkin);
+        RequestBody checkoutBody = RequestBody.create(MediaType.parse("text/plain"), checkout);
+
+
+        Call<Reservation> call = serverApi.postReservation(token, query, checkinBody, checkoutBody);
+        String originalUrl = call.request().url().toString();
+        Log.e("Loader", " origin : " + originalUrl);
+        originalUrl = originalUrl.replace("%3F", "?");
+        Log.e("Loader", " origin : " + originalUrl);
+        String encodedUrl = URLEncoder.encode(String.valueOf(originalUrl), "UTF-8");
+        Log.e("Loader", "encodedURl : " + encodedUrl);
+
+        call.enqueue(new Callback<Reservation>() {
+            @Override
+            public void onResponse(Call<Reservation> call, Response<Reservation> response) {
+                if (response.isSuccessful()) {
+                    Log.e("Loader", "code : " + response.code() + ", message : " + response.message());
+                    Log.e("Loader", "body : " + response.body().toString());
+                } else {
+                    Log.e("Loader", "code : " + response.code() + "message : " + response.message());
+                    Log.e("Loader", "request body : " + response.raw().request().body() + ", url : " + response.raw().request().url());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Reservation> call, Throwable t) {
+                t.printStackTrace();
+            }
+        });
+
     }
 }
