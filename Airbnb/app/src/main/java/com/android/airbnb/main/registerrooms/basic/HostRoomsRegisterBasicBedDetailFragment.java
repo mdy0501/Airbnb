@@ -4,6 +4,7 @@ package com.android.airbnb.main.registerrooms.basic;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,6 +13,8 @@ import android.widget.TextView;
 
 import com.android.airbnb.R;
 import com.android.airbnb.domain.register.Bed;
+
+import static com.android.airbnb.main.registerrooms.HostRoomsRegisterActivity.hostingHouse;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -48,6 +51,10 @@ public class HostRoomsRegisterBasicBedDetailFragment extends Fragment implements
 
     private void init(){
         bed = new Bed();
+        txtKingResult.setText(bed.getKingBed()+"");
+        txtQueenResult.setText(bed.getQueenBed()+"");
+        txtDoubleResult.setText(bed.getDoubleBed()+"");
+        txtSingleResult.setText(bed.getSingleBed()+"");
     }
 
     private void setViews(View view) {
@@ -92,7 +99,20 @@ public class HostRoomsRegisterBasicBedDetailFragment extends Fragment implements
                 hostRoomsRegisterBasicActivity.onBackPressed();
                 break;
             case R.id.ImgBtnSave:
-                hostRoomsRegisterBasicActivity.onBackPressed();
+                hostingHouse.setKingBeds(txtKingResult.getText().toString());
+                hostingHouse.setQueenBeds(txtQueenResult.getText().toString());
+                hostingHouse.setDoubleBeds(txtDoubleResult.getText().toString());
+                hostingHouse.setSingleBeds(txtSingleResult.getText().toString());
+                Log.e("킹사이즈 침대 :: " , txtKingResult.getText().toString());
+                Log.e("퀸사이즈 침대 :: " , txtQueenResult.getText().toString());
+                Log.e("더블사이즈 침대 :: " , txtDoubleResult.getText().toString());
+                Log.e("싱글사이즈 침대 :: " , txtSingleResult.getText().toString());
+//                hostRoomsRegisterBasicActivity.onBackPressed();
+                hostRoomsRegisterBasicActivity.getSupportFragmentManager().popBackStack();
+                hostRoomsRegisterBasicActivity.getSupportFragmentManager().beginTransaction()
+                        .add(R.id.basicRoomsRegisterContainer, hostRoomsRegisterBasicActivity.hostRoomsRegisterBasicBedFragment)
+                        .addToBackStack(null)
+                        .commit();
                 break;
             case R.id.ImgBtnKingPlus:
                 bed.setKingBed(bed.getKingBed()+1);

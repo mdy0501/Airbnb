@@ -18,6 +18,8 @@ import android.widget.TextView;
 
 import com.android.airbnb.R;
 
+import static com.android.airbnb.main.registerrooms.HostRoomsRegisterActivity.hostingHouse;
+
 /**
  * A simple {@link Fragment} subclass.
  */
@@ -79,8 +81,46 @@ public class HostRoomsRegisterBasicBathFragment extends Fragment implements View
         spinnerBath.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                Log.e("position ", position + "");
-                Log.e("id ", id + "");
+                switch (position){
+                    case 0:
+                        hostingHouse.setBathrooms("0");
+                        Log.e("화장실개수 :: ", hostingHouse.getBathrooms()+"");
+                        break;
+                    case 1:
+                        hostingHouse.setBathrooms("1");
+                        Log.e("화장실개수 :: ", hostingHouse.getBathrooms()+"");
+                        break;
+                    case 2:
+                        hostingHouse.setBathrooms("2");
+                        Log.e("화장실개수 :: ", hostingHouse.getBathrooms()+"");
+                        break;
+                    case 3:
+                        hostingHouse.setBathrooms("3");
+                        Log.e("화장실개수 :: ", hostingHouse.getBathrooms()+"");
+                        break;
+                    case 4:
+                        hostingHouse.setBathrooms("4");
+                        Log.e("화장실개수 :: ", hostingHouse.getBathrooms()+"");
+                        break;
+                    case 5:
+                        hostingHouse.setBathrooms("5");
+                        Log.e("화장실개수 :: ", hostingHouse.getBathrooms()+"");
+                        break;
+                    case 6:
+                        hostingHouse.setBathrooms("6");
+                        Log.e("화장실개수 :: ", hostingHouse.getBathrooms()+"");
+                        break;
+                    case 7:
+                        hostingHouse.setBathrooms("7");
+                        Log.e("화장실개수 :: ", hostingHouse.getBathrooms()+"");
+                        break;
+                    case 8:
+                        hostingHouse.setBathrooms("8");
+                        Log.e("화장실개수 :: ", hostingHouse.getBathrooms()+"");
+                        break;
+                }
+
+
                 ((TextView)parent.getChildAt(0)).setTextColor(Color.BLACK);
             }
 

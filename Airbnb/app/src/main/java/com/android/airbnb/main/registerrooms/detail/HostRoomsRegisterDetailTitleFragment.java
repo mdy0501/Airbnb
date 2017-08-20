@@ -13,6 +13,8 @@ import android.widget.TextView;
 
 import com.android.airbnb.R;
 
+import static com.android.airbnb.main.registerrooms.HostRoomsRegisterActivity.hostingHouse;
+
 /**
  * 숙소등록 2-3단계 (숙소제목 등록)
  */
@@ -65,6 +67,7 @@ public class HostRoomsRegisterDetailTitleFragment extends Fragment implements Vi
                 hostRoomsRegisterDetailActivity.onBackPressed();
                 break;
             case R.id.ImgBtnNext:
+                hostingHouse.setTitle(editTitle.getText().toString());
                 goHostRoomsRegisterDetailSpaceInfoFragment();
                 break;
         }

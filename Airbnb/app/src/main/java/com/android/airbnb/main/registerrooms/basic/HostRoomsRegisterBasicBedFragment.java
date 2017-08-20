@@ -12,13 +12,15 @@ import android.widget.TextView;
 
 import com.android.airbnb.R;
 
+import static com.android.airbnb.main.registerrooms.HostRoomsRegisterActivity.hostingHouse;
+
 /**
  * A simple {@link Fragment} subclass.
  */
 public class HostRoomsRegisterBasicBedFragment extends Fragment implements View.OnClickListener{
 
     private HostRoomsRegisterBasicActivity hostRoomsRegisterBasicActivity;
-    private TextView txtDetailTitle, txtDetailContent, txtAddBed, txtContent;
+    private TextView txtTitle, txtDetail, txtDetailContent, txtAddBed;
     private ImageButton ImgBtnNext;
     private ImageButton ImgBtnBack;
     private View view = null;
@@ -41,16 +43,17 @@ public class HostRoomsRegisterBasicBedFragment extends Fragment implements View.
         }
         setViews(view);
         setListeners();
+        txtDetailContent.setText("킹사이즈 침대 " + hostingHouse.getKingBeds() + "대, " + "퀸사이즈 침대 " + hostingHouse.getQueenBeds() + "대, " + "더블사이즈 침대 " + hostingHouse.getDoubleBeds() + "대, " + "싱글사이즈 침대 " + hostingHouse.getSingleBeds() + "대" );
         return view;
     }
 
     private void setViews(View view) {
-        txtContent = (TextView) view.findViewById(R.id.txtDetailContent);
+        txtTitle = (TextView) view.findViewById(R.id.txtTitle);
         txtAddBed = (TextView) view.findViewById(R.id.txtAddBed);
         ImgBtnNext = (ImageButton) view.findViewById(R.id.ImgBtnSave);
-        txtDetailTitle = (TextView) view.findViewById(R.id.txtKingTitle);
+        txtDetail = (TextView) view.findViewById(R.id.txtDetail);
         ImgBtnBack = (ImageButton) view.findViewById(R.id.ImgBtnCancel);
-        txtDetailTitle = (TextView) view.findViewById(R.id.txtKingTitle);
+        txtDetailContent = (TextView) view.findViewById(R.id.txtDetailContent);
     }
 
     private void setListeners(){
@@ -63,6 +66,7 @@ public class HostRoomsRegisterBasicBedFragment extends Fragment implements View.
     public void onClick(View v) {
         switch (v.getId()){
             case R.id.txtAddBed:
+                hostRoomsRegisterBasicActivity.getSupportFragmentManager().popBackStack();
                 goHostRoomsRegisterBasicBedDetailFragment();
                 break;
             case R.id.ImgBtnCancel:

@@ -61,13 +61,16 @@ public class HostRoomsRegisterBasicStreetAddressFragment extends Fragment {
         autocompleteFragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {
             @Override
             public void onPlaceSelected(Place place) {
-                Log.i("StreetAddressFragment", "Place name : " + place.getName());
-                Log.i("StreetAddressFragment", "Place latlng : " + place.getLatLng());
+                Log.i("StreetAddressFragment", "Place name : " + place.getName());          // 도로명 주소
+                Log.i("StreetAddressFragment", "Place latlng : " + place.getLatLng());      // 위도, 경도
+                Log.i("StreetAddressFragment", "Place lat : " + place.getLatLng().latitude);      // 위도
+                Log.i("StreetAddressFragment", "Place lng : " + place.getLatLng().longitude);      // 경도
                 Log.i("StreetAddressFragment", "Place id : " + place.getId());
-                Log.i("StreetAddressFragment", "Place address : " + place.getAddress());
+                Log.i("StreetAddressFragment", "Place address : " + place.getAddress());    // 전체 주소
                 Log.i("StreetAddressFragment", "Place locale : " + place.getLocale());
                 Log.i("StreetAddressFragment", "Place attributions : " + place.getViewport());
                 Log.i("StreetAddressFragment", "Place place price : " + place.getPriceLevel());
+
 
 
                 mStreetAddressListener.streetAddressCallBack(place);

@@ -6,6 +6,24 @@ package com.android.airbnb.domain.airbnb;
 
 public class HostingHouse {
 
+    /* 싱글톤 적용 */
+    // 1. 자기 자신을 담아두는 저장공간 생성
+    private static HostingHouse hostingHouse = null;
+
+    // 2. 생성자를 private으로 만들어 외부에서 생성할 수 없도록 제한
+    private HostingHouse(){
+
+    }
+
+    // 3. 외부에서 생성할 수 없으므로 내부에서 생성한 후 사용할 수 있도록 인터페이스를 제공해야 한다.
+    //    외부에서 new가 안되므로 static으로 구성해야 한다.
+    public static HostingHouse getInstance(){
+        if(hostingHouse == null){
+            hostingHouse = new HostingHouse();
+        }
+        return hostingHouse;
+    }
+
     private String title;   // 숙소 제목
     private String address; // 숙소 주소
     private String introduce;   // 숙소 소개
@@ -24,6 +42,13 @@ public class HostingHouse {
     private String latitude;    // 숙소 위도
     private String longitude;   // 숙소 경도
     private byte[] image;       // 숙소 이미지
+
+    private String kingBeds = "0";    // 킹사이즈 침대
+    private String queenBeds = "0";   // 퀸사이즈 침대
+    private String doubleBeds = "0";  // 더블사이즈 침대
+    private String singleBeds = "0";  // 싱글사이즈 침대
+
+
 
     public String getTitle() {
         return title;
@@ -167,5 +192,39 @@ public class HostingHouse {
 
     public void setImage(byte[] image) {
         this.image = image;
+    }
+
+
+
+    public String getKingBeds() {
+        return kingBeds;
+    }
+
+    public void setKingBeds(String kingBeds) {
+        this.kingBeds = kingBeds;
+    }
+
+    public String getQueenBeds() {
+        return queenBeds;
+    }
+
+    public void setQueenBeds(String queenBeds) {
+        this.queenBeds = queenBeds;
+    }
+
+    public String getDoubleBeds() {
+        return doubleBeds;
+    }
+
+    public void setDoubleBeds(String doubleBeds) {
+        this.doubleBeds = doubleBeds;
+    }
+
+    public String getSingleBeds() {
+        return singleBeds;
+    }
+
+    public void setSingleBeds(String singleBeds) {
+        this.singleBeds = singleBeds;
     }
 }
