@@ -53,6 +53,7 @@ public class GuestWishListDetailFragment extends Fragment implements ITask.allWi
     private ImageView btnFilter;
     private GuestWistListFragment wishListFragment;
     public static final String WISHLIST_HOUSES = "Wcom.android.airbnb.main.ISHLIST_HOUSES";
+    private String userToken = "";
 
     public GuestWishListDetailFragment() {
         // Required empty public constructor
@@ -63,6 +64,7 @@ public class GuestWishListDetailFragment extends Fragment implements ITask.allWi
         super.onAttach(context);
         this.mContext = context;
         guestMainActivity = (GuestMainActivity) context;
+        userToken = "Token " + PreferenceUtil.getToken(mContext);
         getData();
     }
 
@@ -90,7 +92,6 @@ public class GuestWishListDetailFragment extends Fragment implements ITask.allWi
         actionBar.setDisplayShowCustomEnabled(true); //커스터마이징 하기 위해 필요
         actionBar.setDisplayShowTitleEnabled(false);
         actionBar.setDisplayHomeAsUpEnabled(true);
-
     }
 
     @Override
@@ -106,8 +107,8 @@ public class GuestWishListDetailFragment extends Fragment implements ITask.allWi
                 Toast.makeText(mContext, "목록을 삭제합니다.", Toast.LENGTH_SHORT).show();
                 break;
 
-            case R.id.wishlist_menu_filter:
-                Toast.makeText(mContext, "필터로 갑니다.", Toast.LENGTH_SHORT).show();
+            case R.id.wishlist_menu_refresh:
+                Loader.getWishList(userToken, this);
                 break;
 
             case android.R.id.home:
@@ -119,7 +120,7 @@ public class GuestWishListDetailFragment extends Fragment implements ITask.allWi
     }
 
     private void getData() {
-        Loader.getWishList("Token " + PreferenceUtil.getToken(mContext), this);
+        Loader.getWishList(userToken, this);
     }
 
     private void setAdapter() {
@@ -160,6 +161,9 @@ public class GuestWishListDetailFragment extends Fragment implements ITask.allWi
     @Override
     public void doAllWishList(List<House> wishlist) {
         this.wishlist = wishlist;
+        for (House item : wishlist){
+            item.setWished(true);
+        }
         setAdapter();
         connectData();
     }
