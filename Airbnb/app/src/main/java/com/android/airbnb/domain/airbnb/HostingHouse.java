@@ -43,10 +43,15 @@ public class HostingHouse {
     private String longitude;   // 숙소 경도
     private byte[] image;       // 숙소 이미지
 
+    private String imagePath;   // 숙소 이미지 경로
+
     private String kingBeds = "0";    // 킹사이즈 침대
     private String queenBeds = "0";   // 퀸사이즈 침대
     private String doubleBeds = "0";  // 더블사이즈 침대
     private String singleBeds = "0";  // 싱글사이즈 침대
+
+
+    public String facilities = null;
 
 
 
@@ -192,6 +197,15 @@ public class HostingHouse {
 
     public void setImage(byte[] image) {
         this.image = image;
+    }
+
+
+    public String getImagePath() {
+        return imagePath;
+    }
+
+    public void setImagePath(String imagePath) {
+        this.imagePath = imagePath;
     }
 
 

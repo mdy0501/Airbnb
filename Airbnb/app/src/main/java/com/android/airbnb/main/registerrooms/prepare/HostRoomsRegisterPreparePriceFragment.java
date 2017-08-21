@@ -2,7 +2,6 @@ package com.android.airbnb.main.registerrooms.prepare;
 
 
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -13,7 +12,6 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.android.airbnb.R;
-import com.android.airbnb.main.registerrooms.HostRoomsRegisterActivity;
 
 import static com.android.airbnb.main.registerrooms.HostRoomsRegisterActivity.hostingHouse;
 
@@ -83,8 +81,10 @@ public class HostRoomsRegisterPreparePriceFragment extends Fragment implements V
                 hostingHouse.setExtra_people_fee(editExtraPeopleFee.getText().toString());
                 hostingHouse.setCleaning_fee(editCleaningFee.getText().toString());
                 hostingHouse.setWeekly_discount(editWeeklyDiscount.getText().toString());
-                Intent intent = new Intent(getActivity(), HostRoomsRegisterActivity.class);
-                startActivity(intent);
+                getFragmentManager().beginTransaction().remove(getFragmentManager().findFragmentById(R.id.prepareRoomsRegisterContainer)).commit();
+                getActivity().finish();
+//                Intent intent = new Intent(getActivity(), HostRoomsRegisterActivity.class);
+//                startActivity(intent);
                 break;
         }
     }

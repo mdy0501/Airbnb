@@ -15,6 +15,7 @@ import com.android.airbnb.domain.airbnb.FacebookLoginResult;
 import com.android.airbnb.login.LoginActivity;
 import com.android.airbnb.main.GuestMainActivity;
 import com.android.airbnb.signup.SignUpActivity;
+import com.android.airbnb.util.PermissionControl;
 import com.android.airbnb.util.PreferenceUtil;
 import com.android.airbnb.util.Remote.IServerApi;
 import com.facebook.AccessToken;
@@ -40,7 +41,7 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-public class WelcomeActivity extends AppCompatActivity implements View.OnClickListener{
+public class WelcomeActivity extends AppCompatActivity implements View.OnClickListener, PermissionControl.CallBack{
 
     private Button btnGoLogin, btnFinish, btnSignUp;
     private ImageView imageAirbnb;
@@ -59,6 +60,12 @@ public class WelcomeActivity extends AppCompatActivity implements View.OnClickLi
         setContentView(R.layout.activity_welcome);
         setViews();
         setListeners();
+        facebookLogin();
+        PermissionControl.checkVersion(this);
+    }
+
+    // 페이스북 로그인 코드
+    private void facebookLogin(){
         callbackManager = CallbackManager.Factory.create();
         btnLoginFacebook.setReadPermissions(Arrays.asList("public_profile", "email"));
         btnLoginFacebook.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
@@ -116,7 +123,7 @@ public class WelcomeActivity extends AppCompatActivity implements View.OnClickLi
         });
     }
 
-    // 페이스북
+    // 페이스북 onActivityResult
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -139,8 +146,6 @@ public class WelcomeActivity extends AppCompatActivity implements View.OnClickLi
             @Override
             public void onResponse(Call<FacebookLoginResult> call, Response<FacebookLoginResult> response) {
                 Log.e("===============", "로그인 데이터 전송");
-                Log.e("response.code()", response.code()+"");
-                Log.e("response.body() 1  :: ", response.body().toString());
 
 
 
@@ -250,5 +255,16 @@ public class WelcomeActivity extends AppCompatActivity implements View.OnClickLi
                 startActivity(intent);
                 break;
         }
+    }
+
+    @Override
+    public void init() {
+
+    }
+
+    @Override
+    public void cancel() {
+        Toast.makeText(this, "권한을 요청을 승인하셔야 앱을 사용할 수 있습니다.", Toast.LENGTH_SHORT).show();
+        finish();
     }
 }
