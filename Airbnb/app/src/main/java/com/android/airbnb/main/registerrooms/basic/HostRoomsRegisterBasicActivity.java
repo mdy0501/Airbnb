@@ -1,10 +1,9 @@
 package com.android.airbnb.main.registerrooms.basic;
 
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 
 import com.android.airbnb.R;
-import com.android.airbnb.domain.airbnb.HostingHouse;
 
 public class HostRoomsRegisterBasicActivity extends AppCompatActivity {
 
@@ -19,7 +18,7 @@ public class HostRoomsRegisterBasicActivity extends AppCompatActivity {
     HostRoomsRegisterBasicAmenitiesFragment hostRoomsRegisterBasicAmenitiesFragment;
     HostRoomsRegisterBasicSpaceFragment hostRoomsRegisterBasicSpaceFragment;
 
-    public HostingHouse hostingHouse = new HostingHouse();
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

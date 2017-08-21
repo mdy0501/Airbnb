@@ -20,6 +20,9 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.android.airbnb.R;
+import com.android.airbnb.domain.airbnb.HostingHouse;
+
+import static com.android.airbnb.main.registerrooms.HostRoomsRegisterActivity.hostingHouse;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -131,20 +134,21 @@ public class HostRoomsRegisterBasicTypeFragment extends Fragment implements View
                 .commit();
     }
 
+    // 숙소유형 RadioButton 선택
     @Override
     public void onCheckedChanged(RadioGroup group, @IdRes int checkedId) {
         switch (checkedId){
             case R.id.radioButtonAll:
-                hostRoomsRegisterBasicActivity.hostingHouse.setRoom_type("House");
-                Log.e("R_B_All :: ", hostRoomsRegisterBasicActivity.hostingHouse.getRoom_type());
+                hostingHouse.setRoom_type("House");
+                Log.e("R_B_All :: ", HostingHouse.getInstance().getRoom_type());
                 break;
             case R.id.radioButtonPrivateRoom:
-                hostRoomsRegisterBasicActivity.hostingHouse.setRoom_type("Individual");
-                Log.e("R_B_PrivateRoom :: ", hostRoomsRegisterBasicActivity.hostingHouse.getRoom_type());
+                hostingHouse.setRoom_type("Individual");
+                Log.e("R_B_PrivateRoom :: ", hostingHouse.getRoom_type());
                 break;
             case R.id.radioButtonMultiRoom:
-                hostRoomsRegisterBasicActivity.hostingHouse.setRoom_type("Shared_Room");
-                Log.e("R_B_MultiRoom :: ", hostRoomsRegisterBasicActivity.hostingHouse.getRoom_type());
+                hostingHouse.setRoom_type("Shared_Room");
+                Log.e("R_B_MultiRoom :: ", hostingHouse.getRoom_type());
                 break;
         }
 

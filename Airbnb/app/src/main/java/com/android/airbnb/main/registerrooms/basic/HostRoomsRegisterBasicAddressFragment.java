@@ -5,15 +5,19 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.constraint.ConstraintLayout;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.android.airbnb.R;
 import com.google.android.gms.location.places.Place;
+
+import static com.android.airbnb.main.registerrooms.HostRoomsRegisterActivity.hostingHouse;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -26,6 +30,7 @@ public class HostRoomsRegisterBasicAddressFragment extends Fragment implements V
     private EditText editSi, editGu, editDong, editZipCode;
     private ConstraintLayout layoutDoromyung;
     private View view = null;
+    private String address = null;
 
     public HostRoomsRegisterBasicAddressFragment() {
         // Required empty public constructor
@@ -81,7 +86,16 @@ public class HostRoomsRegisterBasicAddressFragment extends Fragment implements V
                 hostRoomsRegisterBasicActivity.onBackPressed();
                 break;
             case R.id.ImgBtnNext:
-                goHostRoomsRegisterBasicLocationFragment();
+                // TODO - 주소 입력안하고 '다음'버튼 누를 경우, 예외처리 해줘야함.
+                if(address.equals("")){
+                    Toast.makeText(hostRoomsRegisterBasicActivity, "주소를 입력해주세요.", Toast.LENGTH_SHORT).show();
+                } else {
+                    // 숙소 주소 저장
+                    address = address + " " + editDong.getText().toString();
+                    hostingHouse.setAddress(address);
+                    Log.e("주소 111 ", address);
+                    goHostRoomsRegisterBasicLocationFragment();
+                }
                 break;
             case R.id.layoutDoromyung:
                 goStreetAddressFragment();
@@ -110,5 +124,23 @@ public class HostRoomsRegisterBasicAddressFragment extends Fragment implements V
     public void streetAddressCallBack(Place place) {
         txtDoromyungContent.setText(place.getName());
         hostRoomsRegisterBasicActivity.hostRoomsRegisterBasicLocationFragment.setPlace(place);
+        Log.e("주소 Fragment", "주소 Fragment");
+
+        Log.i("StreetAddressFragment", "Place name : " + place.getName());          // 도로명 주소
+        Log.i("StreetAddressFragment", "Place latlng : " + place.getLatLng());      // 위도, 경도
+        Log.i("StreetAddressFragment", "Place lat : " + place.getLatLng().latitude);      // 위도
+        Log.i("StreetAddressFragment", "Place lng : " + place.getLatLng().longitude);      // 경도
+        Log.i("StreetAddressFragment", "Place id : " + place.getId());
+        Log.i("StreetAddressFragment", "Place address : " + place.getAddress());    // 전체 주소
+        Log.i("StreetAddressFragment", "Place locale : " + place.getLocale());
+        Log.i("StreetAddressFragment", "Place attributions : " + place.getViewport());
+        Log.i("StreetAddressFragment", "Place place price : " + place.getPriceLevel());
+
+        // 숙소 주소 저장
+        address = place.getAddress()+"";
+        // 숙소 위도 저장
+        hostingHouse.setLatitude(place.getLatLng().latitude+"");
+        // 숙소 경도 저장
+        hostingHouse.setLongitude(place.getLatLng().longitude+"");
     }
 }

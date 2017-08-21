@@ -85,7 +85,7 @@
 
     <!-- 숙박 가능 인원 (게스트용 침실) -->
     <string-array name="bedroom">
-        <item>원룸</item>
+        <!--<item>원룸</item>-->
         <item>침실 1개</item>
         <item>침실 2개</item>
         <item>침실 3개</item>
@@ -121,19 +121,19 @@
     <!-- 욕실 개수 -->
     <string-array name="bath">
         <item>욕실 0개</item>
-        <item>욕실 0.5개</item>
+        <!--<item>욕실 0.5개</item>-->
         <item>욕실 1개</item>
-        <item>욕실 1.5개</item>
+        <!--<item>욕실 1.5개</item>-->
         <item>욕실 2개</item>
-        <item>욕실 2.5개</item>
+        <!--<item>욕실 2.5개</item>-->
         <item>욕실 3개</item>
-        <item>욕실 3.5개</item>
+        <!--<item>욕실 3.5개</item>-->
         <item>욕실 4개</item>
-        <item>욕실 4.5개</item>
+        <!--<item>욕실 4.5개</item>-->
         <item>욕실 5개</item>
-        <item>욕실 5.5개</item>
+        <!--<item>욕실 5.5개</item>-->
         <item>욕실 6개</item>
-        <item>욕실 6.5개</item>
+        <!--<item>욕실 6.5개</item>-->
         <item>욕실 7개</item>
         <item>욕실 8개 이상</item>
     </string-array>

@@ -15,6 +15,8 @@ import android.widget.TextView;
 import com.android.airbnb.R;
 import com.android.airbnb.main.registerrooms.HostRoomsRegisterActivity;
 
+import static com.android.airbnb.main.registerrooms.HostRoomsRegisterActivity.hostingHouse;
+
 /**
  * A simple {@link Fragment} subclass.
  */
@@ -77,6 +79,10 @@ public class HostRoomsRegisterPreparePriceFragment extends Fragment implements V
                 hostRoomsRegisterPrepareActivity.onBackPressed();
                 break;
             case R.id.ImgBtnNext:
+                hostingHouse.setPrice_per_day(editPricePerDay.getText().toString());
+                hostingHouse.setExtra_people_fee(editExtraPeopleFee.getText().toString());
+                hostingHouse.setCleaning_fee(editCleaningFee.getText().toString());
+                hostingHouse.setWeekly_discount(editWeeklyDiscount.getText().toString());
                 Intent intent = new Intent(getActivity(), HostRoomsRegisterActivity.class);
                 startActivity(intent);
                 break;
