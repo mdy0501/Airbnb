@@ -9,6 +9,7 @@ import com.android.airbnb.domain.reservation.Reservation;
 
 import java.util.List;
 
+import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
@@ -71,6 +72,32 @@ public interface IServerApi {
     // Key : Authorization  ,  Value : Token xxxxxxxxxxxxxxx
     @GET("apis/user/logout/")
     Call<ResponseBody> getLogout(@Header("Authorization") String token);
+
+
+    // 숙소 등록 POST
+    @Multipart
+    @POST("apis/house/")
+    Call<ResponseBody> postRegisterRooms(@Header("Authorization") String token,
+                                         @Part("title") RequestBody title,
+                                         @Part("address") RequestBody address,
+                                         @Part("introduce") RequestBody introduce,
+                                         @Part("space_info") RequestBody space_info,
+                                         @Part("guest_access") RequestBody guest_access,
+                                         @Part("price_per_day") RequestBody price_per_day,
+                                         @Part("extra_people_fee") RequestBody extra_people_fee,
+                                         @Part("cleaning_fee") RequestBody cleaning_fee,
+                                         @Part("weekly_discount") RequestBody weekly_discount,
+                                         @Part("accommodates") RequestBody accomodates,
+                                         @Part("bathrooms") RequestBody bathrooms,
+                                         @Part("bedrooms") RequestBody bedrooms,
+                                         @Part("beds") RequestBody beds,
+                                         @Part("room_type") RequestBody room_type,
+                                         @Part("amenities") RequestBody amenities,
+                                         @Part("latitude") RequestBody latitude,
+                                         @Part("longitude") RequestBody longitude,
+//                                         @Part("image") RequestBody image);
+                                         @Part MultipartBody.Part photo);
+
 
     @GET("apis/like/")
     Call<List<House>> getWishList(@Header("Authorization") String token);
