@@ -21,9 +21,9 @@ import com.android.airbnb.R;
 public class GuestProfileFragment extends Fragment implements View.OnClickListener{
 
     private GuestMainActivity guestMainActivity;
-    private TextView txtName, txtModifyProfile, txtTravelCredit, txtChangeMode, txtSetting, txtHelp, txtFeedback;
-    private ImageView imgProfile, imgTravelCredit, imgChangeMode, imgSetting, imgHelp, imgFeedback;
-    private ConstraintLayout layoutProfile, layoutTravelCredit, layoutChangeMode, layoutSetting, layoutHelp, layoutFeedback;
+    private TextView txtName, txtModifyProfile, txtTravelCredit, txtChangeMode, txtReserved, txtSetting, txtHelp, txtFeedback;
+    private ImageView imgProfile, imgTravelCredit, imgChangeMode, imgReserved,imgSetting, imgHelp, imgFeedback;
+    private ConstraintLayout layoutProfile, layoutTravelCredit, layoutChangeMode, layoutReserved ,layoutSetting, layoutHelp, layoutFeedback;
 
 //    private ProgressDialog changeModeDialog;
 
@@ -59,6 +59,7 @@ public class GuestProfileFragment extends Fragment implements View.OnClickListen
         txtModifyProfile = (TextView) view.findViewById(R.id.txtModifyProfile);
         txtTravelCredit = (TextView) view.findViewById(R.id.txtTravelCredit);
         txtChangeMode = (TextView) view.findViewById(R.id.txtChangeMode);
+        txtReserved = (TextView) view.findViewById(R.id.txtReserved);
         txtSetting = (TextView) view.findViewById(R.id.txtSetting);
         txtHelp = (TextView) view.findViewById(R.id.txtHelp);
         txtFeedback = (TextView) view.findViewById(R.id.txtFeedback);
@@ -71,6 +72,7 @@ public class GuestProfileFragment extends Fragment implements View.OnClickListen
         layoutProfile = (ConstraintLayout) view.findViewById(R.id.layoutProfile);
         layoutTravelCredit = (ConstraintLayout) view.findViewById(R.id.layoutTravelCredit);
         layoutChangeMode = (ConstraintLayout) view.findViewById(R.id.layoutChangeMode);
+        layoutReserved = (ConstraintLayout) view.findViewById(R.id.layoutReserved);
         layoutSetting = (ConstraintLayout) view.findViewById(R.id.layoutSetting);
         layoutHelp = (ConstraintLayout) view.findViewById(R.id.layoutHelp);
         layoutFeedback = (ConstraintLayout) view.findViewById(R.id.layoutFeedback);
@@ -80,6 +82,7 @@ public class GuestProfileFragment extends Fragment implements View.OnClickListen
         layoutProfile.setOnClickListener(this);
         layoutTravelCredit.setOnClickListener(this);
         layoutChangeMode.setOnClickListener(this);
+        layoutReserved.setOnClickListener(this);
         layoutSetting.setOnClickListener(this);
         layoutHelp.setOnClickListener(this);
         layoutFeedback.setOnClickListener(this);
@@ -101,9 +104,11 @@ public class GuestProfileFragment extends Fragment implements View.OnClickListen
                 intent = new Intent(getActivity(), HostMainActivity.class);
                 startActivity(intent);
 //                getActivity().overridePendingTransition(R.anim.change_mode_slide_in, R.anim.change_mode_step_back);
-
 //                changeModeDialog.dismiss();
                 getActivity().finish();
+                break;
+            case R.id.layoutReserved:
+                Toast.makeText(guestMainActivity.getBaseContext(), "예약 확인하기 클릭", Toast.LENGTH_SHORT).show();
                 break;
             case R.id.layoutSetting :
                 intent = new Intent(guestMainActivity.getBaseContext(), SettingActivity.class);
