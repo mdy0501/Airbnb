@@ -8,10 +8,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.android.airbnb.R;
+
+import static com.android.airbnb.main.registerrooms.HostRoomsRegisterActivity.hostingHouse;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -19,8 +22,8 @@ import com.android.airbnb.R;
 public class HostRoomsRegisterBasicAmenitiesFragment extends Fragment implements View.OnClickListener{
 
     private HostRoomsRegisterBasicActivity hostRoomsRegisterBasicActivity;
-    private CheckBox checkBox1, checkBox3, checkBox5, checkBox6, checkBox7, checkBox8, checkBox10, checkBox11, checkBox12, checkBox15, checkBox17, checkBox19, checkBox20, checkBox22, checkBox23;
-    private TextView txtTitle, textView1, textView2, textView3, textView4, textView5, textView6, textView7, textView8, textView9, textView10, textView11, textView12, textView13, textView14, textView15, textView16, textView17, textView18, textView19, textView20, textView21, textView22, textView23;
+    private CheckBox checkBox1, checkBox3, checkBox5, checkBox6, checkBox7, checkBox8, checkBox10, checkBox11, checkBox12, checkBox15, checkBox17, checkBox19, checkBox20;
+    private TextView txtTitle, textView1, textView2, textView3, textView4, textView5, textView6, textView7, textView8, textView9, textView10, textView11, textView12, textView13, textView14, textView15, textView17, textView19, textView20;
     private ImageButton ImgBtnBack, ImgBtnNext;
     private View view = null;
 
@@ -43,6 +46,7 @@ public class HostRoomsRegisterBasicAmenitiesFragment extends Fragment implements
         }
         setViews(view);
         setListeners();
+        setCheckBoxListeners();
         return view;
     }
 
@@ -72,19 +76,12 @@ public class HostRoomsRegisterBasicAmenitiesFragment extends Fragment implements
         textView14 = (TextView) view.findViewById(R.id.textView14);
         textView15 = (TextView) view.findViewById(R.id.textView15);
         checkBox15 = (CheckBox) view.findViewById(R.id.checkBox15);
-        textView16 = (TextView) view.findViewById(R.id.textView16);
         textView17 = (TextView) view.findViewById(R.id.textView17);
         checkBox17 = (CheckBox) view.findViewById(R.id.checkBox17);
-        textView18 = (TextView) view.findViewById(R.id.textView18);
         textView19 = (TextView) view.findViewById(R.id.textView19);
         checkBox19 = (CheckBox) view.findViewById(R.id.checkBox19);
         textView20 = (TextView) view.findViewById(R.id.textView20);
         checkBox20 = (CheckBox) view.findViewById(R.id.checkBox20);
-        textView21 = (TextView) view.findViewById(R.id.textView21);
-        textView22 = (TextView) view.findViewById(R.id.textView22);
-        checkBox22 = (CheckBox) view.findViewById(R.id.checkBox22);
-        textView23 = (TextView) view.findViewById(R.id.textView23);
-        checkBox23 = (CheckBox) view.findViewById(R.id.checkBox23);
         ImgBtnNext = (ImageButton) view.findViewById(R.id.ImgBtnNext);
         ImgBtnBack = (ImageButton) view.findViewById(R.id.ImgBtnBack);
         txtTitle = (TextView) view.findViewById(R.id.txtTitle);
@@ -102,6 +99,10 @@ public class HostRoomsRegisterBasicAmenitiesFragment extends Fragment implements
                 hostRoomsRegisterBasicActivity.onBackPressed();
                 break;
             case R.id.ImgBtnNext:
+                if(hostingHouse.facilities != null) {
+                    hostingHouse.facilities = hostingHouse.facilities.substring(0, hostingHouse.facilities.length() - 2);
+                }
+                hostingHouse.setAmenities(hostingHouse.facilities);
                 goHostRoomsRegisterBasicSpaceFragment();
                 break;
         }
@@ -112,5 +113,138 @@ public class HostRoomsRegisterBasicAmenitiesFragment extends Fragment implements
                 .add(R.id.basicRoomsRegisterContainer, hostRoomsRegisterBasicActivity.hostRoomsRegisterBasicSpaceFragment)
                 .addToBackStack(null)
                 .commit();
+    }
+
+    private void setCheckBoxListeners(){
+        // 필수 아이템(수건, 침구 등)
+        checkBox1.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if(isChecked){
+//                    hostingHouse.setAmenities("Essentials");
+                    hostingHouse.facilities = "Essentials, ";
+                }
+            }
+        });
+
+        // 무선 인터넷
+        checkBox3.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if(isChecked){
+                    hostingHouse.facilities = hostingHouse.facilities + "Wireless_Internet, ";
+                }
+            }
+        });
+
+        // 샴푸
+        checkBox5.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if(isChecked){
+                    hostingHouse.facilities = hostingHouse.facilities + "Shampoo, ";
+                }
+            }
+        });
+
+        // 옷걸이
+        checkBox6.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if(isChecked){
+                    hostingHouse.facilities = hostingHouse.facilities + "Hangers, ";
+                }
+            }
+        });
+
+        // TV
+        checkBox7.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if(isChecked){
+                    hostingHouse.facilities = hostingHouse.facilities + "TV, ";
+                }
+            }
+        });
+
+        // 난방
+        checkBox8.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if(isChecked){
+                    hostingHouse.facilities = hostingHouse.facilities + "Heating, ";
+                }
+            }
+        });
+
+        // 에어컨
+        checkBox10.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if(isChecked){
+                    hostingHouse.facilities = hostingHouse.facilities + "Air_conditioning, ";
+                }
+            }
+        });
+
+        // 조식
+        checkBox11.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if(isChecked){
+                    hostingHouse.facilities = hostingHouse.facilities + "Breakfast, ";
+                }
+            }
+        });
+
+        // 실내 벽난로
+        checkBox12.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if(isChecked){
+                    hostingHouse.facilities = hostingHouse.facilities + "Indoor_fireplace, ";
+                }
+            }
+        });
+
+        // 애완동물 동행 허용
+        checkBox15.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if(isChecked){
+                    hostingHouse.facilities = hostingHouse.facilities + "Pets_allowed, ";
+                }
+            }
+        });
+
+        // 흡연 허용
+        checkBox17.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if(isChecked){
+                    hostingHouse.facilities = hostingHouse.facilities + "Smoking_allowed, ";
+                }
+            }
+        });
+
+        // 휠체어 접근 가능
+        checkBox19.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if(isChecked){
+                    hostingHouse.facilities = hostingHouse.facilities + "Wheelchair_accessible, ";
+                }
+            }
+        });
+
+        // 현관 안내인(doorman)
+        checkBox20.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if(isChecked){
+                    hostingHouse.facilities = hostingHouse.facilities + "Doorman, ";
+                }
+            }
+        });
     }
 }
