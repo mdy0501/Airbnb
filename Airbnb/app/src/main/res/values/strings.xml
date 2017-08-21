@@ -8,9 +8,16 @@
     <string name="hostInfo_intro_dummy">Hi, there! I\'m Ji-eun from south korea.\n
         I\'m Ji-eun from south korea.\nI\'m Ji-eun from south korea.\nI\'m Ji-eun from south korea.
     </string>
+    <string name="detail_house_review_dummy">
+        Great Place to escape for a few days. The outside shower au naturel is magnificent. The TV and the interior stereo do not work as do a few of the bulbs. The air conditioning could do with a re gas as it is not functioning h way it should and I could not get the oven to light. But these The BBQ - g s is excellent and the solar powered outside lights and the sun loungers and plunge pool are excellentin heat. Most of all you will loathe traquility and peace and quiet. Go Horse Riding at Rejertilla nearby or mountain biking. Go to Caminito del Rey - but book in advane all are unmissable. The airstream is super cool and unusual just needs bit more love from the host to be perfect. The experience is unmissable and 5 star you will not be disappointed. The area is incredibly beautiful. Drive the road from El Burgo to Ronda - which is so beautiful. An amazing road and No speed cameras - Z bends - driving as it should be - or better rent a fast motorbike!
+            </string>
 
     <string name="saveList">목록 만들기</string>
     <string name="wishlist_menu_delete">삭제하기</string>
+
+    <!-- calendar tag -->
+    <string name="date_tag">date tag</string>
+    <string name="check_booking_tag">check booked tag</string>
 
 
     <!-- calendarView -->

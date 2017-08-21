@@ -62,7 +62,7 @@ public class HostRoomsRegisterBasicSpaceFragment extends Fragment implements Vie
         checkBox7 = (CheckBox) view.findViewById(R.id.checkBox7);
         textView8 = (TextView) view.findViewById(R.id.textView8);
         checkBox8 = (CheckBox) view.findViewById(R.id.checkBox8);
-        textView9 = (TextView) view.findViewById(R.id.textView9);
+        textView9 = (TextView) view.findViewById(R.id.detail_house_more_calendar);
         textView10 = (TextView) view.findViewById(R.id.textView10);
         checkBox9 = (CheckBox) view.findViewById(R.id.checkBox9);
         textView11 = (TextView) view.findViewById(R.id.textView11);

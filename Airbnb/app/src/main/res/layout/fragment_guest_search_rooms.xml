@@ -13,12 +13,14 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="16dp"
         android:clickable="true"
+        android:cropToPadding="false"
+        android:scaleType="fitXY"
         app:fabSize="mini"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:srcCompat="@mipmap/icon_map" />
+        app:srcCompat="@drawable/ic_map" />
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recyclerRooms"

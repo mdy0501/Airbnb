@@ -2,6 +2,7 @@ package com.android.airbnb.calendar;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.graphics.Paint;
 import android.graphics.Typeface;
 import android.util.Log;
 import android.view.Gravity;
@@ -34,6 +35,8 @@ public class CalendarItem extends LinearLayout {
     private LinearLayout.LayoutParams textParams;
     private OnCalendarChangedListener mListener;
     private CalendarData calendarData;
+    public static final int CHECK_BOOKING_TAG = R.string.check_booking_tag;
+    public static final int DATE_TAG = R.string.date_tag;
     private int startIndex;
 
     public CalendarItem(CalendarData calendarData, Context context, OnCalendarChangedListener mListener) {
@@ -50,26 +53,28 @@ public class CalendarItem extends LinearLayout {
         selectedTvs = new ArrayList<>();
         setOrientation(VERTICAL);
         setCalendarItemParams(this);
-        Log.e("sdfsf", "year month : " + yearMonth);
         initView();
     }
 
     private void setCalendarItemParams(CalendarItem layout) {
         calendarLayoutParams = new LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT);
+        calendarLayoutParams.setMargins(0, 0, 0, 30);
         layout.setLayoutParams(calendarLayoutParams);
     }
 
     private void setRowParams(LinearLayout row) {
         rowParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT);
+        rowParams.height = 150;
+        rowParams.gravity = Gravity.CENTER;
         row.setGravity(Gravity.CENTER);
         row.setLayoutParams(rowParams);
     }
 
-    private void setTextViewParams(TextView tv, String text) {
+    private void setTextViewParams(TextView tv) {
         textParams = new LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.MATCH_PARENT);
         textParams.weight = 1;
         textParams.gravity = Gravity.CENTER;
-        tv.setTextAlignment(TEXT_ALIGNMENT_VIEW_END);
+        tv.setGravity(Gravity.CENTER);
         tv.setLayoutParams(textParams);
     }
 
@@ -79,7 +84,7 @@ public class CalendarItem extends LinearLayout {
         TextView title = new TextView(context);
         title.setText(String.format("%s년 %s월", year, month));
         title.setTextColor(Color.BLACK);
-        title.setTextSize(20f);
+        title.setTextSize(30f);
         addView(title);
 
         // 일 세팅
@@ -93,23 +98,24 @@ public class CalendarItem extends LinearLayout {
             }
 
             final TextView col = new TextView(context);
-            setTextViewParams(col, days.get(i));
+            setTextViewParams(col);
             col.setText(days.get(i) + "");
             col.setBackgroundResource(R.color.white);
             col.setTextColor(Color.BLACK);
             col.setTextSize(20f);
             if (days.get(i) != "" || !days.get(i).equals("")) {
-                col.setTag(year + "-" + Utils.CalendarUtil.getFormattedForCal(month) +
+                col.setTag(DATE_TAG, year + "-" + Utils.CalendarUtil.getFormattedForCal(month) +
                         "-" + Utils.CalendarUtil.getFormattedForCal(days.get(i) + ""));
+                col.setTag(CHECK_BOOKING_TAG, false);
             }
             col.setOnClickListener(new OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    String key = (String) v.getTag();
+                    String key = (String) v.getTag(DATE_TAG);
                     if (key != null) {
                         Toast.makeText(v.getContext(), key, Toast.LENGTH_SHORT).show();
                     }
-                    setCompleted(key, CalendarActivity.STAUS, col);
+                    setCompleted(key, CalendarActivity.STATUS, col);
                 }
             });
 
@@ -123,19 +129,23 @@ public class CalendarItem extends LinearLayout {
     public void resetAll() {
         for (int i = 0; i < cols.size(); i++) {
             TextView tv = cols.get(i);
-            tv.setText(days.get(i + startIndex));
-            tv.setTextColor(Color.BLACK);
-            tv.setTypeface(null, Typeface.NORMAL);
-            tv.setBackgroundResource(R.color.white);
-            selectedTvs.clear();
+            Log.e("CalendarItem", "isBooked ? " + (boolean) tv.getTag(CHECK_BOOKING_TAG));
+            if ((boolean)tv.getTag(CHECK_BOOKING_TAG) == false) {
+                tv.setText(days.get(i + startIndex));
+                tv.setTextColor(Color.BLACK);
+                tv.setTypeface(null, Typeface.NORMAL);
+                tv.setBackgroundResource(R.color.white);
+                selectedTvs.clear();
+            }
         }
     }
 
     public void setCompleted(String date, String status, TextView tv) {
         switch (status) {
+            // 1. 초기 아무것도 선택하지 않았을 때
             case CalendarActivity.NOTHING:
                 Log.e("JunheeCalendarItem", " 1 ==================");
-                CalendarActivity.STAUS = CalendarActivity.CHECK_IN;
+                CalendarActivity.STATUS = CalendarActivity.CHECK_IN;
                 CalendarActivity.checkinDate = date;
                 Log.e("JunheeCalendarItem", "check in : " + CalendarActivity.checkinDate + ", check out : " + CalendarActivity.checkoutDate);
                 setSelected(tv);
@@ -143,9 +153,10 @@ public class CalendarItem extends LinearLayout {
                 mListener.checkInChanged(date);
                 break;
 
+            // 2. CHECK IN date가 선택된 상황일 때
             case CalendarActivity.CHECK_IN:
                 Log.e("JunheeCalendarItem", " 2 ==================");
-                CalendarActivity.STAUS = CalendarActivity.CHECK_OUT;
+                CalendarActivity.STATUS = CalendarActivity.CHECK_OUT;
                 CalendarActivity.checkoutDate = date;
                 Log.e("JunheeCalendarItem", "check in : " + CalendarActivity.checkinDate + ", check out : " + CalendarActivity.checkoutDate);
                 setSelected(tv);
@@ -153,10 +164,11 @@ public class CalendarItem extends LinearLayout {
                 mListener.checkOutChanged(date);
                 break;
 
+            // 3. CHECK OUT date가 선택된 상황일 때
             case CalendarActivity.CHECK_OUT:
                 Log.e("JunheeCalendarItem", " 3 ==================");
                 mListener.resetAll();
-                CalendarActivity.STAUS = CalendarActivity.CHECK_IN;
+                CalendarActivity.STATUS = CalendarActivity.CHECK_IN;
                 CalendarActivity.checkinDate = date;
                 CalendarActivity.checkoutDate = "";
                 Log.e("JunheeCalendarItem", "check in : " + CalendarActivity.checkinDate + ", check out : " + CalendarActivity.checkoutDate);
@@ -166,14 +178,39 @@ public class CalendarItem extends LinearLayout {
         }
     }
 
-    public void setRanged(int start, int end){
-        for(int i= start; i <= end; i++){
-            setSelected(cols.get(i));
+    // booking 완료된 날짜 속성값 변경하는 메소드
+    public void setBooked(TextView tv) {
+        if (tv.getText() != "" || !tv.getText().equals("")) {
+            tv.setTag(CHECK_BOOKING_TAG, true);
+            tv.setClickable(false);
+            Log.e("CalendarItem", "CHECK_BOOKING_TAG : " + (boolean) tv.getTag(CHECK_BOOKING_TAG));
+            tv.setBackgroundColor(getResources().getColor(R.color.white));
+            tv.setTextColor(Color.GRAY);
+            tv.setPaintFlags(Paint.STRIKE_THRU_TEXT_FLAG);
+            tv.setTypeface(null, Typeface.BOLD_ITALIC);
         }
     }
 
+    public void setRanged(int start, int end) {
+        // status에 따라 분기하여 다른 작업을 한다.
+        // TODO for문도 메소드 안에 넣을 수 있도록 메소드를 정리한다.
+        if (CalendarActivity.STATUS == CalendarActivity.NOTHING) {
+            for (int i = start; i <= end; i++) {
+                Log.e("CalendarItem", "setRanged : nothing ================= do ");
+                setBooked(cols.get(i));
+            }
+        } else {
+            Log.e("CalendarItem", "setRanged : check in & check out ================= do ");
+            for (int i = start; i <= end; i++) {
+                setSelected(cols.get(i));
+            }
+        }
+    }
+
+    // checkin checkout 선택 시, 속성값 변경하는 메소드
+    // TODO for문도 메소드 안에 넣을 수 있도록 메소드를 정리한다.
     public void setSelected(TextView tv) {
-        if(tv.getText() != "" || !tv.getText().equals("")){
+        if (tv.getText() != "" || !tv.getText().equals("")) {
             tv.setBackgroundColor(getResources().getColor(R.color.selected_day_background));
             tv.setTextColor(Color.WHITE);
             tv.setTypeface(null, Typeface.BOLD);

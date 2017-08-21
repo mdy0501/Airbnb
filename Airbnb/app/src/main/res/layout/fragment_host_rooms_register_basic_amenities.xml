@@ -191,7 +191,7 @@
                     app:layout_constraintTop_toTopOf="@+id/textView8" />
 
                 <TextView
-                    android:id="@+id/textView9"
+                    android:id="@+id/detail_house_more_calendar"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="24dp"
@@ -212,7 +212,7 @@
                     android:textColor="@android:color/black"
                     android:textSize="22sp"
                     app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/textView9" />
+                    app:layout_constraintTop_toBottomOf="@+id/detail_house_more_calendar" />
 
                 <CheckBox
                     android:id="@+id/checkBox10"

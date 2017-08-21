@@ -66,10 +66,11 @@
             android:name=".DetailMapActivity"
             android:label="@string/title_activity_detail_map"
             android:theme="@style/NoActioinBarTheme" />
-        <activity android:name=".calendar.CalendarActivity"></activity>
+        <activity android:name=".calendar.CalendarActivity" />
         <activity android:name=".main.registerrooms.basic.HostRoomsRegisterBasicActivity" />
         <activity android:name=".main.registerrooms.detail.HostRoomsRegisterDetailActivity" />
-        <activity android:name=".main.registerrooms.prepare.HostRoomsRegisterPrepareActivity"></activity>
+        <activity android:name=".main.registerrooms.prepare.HostRoomsRegisterPrepareActivity" />
+        <activity android:name=".DetailExtraFeeActivity"></activity>
     </application>
 
 </manifest>

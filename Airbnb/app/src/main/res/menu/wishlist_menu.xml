@@ -8,8 +8,8 @@
         app:showAsAction="never" />
 
     <item
-        android:id="@+id/wishlist_menu_filter"
-        android:icon="@drawable/ic_filter"
+        android:id="@+id/wishlist_menu_refresh"
+        android:icon="@drawable/ic_refresh_black_24dp"
         android:title="filter"
         app:showAsAction="ifRoom|withText" />
 

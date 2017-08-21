@@ -16,6 +16,9 @@ import com.android.airbnb.R;
 import com.android.airbnb.domain.airbnb.House;
 import com.android.airbnb.domain.airbnb.House_images;
 import com.android.airbnb.util.GlideApp;
+import com.android.airbnb.util.PreferenceUtil;
+import com.android.airbnb.util.Remote.ITask;
+import com.android.airbnb.util.Remote.Loader;
 
 import java.util.List;
 
@@ -24,7 +27,7 @@ import java.util.List;
  * wishlist의 담겨있는 아이템을 보여주는 리스트어댑터
  */
 
-public class WishListDetailAdapter extends RecyclerView.Adapter<WishListDetailAdapter.Holder> {
+public class WishListDetailAdapter extends RecyclerView.Adapter<WishListDetailAdapter.Holder> implements ITask.postWishList {
 
     private Context mContext;
 
@@ -53,7 +56,8 @@ public class WishListDetailAdapter extends RecyclerView.Adapter<WishListDetailAd
         holder.setPrice("₩" + house.getPrice_per_day());
         holder.setRatingBar("4");
         holder.setReviewCount("40");
-        holder.setBtnSave(true);
+        holder.setBtnSave(house.isWished());
+        holder.setPosition(position);
     }
 
     @Override
@@ -61,7 +65,52 @@ public class WishListDetailAdapter extends RecyclerView.Adapter<WishListDetailAd
         return houseList.size();
     }
 
+    @Override
+    public void getWishResponse(String message) {
+        Toast.makeText(mContext, message, Toast.LENGTH_SHORT).show();
+    }
+
     class Holder extends RecyclerView.ViewHolder {
+
+
+
+        private ImageView houseImg;
+        private CheckBox btnSave;
+        private TextView price;
+        private TextView title;
+        private TextView houseType;
+        private RatingBar ratingBar;
+        private TextView reviewCount;
+        private int position;
+
+
+        public Holder(View view) {
+            super(view);
+            houseImg = (ImageView) view.findViewById(R.id.wishlist_img);
+            btnSave = (CheckBox) view.findViewById(R.id.wishlist_btnSave);
+            price = (TextView) view.findViewById(R.id.wishlist_house_price);
+            title = (TextView) view.findViewById(R.id.wishlist_house_title);
+            houseType = (TextView) view.findViewById(R.id.wishlist_house_type);
+            ratingBar = (RatingBar) view.findViewById(R.id.wishlist_house_ratingbar);
+            reviewCount = (TextView) view.findViewById(R.id.wishlist_review_count);
+
+            btnSave.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                @Override
+                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                    if(isChecked)
+                        Loader.postWishList("Token " + PreferenceUtil.getToken(mContext), houseList.get(position).getPk(), WishListDetailAdapter.this);
+                    Toast.makeText(mContext, "isChecked :: " + isChecked, Toast.LENGTH_SHORT).show();
+                }
+            });
+
+            view.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Toast.makeText(mContext, "item clicked ======= done! ", Toast.LENGTH_SHORT).show();
+
+                }
+            });
+        }
 
         public void setHouseImg(String imgUrl) {
             GlideApp
@@ -95,39 +144,12 @@ public class WishListDetailAdapter extends RecyclerView.Adapter<WishListDetailAd
             this.reviewCount.setText(reviewCount);
         }
 
-        private ImageView houseImg;
-        private CheckBox btnSave;
-        private TextView price;
-        private TextView title;
-        private TextView houseType;
-        private RatingBar ratingBar;
-        private TextView reviewCount;
+        public int getHousePistion() {
+            return position;
+        }
 
-
-        public Holder(View view) {
-            super(view);
-            houseImg = (ImageView) view.findViewById(R.id.wishlist_img);
-            btnSave = (CheckBox) view.findViewById(R.id.wishlist_btnSave);
-            price = (TextView) view.findViewById(R.id.wishlist_house_price);
-            title = (TextView) view.findViewById(R.id.wishlist_house_title);
-            houseType = (TextView) view.findViewById(R.id.wishlist_house_type);
-            ratingBar = (RatingBar) view.findViewById(R.id.wishlist_house_ratingbar);
-            reviewCount = (TextView) view.findViewById(R.id.wishlist_review_count);
-
-            btnSave.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-                @Override
-                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                    Toast.makeText(mContext, "isChecked :: " + isChecked, Toast.LENGTH_SHORT).show();
-                }
-            });
-
-            view.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Toast.makeText(mContext, "item clicked ======= done! ", Toast.LENGTH_SHORT).show();
-
-                }
-            });
+        public void setPosition(int position) {
+            this.position = position;
         }
     }
 }

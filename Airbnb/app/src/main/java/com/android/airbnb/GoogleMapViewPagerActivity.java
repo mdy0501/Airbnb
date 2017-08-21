@@ -254,6 +254,7 @@ public class GoogleMapViewPagerActivity extends FragmentActivity implements OnMa
     }
 
     private void setMarkerChanged(Marker marker) {
+        Log.e("GoogleMapViewPager", "selectedMarkerID ===== origin : " + selectedMarkerID);
         if (selectedMarkerID != "") {
             Marker exMarker = markerMap.get(selectedMarkerID);
             setMarkerIcon(exMarker, R.style.iconGenTxt_default, Color.parseColor("#ffffff"));
@@ -261,6 +262,7 @@ public class GoogleMapViewPagerActivity extends FragmentActivity implements OnMa
         }
         setMarkerIcon(marker, R.style.iconGenTxt_clicked, Color.parseColor("#00A599"));
         selectedMarkerID = marker.getId();
+        Log.e("GoogleMapViewPager", "selectedMarkerID ===== changed : " + selectedMarkerID);
         mapListPager.setCurrentItem(markerList.indexOf(marker));
     }
 
@@ -289,13 +291,6 @@ public class GoogleMapViewPagerActivity extends FragmentActivity implements OnMa
         new Thread(new Runnable() {
             @Override
             public void run() {
-                // 하우스리스트 받아온 상황
-                // 셋포지션하려고 비동기처리
-                //
-                for (int i = 0; i < houseList.size(); i++) {
-//                    getMarkerOpt(i);
-                }
-
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
@@ -304,15 +299,20 @@ public class GoogleMapViewPagerActivity extends FragmentActivity implements OnMa
                         for (int i = 0; i < houseList.size(); i++) {
                             markerOptions = new MarkerOptions()
                                     .position(houseList.get(i).getLatLng())
-                                    .icon(BitmapDescriptorFactory.fromBitmap(iconGenerator.makeIcon("₩" + houseList.get(i).getTitle())))
+                                    .icon(BitmapDescriptorFactory.fromBitmap(iconGenerator.makeIcon("₩" + houseList.get(i).getPrice_per_day())))
                                     .anchor(iconGenerator.getAnchorU(), iconGenerator.getAnchorV());
+
                             Marker marker = googleMap.addMarker(markerOptions);
                             marker.setTag(houseList.get(i));
+                            marker.hideInfoWindow();
                             houseList.get(i).setMarker(marker);
                             markerList.add(marker);
                             markerMap.put(marker.getId(), marker);
                             progress.stop();
                         }
+                        Log.e("GoogleMapPAger", "markerlist : " + markerList.size());
+                        Log.e("GoogleMapPAger", "markermap : " + markerMap.size());
+                        setMarkerChanged(markerList.get(0));
                     }
                 });
             }
@@ -331,7 +331,7 @@ public class GoogleMapViewPagerActivity extends FragmentActivity implements OnMa
         bottomSheetAdapter.notifyDataSetChanged();
         wishBottomRecycler.smoothScrollToPosition(0);
         if (btnIsChecked) {
-            Snackbar.make(snackbarPlace, "[위시리스트]에 저장됨.", Snackbar.LENGTH_LONG).setAction("위시리스트", new View.OnClickListener() {
+            Snackbar.make(snackbarPlace, "[wishlist]에 저장됨.", Snackbar.LENGTH_LONG).setAction("위시리스트", new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     Loader.getWishList(userToken, GoogleMapViewPagerActivity.this);
@@ -340,7 +340,7 @@ public class GoogleMapViewPagerActivity extends FragmentActivity implements OnMa
             }).show();
 
         } else {
-            Snackbar.make(snackbarPlace, "[위시리스트 이름]에 삭제됨.", Snackbar.LENGTH_LONG).setAction("위시리스트", new View.OnClickListener() {
+            Snackbar.make(snackbarPlace, "[wishlist]에 삭제됨.", Snackbar.LENGTH_LONG).setAction("위시리스트", new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     Loader.getWishList(userToken, GoogleMapViewPagerActivity.this);
@@ -364,11 +364,8 @@ public class GoogleMapViewPagerActivity extends FragmentActivity implements OnMa
 
     @Override
     public void doAllWishList(List<House> houses) {
-        Log.e("MapActivity", "start doTotalHouseList ============ ");
         wishlist = houses;
-        Log.e("MapActivity", "houses : " + houses.toString());
         bottomSheetAdapter.refreshWishList(wishlist);
-        Log.e("MapActivity", "start doTotalHouseList ============ ");
         findWishHouses();
     }
 

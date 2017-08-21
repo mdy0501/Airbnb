@@ -22,8 +22,6 @@ import java.util.List;
 
 public class WishListAdadpter extends RecyclerView.Adapter<WishListAdadpter.Holder> {
 
-
-
     // 백엔드 작업이 완료되면 houseList는 wishList 관련 객체로 교체해준다.
     private List<House> houselist;
     public Context mContext;
