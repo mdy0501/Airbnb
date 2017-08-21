@@ -17,19 +17,17 @@ import com.android.airbnb.DetailHouseActivity;
 import com.android.airbnb.R;
 import com.android.airbnb.domain.airbnb.House;
 import com.android.airbnb.domain.reservation.Reservation;
-import com.android.airbnb.util.PreferenceUtil;
+import com.android.airbnb.util.Remote.ITask;
 import com.android.airbnb.util.Remote.Loader;
-import com.google.gson.Gson;
 import com.tsengvn.typekit.TypekitContextWrapper;
 
-import java.io.UnsupportedEncodingException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-public class CalendarActivity extends AppCompatActivity implements CalendarItem.OnCalendarChangedListener, View.OnClickListener {
+public class CalendarActivity extends AppCompatActivity implements CalendarItem.OnCalendarChangedListener, View.OnClickListener, ITask.oneReservation {
 
     private List<CalendarData> calendarDatas;
     private ImageView calendarBtnClose;
@@ -46,12 +44,13 @@ public class CalendarActivity extends AppCompatActivity implements CalendarItem.
     public static final String CHECK_IN = "com.android.airbnb.calendar.CalendarData.checkin";
     public static final String CHECK_OUT = "com.android.airbnb.calendar.CalendarData.checkout";
     public static final String NOTHING = "com.android.airbnb.calendar.CalendarData.nothing";
-    public static String STAUS = NOTHING;
+    public static String STATUS = NOTHING;
 
     public static String checkinDate = "";
     public static String checkoutDate = "";
 
     private List<CalendarItem> items;
+    private List<Reservation> reservations;
     private House house;
 
     @Override
@@ -61,9 +60,10 @@ public class CalendarActivity extends AppCompatActivity implements CalendarItem.
         items = new ArrayList<>();
         getCalendarDate();
         getData();
-        initView();
-        setOnClick();
-        setCalendar();
+        Loader.getReservation(house.getPk(), this);
+//        initView();
+//        setOnClick();
+//        setCalendar();
     }
 
     private void getData(){
@@ -75,6 +75,41 @@ public class CalendarActivity extends AppCompatActivity implements CalendarItem.
         for (CalendarItem item : items) {
             item.resetAll();
         }
+    }
+
+    private void setBookedDates(String checkin, String checkout){
+
+        String subCheckin = checkin.substring(0, 7);
+        String subCheckout = checkout.substring(0, 7);
+
+        int subCheckinDd = Integer.parseInt(checkin.substring(9));
+        int subCheckoutDd = Integer.parseInt(checkout.substring(9));
+
+        Log.e("CustomCalendar", "subCheckin : " + subCheckin + ", checkout : " + subCheckout);
+        Log.e("CustomCalendar", "subCheckinDd : " + subCheckinDd + ", subCheckoutDd : " + subCheckoutDd);
+
+        for (CalendarItem item : items) {
+
+            String itemKey = (String) item.getTag();
+
+            if ((subCheckin).equals(itemKey) && (subCheckout).equals(itemKey)) {
+                for (int i = subCheckinDd; i <= subCheckoutDd; i++) {
+                    item.setBooked(item.getCols().get(i));
+                }
+
+            } else if ((subCheckin).equals(itemKey) || (subCheckout).equals(itemKey)) {
+
+                if ((subCheckin).equals(itemKey))
+                    subCheckinDd = items.indexOf(item);
+                else if ((subCheckout).equals(itemKey))
+                    subCheckoutDd = items.indexOf(item);
+
+                setCalendarRange(subCheckinDd, subCheckoutDd);
+            }
+        }
+        Log.e("CustomCalendar", "startIndex : " + subCheckinDd + ", endIndex : " + subCheckoutDd);
+
+
     }
 
     private void setRange(String startDate, String endDate) {
@@ -221,19 +256,11 @@ public class CalendarActivity extends AppCompatActivity implements CalendarItem.
                 break;
 
             case R.id.calendar_btn_Save:
-                Log.e("CalendarActivity", "house pk : " + house.getPk());
-                Reservation reservation = new Reservation();
-                reservation.setCheckout_date(checkoutDate);
-                reservation.setCheckin_date(checkinDate);
-                Gson gson = new Gson();
-                String jsonString = gson.toJson(reservation);
-                String queryString = "?house=" + house.getPk();
-                Log.e("CalendarAct", "query : " + queryString);
-                try {
-                    Loader.postReservation("Token" + PreferenceUtil.getToken(this), queryString, checkinDate, checkoutDate);
-                } catch (UnsupportedEncodingException e) {
-                    e.printStackTrace();
-                }
+                Intent intent = new Intent();
+                intent.putExtra("checkin", checkinDate);
+                intent.putExtra("checkout", checkoutDate);
+                setResult(200, intent);
+                finish();
                 break;
 
             case R.id.calendar_delete:
@@ -242,4 +269,15 @@ public class CalendarActivity extends AppCompatActivity implements CalendarItem.
         }
     }
 
+    @Override
+    public void doOneReservation(List<Reservation> reservations) {
+        this.reservations = reservations;
+        initView();
+        setOnClick();
+        setCalendar();
+
+        for(Reservation item : reservations){
+            setBookedDates(item.getCheckin_date(), item.getCheckout_date());
+        }
+    }
 }
