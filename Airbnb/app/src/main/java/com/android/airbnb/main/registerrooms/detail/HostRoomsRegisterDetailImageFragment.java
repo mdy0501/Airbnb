@@ -1,6 +1,7 @@
 package com.android.airbnb.main.registerrooms.detail;
 
 
+import android.content.ClipData;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
@@ -8,16 +9,13 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.android.airbnb.R;
-import com.android.airbnb.util.GlideApp;
 
 import static android.app.Activity.RESULT_OK;
 import static com.android.airbnb.main.registerrooms.HostRoomsRegisterActivity.hostingHouse;
@@ -30,7 +28,6 @@ public class HostRoomsRegisterDetailImageFragment extends Fragment implements Vi
     private HostRoomsRegisterDetailActivity hostRoomsRegisterDetailActivity;
     private TextView txtTitle, txtLimit, txtImage;
     private ImageButton ImgBtnRegisterPicture, ImgBtnNext, ImgBtnBack;
-    private ImageView img1, img2;
     private View view = null;
 
     public HostRoomsRegisterDetailImageFragment() {
@@ -61,8 +58,6 @@ public class HostRoomsRegisterDetailImageFragment extends Fragment implements Vi
         ImgBtnBack = (ImageButton) view.findViewById(R.id.ImgBtnBack);
         txtTitle = (TextView) view.findViewById(R.id.txtTitle);
         txtImage = (TextView) view.findViewById(R.id.txtImage);
-        img1 = (ImageView) view.findViewById(R.id.img1);
-        img2 = (ImageView) view.findViewById(R.id.img2);
     }
 
     private void setListeners(){
@@ -82,6 +77,9 @@ public class HostRoomsRegisterDetailImageFragment extends Fragment implements Vi
                 break;
             case R.id.ImgBtnRegisterPicture:
                 Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);   // EXTERNAL_CONTENT_URI 에 여러가지가 있는데 그 중에서 이미지들을 가져올 수 있게 해준다.
+                intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
+//                intent.setAction(Intent.ACTION_GET_CONTENT);
+//                intent.setType("image");
                 startActivityForResult( Intent.createChooser(intent, "앱을 선택하세요."), 100);    // 사진앱이 여러개일 경우 선택하게끔 해준다.
                 break;
         }
@@ -94,18 +92,54 @@ public class HostRoomsRegisterDetailImageFragment extends Fragment implements Vi
         if(resultCode == RESULT_OK){
             switch (requestCode){
                 case 100:
-                    Uri imageUri = data.getData();
-                    String filePath = getPathFromUri(getActivity(), imageUri);
-                    hostingHouse.setImagePath(filePath);    // 숙소 이미지 경로 저장
-                    Log.e("Gallery","imageUri========================="+imageUri);
-                    Log.e("Gallery","filePath========================="+filePath);
-                    txtImage.setText(filePath);
-                    GlideApp
-                            .with(getActivity())
-                            .load(imageUri)
-                            .centerCrop()
-                            .fallback(R.drawable.question_mark)
-                            .into(img1);
+//                    List<Uri> uris = new ArrayList<>();
+                    ClipData clipData = data.getClipData();
+                    int count = clipData.getItemCount();
+                    for(int i=0 ; i<count ; i++){
+                        ClipData.Item item = clipData.getItemAt(i);
+                        Uri imageUri = item.getUri();
+                        hostingHouse.uris.add(imageUri);
+                        String filePath = getPathFromUri(getActivity(), imageUri);  // Uri에서 실제 경로를 꺼낸다.
+                        hostingHouse.filePaths.add(filePath);
+                    }
+
+
+
+//                    String filePath1 = getPathFromUri(getActivity(), hostingHouse.uris.get(0));
+//                    GlideApp
+//                            .with(getActivity())
+//                            .load(hostingHouse.uris.get(0))
+//                            .centerCrop()
+//                            .fallback(R.drawable.question_mark)
+//                            .into(img1);
+//
+//                    String filePath2 = getPathFromUri(getActivity(), hostingHouse.uris.get(1));
+//                    GlideApp
+//                            .with(getActivity())
+//                            .load(hostingHouse.uris.get(1))
+//                            .centerCrop()
+//                            .fallback(R.drawable.question_mark)
+//                            .into(img2);
+//
+//                    String filePath3 = getPathFromUri(getActivity(), hostingHouse.uris.get(2));
+//                    GlideApp
+//                            .with(getActivity())
+//                            .load(hostingHouse.uris.get(2))
+//                            .centerCrop()
+//                            .fallback(R.drawable.question_mark)
+//                            .into(img3);
+
+//                    String filePath = getPathFromUri(getActivity(), imageUri);
+//                    hostingHouse.setImagePath(filePath);    // 숙소 이미지 경로 저장
+//                    Log.e("Gallery","imageUri========================="+imageUri);
+//                    Log.e("Gallery","filePath========================="+filePath);
+//                    txtImage.setText(filePath);
+//                    GlideApp
+//                            .with(getActivity())
+//                            .load(imageUri)
+//                            .centerCrop()
+//                            .fallback(R.drawable.question_mark)
+//                            .into(img1);
 
             }
 
