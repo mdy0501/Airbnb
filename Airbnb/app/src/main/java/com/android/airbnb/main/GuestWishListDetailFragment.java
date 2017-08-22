@@ -12,13 +12,13 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -29,6 +29,7 @@ import com.android.airbnb.domain.airbnb.House;
 import com.android.airbnb.util.PreferenceUtil;
 import com.android.airbnb.util.Remote.ITask;
 import com.android.airbnb.util.Remote.Loader;
+import com.baoyz.widget.PullRefreshLayout;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -41,8 +42,6 @@ public class GuestWishListDetailFragment extends Fragment implements ITask.allWi
     private GuestMainActivity guestMainActivity;
     private TextView txtTitle;
     private android.support.v7.widget.Toolbar toolbar;
-    private ImageView btnBack;
-    private ImageView btnMenu;
     private TextView title;
     private TextView houseCount;
     private RecyclerView wishRecycler;
@@ -50,10 +49,9 @@ public class GuestWishListDetailFragment extends Fragment implements ITask.allWi
     private Context mContext;
     private WishListDetailAdapter adapter;
     private List<House> wishlist;
-    private ImageView btnFilter;
-    private GuestWistListFragment wishListFragment;
     public static final String WISHLIST_HOUSES = "Wcom.android.airbnb.main.RESERVED_HOUSES";
     private String userToken = "";
+    private PullRefreshLayout refreshLayout;
 
     public GuestWishListDetailFragment() {
         // Required empty public constructor
@@ -75,12 +73,20 @@ public class GuestWishListDetailFragment extends Fragment implements ITask.allWi
     }
 
     @Override
+    public void onResume() {
+        super.onResume();
+        Loader.getWishList(userToken, this);
+        Log.e("WishListDetail", "====== getWishList");
+    }
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_guest_wish, container, false);
         setViews(view);
         setToolbar();
         setListeners();
+        setRefreshLayout();
         return view;
     }
 
@@ -137,12 +143,22 @@ public class GuestWishListDetailFragment extends Fragment implements ITask.allWi
         houseCount = (TextView) view.findViewById(R.id.reservation_house_count);
         wishRecycler = (RecyclerView) view.findViewById(R.id.wish_recycler);
         fabMap = (FloatingActionButton) view.findViewById(R.id.floatingActionButton);
+//        refreshLayout = (PullRefreshLayout) view.findViewById(R.id.wishlist_refresh);
+    }
+
+    private void setRefreshLayout(){
+        refreshLayout.setRefreshStyle(PullRefreshLayout.STYLE_RING);
+        refreshLayout.setOnRefreshListener(new PullRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                Loader.getWishList(userToken, GuestWishListDetailFragment.this);
+            }
+        });
     }
 
     private void connectData() {
         title.setText("위시리스트");
         houseCount.setText("예약 가능한 숙소 " + wishlist.size() + "개");
-
     }
 
     private void setListeners() {
@@ -159,11 +175,13 @@ public class GuestWishListDetailFragment extends Fragment implements ITask.allWi
 
     @Override
     public void doAllWishList(List<House> wishlist) {
+        Log.e("GuestWishList", "wishlist.size : " + wishlist.size());
         this.wishlist = wishlist;
         for (House item : wishlist){
             item.setWished(true);
         }
         setAdapter();
         connectData();
+        refreshLayout.setRefreshing(false);
     }
 }

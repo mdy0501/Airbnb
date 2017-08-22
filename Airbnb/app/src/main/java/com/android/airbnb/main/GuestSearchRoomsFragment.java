@@ -20,6 +20,7 @@ import com.android.airbnb.domain.airbnb.House;
 import com.android.airbnb.util.PreferenceUtil;
 import com.android.airbnb.util.Remote.ITask;
 import com.android.airbnb.util.Remote.Loader;
+import com.baoyz.widget.PullRefreshLayout;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -35,8 +36,8 @@ public class GuestSearchRoomsFragment extends Fragment implements ITask.totalHou
     private RoomsAdapter roomsAdapter;
     private FloatingActionButton fabGoogleMapViewPager;
     private Context context;
-    public static final String GUEST_SEARCH_ROOMS_FRAGMENT = "com.android.airbnb.main.GuestSearchRoomsFragment";
-
+    private PullRefreshLayout refreshLayout;
+    public static final String GUEST_SEARCH_ROOMS_FRAGMENT = "com.android.airbnb.main.GUEST_SEARCH_ROOMS_FRAGMENT";
 
     public GuestSearchRoomsFragment() {
         // Required empty public constructor
@@ -54,14 +55,10 @@ public class GuestSearchRoomsFragment extends Fragment implements ITask.totalHou
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_guest_search_rooms, container, false);
         setViews(view);
-        setListeners();
-        return view;
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
         Loader.getTotalHouse(this);
+        setListeners();
+        setRefreshLayout();
+        return view;
     }
 
     private void setWishlist() {
@@ -71,6 +68,17 @@ public class GuestSearchRoomsFragment extends Fragment implements ITask.totalHou
     private void setViews(View view) {
         recyclerRooms = (RecyclerView) view.findViewById(R.id.recyclerRooms);
         fabGoogleMapViewPager = (FloatingActionButton) view.findViewById(R.id.fabGoogleMapViewPager);
+        refreshLayout = (PullRefreshLayout) view.findViewById(R.id.search_refresh);
+    }
+
+    private void setRefreshLayout(){
+        refreshLayout.setRefreshStyle(PullRefreshLayout.STYLE_CIRCLES);
+        refreshLayout.setOnRefreshListener(new PullRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                Loader.getTotalHouse(GuestSearchRoomsFragment.this);
+            }
+        });
     }
 
     private void setListeners() {
@@ -106,6 +114,7 @@ public class GuestSearchRoomsFragment extends Fragment implements ITask.totalHou
         wishlist = houses;
         findWishHouses();
         setAdapter();
+        refreshLayout.setRefreshing(false);
     }
 
     @Override
