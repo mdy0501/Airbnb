@@ -15,6 +15,8 @@ import android.widget.Toast;
 
 import com.android.airbnb.R;
 
+import static com.android.airbnb.R.id.guest_main_container;
+
 /**
  * A simple {@link Fragment} subclass.
  */
@@ -24,6 +26,7 @@ public class GuestProfileFragment extends Fragment implements View.OnClickListen
     private TextView txtName, txtModifyProfile, txtTravelCredit, txtChangeMode, txtReserved, txtSetting, txtHelp, txtFeedback;
     private ImageView imgProfile, imgTravelCredit, imgChangeMode, imgReserved,imgSetting, imgHelp, imgFeedback;
     private ConstraintLayout layoutProfile, layoutTravelCredit, layoutChangeMode, layoutReserved ,layoutSetting, layoutHelp, layoutFeedback;
+    private GuestReservedListFragment reservedListFragment;
 
 //    private ProgressDialog changeModeDialog;
 
@@ -109,6 +112,8 @@ public class GuestProfileFragment extends Fragment implements View.OnClickListen
                 break;
             case R.id.layoutReserved:
                 Toast.makeText(guestMainActivity.getBaseContext(), "예약 확인하기 클릭", Toast.LENGTH_SHORT).show();
+                reservedListFragment = new GuestReservedListFragment();
+                guestMainActivity.getSupportFragmentManager().beginTransaction().add(guest_main_container, reservedListFragment).commit();
                 break;
             case R.id.layoutSetting :
                 intent = new Intent(guestMainActivity.getBaseContext(), SettingActivity.class);

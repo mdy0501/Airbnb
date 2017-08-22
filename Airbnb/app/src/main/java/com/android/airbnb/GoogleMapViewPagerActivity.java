@@ -27,6 +27,7 @@ import android.widget.Toast;
 import com.android.airbnb.adapter.BottomSheetAdapter;
 import com.android.airbnb.adapter.MapPagerAdapter;
 import com.android.airbnb.domain.airbnb.House;
+import com.android.airbnb.main.GuestReservedListFragment;
 import com.android.airbnb.main.GuestSearchRoomsFragment;
 import com.android.airbnb.main.GuestWishListDetailFragment;
 import com.android.airbnb.util.PreferenceUtil;
@@ -108,6 +109,8 @@ public class GoogleMapViewPagerActivity extends FragmentActivity implements OnMa
             houseList = intent.getParcelableArrayListExtra(GuestWishListDetailFragment.WISHLIST_HOUSES);
         } else if(objKey.equals(GuestSearchRoomsFragment.GUEST_SEARCH_ROOMS_FRAGMENT)) {
             houseList = intent.getParcelableArrayListExtra(GuestSearchRoomsFragment.GUEST_SEARCH_ROOMS_FRAGMENT);
+        } else if (objKey.equals(GuestReservedListFragment.RESERVED_HOUSES)) {
+            houseList = intent.getParcelableArrayListExtra(GuestReservedListFragment.RESERVED_HOUSES);
         }
     }
 

@@ -8,8 +8,8 @@
 
     <ScrollView
         android:id="@+id/scrollView2"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_width="0dp"
+        android:layout_height="562dp"
         android:layout_alignParentBottom="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
@@ -799,6 +799,7 @@
 
             <CheckBox
                 android:id="@+id/detail_wish"
+                android:background="@drawable/btn_wish"
                 style="@android:style/Widget.Holo.Light.CompoundButton.CheckBox"
                 android:layout_width="40dp"
                 android:layout_height="40dp"

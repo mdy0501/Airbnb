@@ -26,7 +26,9 @@
 
     <color name="calendar_booked_textColor">#414040</color>
 
-
+    <color name="reservation_talk_background">#dfdcdc</color>
+    <color name="btn_cancel_background_color">#f6afb3</color>
+    <color name="colorgray_transFF918E8E">#7a918e8e</color>
 
 
 </resources>
