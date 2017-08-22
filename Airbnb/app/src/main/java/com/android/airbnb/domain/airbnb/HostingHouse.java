@@ -30,7 +30,7 @@ public class HostingHouse {
         }
         return hostingHouse;
     }
-    
+
 
     private String title;   // 숙소 제목
     private String address; // 숙소 주소
