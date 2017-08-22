@@ -7,7 +7,6 @@ import com.android.airbnb.domain.airbnb.House;
 import com.android.airbnb.domain.reservation.Reservation;
 
 import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -209,7 +208,7 @@ public class Loader {
         });
     }
 
-    public static void postReservation(String token, String query, String checkin, String checkout) throws UnsupportedEncodingException {
+    public static void postReservation(String token, String housePk, String checkin, String checkout) throws UnsupportedEncodingException {
         Retrofit client = new Retrofit.Builder()
                 .baseUrl(BASE_URL)
                 .addConverterFactory(GsonConverterFactory.create())
@@ -219,13 +218,9 @@ public class Loader {
         RequestBody checkoutBody = RequestBody.create(MediaType.parse("text/plain"), checkout);
 
 
-        Call<Reservation> call = serverApi.postReservation(token, query, checkinBody, checkoutBody);
+        Call<Reservation> call = serverApi.postReservation(token, housePk, checkinBody, checkoutBody);
         String originalUrl = call.request().url().toString();
         Log.e("Loader", " origin : " + originalUrl);
-        originalUrl = originalUrl.replace("%3F", "?");
-        Log.e("Loader", " origin : " + originalUrl);
-        String encodedUrl = URLEncoder.encode(String.valueOf(originalUrl), "UTF-8");
-        Log.e("Loader", "encodedURl : " + encodedUrl);
 
         call.enqueue(new Callback<Reservation>() {
             @Override
@@ -244,6 +239,32 @@ public class Loader {
                 t.printStackTrace();
             }
         });
+    }
+
+    public static void getReservation(final ITask.getReservation iTask){
+        Retrofit client = new Retrofit.Builder()
+                .baseUrl(BASE_URL)
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+
+        IServerApi serverApi = client.create(IServerApi.class);
+        Call<List<Reservation>> call = serverApi.getReservation();
+        call.enqueue(new Callback<List<Reservation>>() {
+            @Override
+            public void onResponse(Call<List<Reservation>> call, Response<List<Reservation>> response) {
+                if(response.isSuccessful()){
+                    List<Reservation> reservations = response.body();
+                    iTask.getReservatoinResponse(reservations);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<Reservation>> call, Throwable t) {
+
+            }
+        });
+
+
 
     }
 }
