@@ -12,6 +12,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.android.airbnb.DetailHouseActivity;
 import com.android.airbnb.R;
@@ -21,10 +22,7 @@ import com.android.airbnb.util.Remote.ITask;
 import com.android.airbnb.util.Remote.Loader;
 import com.tsengvn.typekit.TypekitContextWrapper;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 public class CalendarActivity extends AppCompatActivity implements CalendarItem.OnCalendarChangedListener, View.OnClickListener, ITask.oneReservation {
@@ -66,7 +64,7 @@ public class CalendarActivity extends AppCompatActivity implements CalendarItem.
 //        setCalendar();
     }
 
-    private void getData(){
+    private void getData() {
         Intent intent = getIntent();
         house = intent.getParcelableExtra(DetailHouseActivity.DETAIL_HOUSE);
     }
@@ -77,7 +75,7 @@ public class CalendarActivity extends AppCompatActivity implements CalendarItem.
         }
     }
 
-    private void setBookedDates(String checkin, String checkout){
+    private void setBookedDates(String checkin, String checkout) {
 
         String subCheckin = checkin.substring(0, 7);
         String subCheckout = checkout.substring(0, 7);
@@ -156,7 +154,7 @@ public class CalendarActivity extends AppCompatActivity implements CalendarItem.
             } else if (i == endIndex) {
                 item.setRanged(0, cols.indexOf(selectedTvs.get(0)));
             } else {
-                item.setRanged(0, cols.size()-1);
+                item.setRanged(0, cols.size() - 1);
             }
         }
     }
@@ -195,7 +193,7 @@ public class CalendarActivity extends AppCompatActivity implements CalendarItem.
         calendarContainer = (LinearLayout) findViewById(R.id.calendar_container);
     }
 
-    private void setOnClick(){
+    private void setOnClick() {
         calendarBtnClose.setClickable(true);
         calendarBtnClose.setOnClickListener(this);
 
@@ -220,7 +218,7 @@ public class CalendarActivity extends AppCompatActivity implements CalendarItem.
     public void checkOutChanged(String date) {
         checkoutDateTxt.setTextAlignment(View.TEXT_ALIGNMENT_TEXT_END);
         checkoutDateTxt.setText("Check out" + "\n" + date);
-        calendarResultTxt.setText(calculatePeriod(checkinDate, checkoutDate));
+        calendarResultTxt.setText(Utils.CalendarUtil.calculatePeriod(checkinDate, checkoutDate) + "박을 선택했습니다.");
         setRange(checkinDate, checkoutDate);
     }
 
@@ -229,43 +227,34 @@ public class CalendarActivity extends AppCompatActivity implements CalendarItem.
         super.attachBaseContext(TypekitContextWrapper.wrap(newBase));
     }
 
-    private String calculatePeriod(String beginDate, String endDate) {
-        long result = 0;
 
-        try {
-            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-            Date formattedBegin = sdf.parse(beginDate);
-            Date formattedEnd = sdf.parse(endDate);
-
-            // 시간차이를 시간,분,초를 곱한 값으로 나누면 하루 단위가 나옴
-            long diff = formattedEnd.getTime() - formattedBegin.getTime();
-            result = diff / (24 * 60 * 60 * 1000);
-            System.out.println("날짜차이=" + result);
-
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-        return result + "박을 선택했습니다.";
-    }
 
     @Override
     public void onClick(View v) {
-        switch (v.getId()){
+        switch (v.getId()) {
             case R.id.calendar_btn_close:
                 onBackPressed();
                 break;
 
             case R.id.calendar_btn_Save:
-                Intent intent = new Intent();
-                intent.putExtra("checkin", checkinDate);
-                intent.putExtra("checkout", checkoutDate);
-                setResult(200, intent);
-                finish();
+                checkDate(checkinDate, checkoutDate);
                 break;
 
             case R.id.calendar_delete:
                 resetAllCalendar();
                 break;
+        }
+    }
+
+    private void checkDate(String checkinDate, String checkoutDate){
+        if (checkinDate.length() == checkoutDate.length()) {
+            Intent intent = new Intent();
+            intent.putExtra("checkin", checkinDate);
+            intent.putExtra("checkout", checkoutDate);
+            setResult(200, intent);
+            finish();
+        } else {
+            Toast.makeText(CalendarActivity.this, "날짜를 확인해주세요.", Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -276,7 +265,7 @@ public class CalendarActivity extends AppCompatActivity implements CalendarItem.
         setOnClick();
         setCalendar();
 
-        for(Reservation item : reservations){
+        for (Reservation item : reservations) {
             setBookedDates(item.getCheckin_date(), item.getCheckout_date());
         }
     }
