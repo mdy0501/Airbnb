@@ -44,6 +44,10 @@ public interface ITask {
     public interface postReservation{
         public void getReservationResponse(String message);
     }
+
+    public interface getReservation{
+        public void getReservatoinResponse(List<Reservation> reservations);
+    }
     /*
     public void doTaskTotalHostList(List<Host> hostList);
     public void doTaskTotalHouseList(List<House> houseList);
