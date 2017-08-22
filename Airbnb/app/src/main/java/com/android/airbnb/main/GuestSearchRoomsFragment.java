@@ -55,8 +55,13 @@ public class GuestSearchRoomsFragment extends Fragment implements ITask.totalHou
         View view = inflater.inflate(R.layout.fragment_guest_search_rooms, container, false);
         setViews(view);
         setListeners();
-        Loader.getTotalHouse(this);
         return view;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        Loader.getTotalHouse(this);
     }
 
     private void setWishlist() {
