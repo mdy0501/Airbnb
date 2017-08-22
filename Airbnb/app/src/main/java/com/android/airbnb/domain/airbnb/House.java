@@ -25,8 +25,6 @@ public class House implements Parcelable {
     private Marker marker;
     private String cleaning_fee;
     private Amenities[] amenities;
-
-
     private boolean isWished = false;
 
     public House(){
