@@ -17,10 +17,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.android.airbnb.adapter.BottomSheetAdapter;
 import com.android.airbnb.adapter.DetailImgPager;
@@ -30,10 +33,14 @@ import com.android.airbnb.domain.airbnb.Amenities;
 import com.android.airbnb.domain.airbnb.House;
 import com.android.airbnb.domain.airbnb.House_images;
 import com.android.airbnb.domain.reservation.Reservation;
+import com.android.airbnb.domain.reservation.ReservationSingleTon;
 import com.android.airbnb.papago.Translator;
 import com.android.airbnb.papago.domain.Data;
 import com.android.airbnb.util.Const;
 import com.android.airbnb.util.GlideApp;
+import com.android.airbnb.util.PreferenceUtil;
+import com.android.airbnb.util.Remote.ITask;
+import com.android.airbnb.util.Remote.Loader;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -45,7 +52,7 @@ import com.tsengvn.typekit.TypekitContextWrapper;
 
 import me.relex.circleindicator.CircleIndicator;
 
-public class DetailHouseActivity extends AppCompatActivity implements OnMapReadyCallback, Translator.IPapago, View.OnClickListener {
+public class DetailHouseActivity extends AppCompatActivity implements OnMapReadyCallback, Translator.IPapago, View.OnClickListener, ITask.postWishList {
 
 
     private TextView detailGuestCountTxt;
@@ -95,6 +102,7 @@ public class DetailHouseActivity extends AppCompatActivity implements OnMapReady
     private TextView detailHouseReviewCount;
     private RatingBar detailHouseReviewRatingbar;
     private TextView detailHouseReadReview;
+    private CheckBox btnWish;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -113,6 +121,12 @@ public class DetailHouseActivity extends AppCompatActivity implements OnMapReady
         setViewPager();
         setPagerIndicator();
         setOnClick();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
     }
 
     // DetailMapViewPagerActivity로 부터 전달 받은 intent를 꺼낸다.
@@ -169,9 +183,12 @@ public class DetailHouseActivity extends AppCompatActivity implements OnMapReady
         detailHouseReviewCount = (TextView) findViewById(R.id.detail_house_review_count);
         detailHouseReviewRatingbar = (RatingBar) findViewById(R.id.detail_house_review_ratingbar);
         detailHouseReadReview = (TextView) findViewById(R.id.detail_house_read_review);
+        btnWish = (CheckBox) findViewById(R.id.detail_wish);
+
+
     }
 
-    private void setReviews(){
+    private void setReviews() {
         // Review data가 넘어오면 셋팅한다..
     }
 
@@ -197,6 +214,7 @@ public class DetailHouseActivity extends AppCompatActivity implements OnMapReady
         detailBathroomCountTxt.setText("욕실 " + house.getBathrooms() + "개");
         detailGuestCountTxt.setText("게스트 " + house.getAccommodates() + "명");
         detailBedCountTxt.setText("침대 " + house.getBeds() + "개");
+        btnWish.setChecked(house.isWished());
 
         GlideApp.with(this)
                 .load(house.getHost().getImg_profile())
@@ -268,20 +286,8 @@ public class DetailHouseActivity extends AppCompatActivity implements OnMapReady
         detailHouseBtnCheckReserve.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                  /* 수정하기 */
-//                Log.e("CalendarActivity", "house pk : " + house.getPk());
-//                Reservation reservation = new Reservation();
-//                reservation.setCheckout_date(checkoutDate);
-//                reservation.setCheckin_date(checkinDate);
-//                Gson gson = new Gson();
-//                String jsonString = gson.toJson(reservation);
-//                String queryString = "?house=" + house.getPk();
-//                Log.e("CalendarAct", "query : " + queryString);
-//                try {
-//                    Loader.postReservation("Token" + PreferenceUtil.getToken(this), queryString, checkinDate, checkoutDate);
-//                } catch (UnsupportedEncodingException e) {
-//                    e.printStackTrace();
-//                }
+                doReservation(isDateSelected);
+
             }
         });
 
@@ -289,13 +295,7 @@ public class DetailHouseActivity extends AppCompatActivity implements OnMapReady
         detailHouseMoreCalendar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(v.getContext(), CalendarActivity.class);
-                intent.putExtra(DETAIL_HOUSE, house);
-                startActivityForResult(intent, DETAIL_HOUSE_ACTIVITY);
-                // activity 전환효과를 위해 anim에 전환효과 설정값 셋팅
-                // 아래 메소드를 통해 전환효과 설정
-                overridePendingTransition(R.anim.slide_in_up, R.anim.stay);
-
+                goCalendar();
             }
         });
 
@@ -305,6 +305,18 @@ public class DetailHouseActivity extends AppCompatActivity implements OnMapReady
                 Intent intent = new Intent(v.getContext(), DetailExtraFeeActivity.class);
                 intent.putExtra(DETAIL_HOUSE, house);
                 v.getContext().startActivity(intent);
+            }
+        });
+
+        btnWish.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked) {
+                    Loader.postWishList("Token " + PreferenceUtil.getToken(buttonView.getContext()), house.getPk(), DetailHouseActivity.this);
+                } else {
+                    Loader.postWishList("Token " + PreferenceUtil.getToken(buttonView.getContext()), house.getPk(), DetailHouseActivity.this);
+                }
+
             }
         });
     }
@@ -339,7 +351,12 @@ public class DetailHouseActivity extends AppCompatActivity implements OnMapReady
 
     @Override
     public void onClick(View v) {
-        // OnClickListener 정리하기
+        // TODO OnClickListener 정리하기
+    }
+
+    @Override
+    public void getWishResponse(String message) {
+        Toast.makeText(this, message.toString(), Toast.LENGTH_SHORT).show();
     }
 
     /* 재사용하지 않는 어댑터 - 이너 클래스로 작성 */
@@ -379,13 +396,6 @@ public class DetailHouseActivity extends AppCompatActivity implements OnMapReady
             public Holder(View itemView) {
                 super(itemView);
                 amenityImg = (ImageView) itemView.findViewById(R.id.amenity_img);
-                itemView.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        /* 액티비티 넘기기 만들기 */
-                        Intent intent = new Intent();
-                    }
-                });
             }
 
             // amenities 이미지를 setting한다..
@@ -400,18 +410,47 @@ public class DetailHouseActivity extends AppCompatActivity implements OnMapReady
     }
 
     private Reservation reservation;
+    private boolean isDateSelected = false;
+    private String checkIn = "";
+    private String checkOut = "";
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == DETAIL_HOUSE_ACTIVITY) {
             if (resultCode == 200) {
-                reservation = new Reservation();
-                reservation.setCheckin_date(data.getStringExtra("checkin"));
-                reservation.setCheckout_date(data.getStringExtra("checkout"));
-                Log.e("DetailHouseActivity", reservation.toString());
+                checkIn = data.getStringExtra("checkin");
+                checkOut = data.getStringExtra("checkout");
+                isDateSelected = true;
+                detailHouseBtnCheckReserve.setText("예약 진행하기");
             }
         }
+    }
+
+    private void doReservation(boolean isDateSelected) {
+        if (isDateSelected) {
+            // 예약진행한다.
+            Intent intent = new Intent(DetailHouseActivity.this, ReservationOneActivity.class);
+            ReservationSingleTon reservation = ReservationSingleTon.getInstnace();
+            reservation.setCheckin_date(checkIn);
+            reservation.setCheckout_date(checkOut);
+            reservation.setHouse(house);
+            startActivity(intent);
+        } else {
+            // 달력을 통해 날짜를 먼저 선택한다.
+            goCalendar();
+        }
+    }
+
+    // 반복적으로 사용되어 메소드로 뺌
+    private void goCalendar() {
+        Intent intent = new Intent(DetailHouseActivity.this, CalendarActivity.class);
+        intent.putExtra(DETAIL_HOUSE, house);
+        startActivityForResult(intent, DETAIL_HOUSE_ACTIVITY);
+        // activity 전환효과를 위해 anim에 전환효과 설정값 셋팅
+        // 아래 메소드를 통해 전환효과 설정
+        overridePendingTransition(R.anim.slide_in_up, R.anim.stay);
+
     }
 
     public void setHousePricePerDay(TextView housePricePerDay) {

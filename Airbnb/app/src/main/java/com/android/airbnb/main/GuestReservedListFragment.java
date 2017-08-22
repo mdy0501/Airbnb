@@ -12,6 +12,8 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -24,8 +26,9 @@ import android.widget.Toast;
 
 import com.android.airbnb.GoogleMapViewPagerActivity;
 import com.android.airbnb.R;
-import com.android.airbnb.adapter.WishListDetailAdapter;
+import com.android.airbnb.adapter.ReservedAdapter;
 import com.android.airbnb.domain.airbnb.House;
+import com.android.airbnb.domain.reservation.Reservation;
 import com.android.airbnb.util.PreferenceUtil;
 import com.android.airbnb.util.Remote.ITask;
 import com.android.airbnb.util.Remote.Loader;
@@ -36,11 +39,12 @@ import java.util.List;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class GuestWishListDetailFragment extends Fragment implements ITask.allWishList {
+public class GuestReservedListFragment extends Fragment implements ITask.getReservation, View.OnClickListener {
+
 
     private GuestMainActivity guestMainActivity;
     private TextView txtTitle;
-    private android.support.v7.widget.Toolbar toolbar;
+    private Toolbar toolbar;
     private ImageView btnBack;
     private ImageView btnMenu;
     private TextView title;
@@ -48,14 +52,14 @@ public class GuestWishListDetailFragment extends Fragment implements ITask.allWi
     private RecyclerView wishRecycler;
     private FloatingActionButton fabMap;
     private Context mContext;
-    private WishListDetailAdapter adapter;
-    private List<House> wishlist;
+    private ReservedAdapter reservedAdapter;
+    private List<House> reservedHouses;
     private ImageView btnFilter;
     private GuestWistListFragment wishListFragment;
-    public static final String WISHLIST_HOUSES = "Wcom.android.airbnb.main.RESERVED_HOUSES";
+    public static final String RESERVED_HOUSES = "Wcom.android.airbnb.main.RESERVED_HOUSES";
     private String userToken = "";
 
-    public GuestWishListDetailFragment() {
+    public GuestReservedListFragment() {
         // Required empty public constructor
     }
 
@@ -63,6 +67,7 @@ public class GuestWishListDetailFragment extends Fragment implements ITask.allWi
     public void onAttach(Context context) {
         super.onAttach(context);
         this.mContext = context;
+        reservedHouses = new ArrayList<>();
         guestMainActivity = (GuestMainActivity) context;
         userToken = "Token " + PreferenceUtil.getToken(mContext);
         getData();
@@ -84,9 +89,9 @@ public class GuestWishListDetailFragment extends Fragment implements ITask.allWi
         return view;
     }
 
-    private void setToolbar(){
-        ((AppCompatActivity)getActivity()).setSupportActionBar(toolbar);
-        ((AppCompatActivity)getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+    private void setToolbar() {
+        ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
+        ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         ActionBar actionBar = ((AppCompatActivity) getActivity()).getSupportActionBar();
         actionBar.setDisplayShowCustomEnabled(true); //커스터마이징 하기 위해 필요
@@ -102,13 +107,13 @@ public class GuestWishListDetailFragment extends Fragment implements ITask.allWi
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()){
+        switch (item.getItemId()) {
             case R.id.wishlist_menu_delete:
                 Toast.makeText(mContext, "목록을 삭제합니다.", Toast.LENGTH_SHORT).show();
                 break;
 
             case R.id.wishlist_menu_refresh:
-                Loader.getWishList(userToken, this);
+                Loader.getReservation(this);
                 break;
 
             case android.R.id.home:
@@ -120,29 +125,33 @@ public class GuestWishListDetailFragment extends Fragment implements ITask.allWi
     }
 
     private void getData() {
-        Loader.getWishList(userToken, this);
+        Loader.getReservation(this);
     }
 
     private void setAdapter() {
-        adapter = new WishListDetailAdapter(wishlist, mContext);
-        wishRecycler.setAdapter(adapter);
-        wishRecycler.setLayoutManager(new LinearLayoutManager(mContext));
-
+        if (reservedHouses != null) {
+            reservedAdapter = new ReservedAdapter(reservedHouses, mContext);
+            wishRecycler.setAdapter(reservedAdapter);
+            wishRecycler.setLayoutManager(new LinearLayoutManager(mContext));
+        }
     }
 
     private void setViews(View view) {
         txtTitle = (TextView) view.findViewById(R.id.txtTitle1);
-        toolbar = (android.support.v7.widget.Toolbar) view.findViewById(R.id.content);
+        toolbar = (Toolbar) view.findViewById(R.id.content);
         title = (TextView) view.findViewById(R.id.title);
         houseCount = (TextView) view.findViewById(R.id.reservation_house_count);
         wishRecycler = (RecyclerView) view.findViewById(R.id.wish_recycler);
         fabMap = (FloatingActionButton) view.findViewById(R.id.floatingActionButton);
     }
 
-    private void connectData() {
-        title.setText("위시리스트");
-        houseCount.setText("예약 가능한 숙소 " + wishlist.size() + "개");
 
+    private void connectData() {
+        title.setText("예약된 숙소 리스트");
+        if (reservedHouses != null)
+            houseCount.setText("예약된 숙소 " + reservedHouses.size() + "개");
+        else
+            houseCount.setText("예약된 숙소 " + 0 + "개");
     }
 
     private void setListeners() {
@@ -150,20 +159,32 @@ public class GuestWishListDetailFragment extends Fragment implements ITask.allWi
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(v.getContext(), GoogleMapViewPagerActivity.class);
-                intent.putExtra("key", WISHLIST_HOUSES);
-                intent.putParcelableArrayListExtra(WISHLIST_HOUSES, (ArrayList<? extends Parcelable>) wishlist);
+                intent.putExtra("key", RESERVED_HOUSES);
+                intent.putParcelableArrayListExtra(RESERVED_HOUSES, (ArrayList<? extends Parcelable>) reservedHouses);
                 v.getContext().startActivity(intent);
             }
         });
     }
 
     @Override
-    public void doAllWishList(List<House> wishlist) {
-        this.wishlist = wishlist;
-        for (House item : wishlist){
-            item.setWished(true);
+    public void onClick(View v) {
+
+    }
+
+    @Override
+    public void getReservatoinResponse(List<Reservation> reservations) {
+        if (reservations != null) {
+            List<Reservation> reservationList = reservations;
+            for (int i= reservationList.size()-1; i > -1; i--) {
+                if (reservationList.get(i).getGuest().getPk().equals(PreferenceUtil.getPrimaryKey(guestMainActivity))) {
+                    Log.e("Reserved", reservationList.get(i).getPk());
+                    reservedHouses.add(reservationList.get(i).getHouse());
+                }
+            }
+            setAdapter();
+            connectData();
+        } else {
+            Toast.makeText(guestMainActivity, "예약된 숙소가 없습니다.", Toast.LENGTH_SHORT).show();
         }
-        setAdapter();
-        connectData();
     }
 }

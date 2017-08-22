@@ -61,7 +61,6 @@
         <activity android:name=".main.SettingActivity" />
         <activity android:name=".main.HostMainActivity" />
         <activity android:name=".main.registerrooms.HostRoomsRegisterActivity" />
-        <activity android:name=".canvas_calendar.CalendarActivity" />
         <activity
             android:name=".DetailMapActivity"
             android:label="@string/title_activity_detail_map"
@@ -70,7 +69,19 @@
         <activity android:name=".main.registerrooms.basic.HostRoomsRegisterBasicActivity" />
         <activity android:name=".main.registerrooms.detail.HostRoomsRegisterDetailActivity" />
         <activity android:name=".main.registerrooms.prepare.HostRoomsRegisterPrepareActivity" />
-        <activity android:name=".DetailExtraFeeActivity"></activity>
+        <activity
+            android:name=".DetailExtraFeeActivity"
+            android:theme="@style/reservation_register" />
+        <activity
+            android:name=".ReservationOneActivity"
+            android:theme="@style/reservation_register" />
+        <activity
+            android:name=".ReservationTwoActivity"
+            android:windowSoftInputMode="stateHidden|adjustResize"
+            android:theme="@style/reservation_register" />
+        <activity
+            android:name=".ReservationThreeActivity"
+            android:theme="@style/reservation_register"></activity>
     </application>
 
 </manifest>

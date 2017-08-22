@@ -2,6 +2,7 @@ package com.android.airbnb.calendar;
 
 import android.util.Log;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -133,7 +134,28 @@ public class Utils {
             else
                 return result;
             }
+
+        public static long calculatePeriod(String beginDate, String endDate) {
+            long result = 0;
+
+            try {
+                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+                Date formattedBegin = sdf.parse(beginDate);
+                Date formattedEnd = sdf.parse(endDate);
+
+                // 시간차이를 시간,분,초를 곱한 값으로 나누면 하루 단위가 나옴
+                long diff = formattedEnd.getTime() - formattedBegin.getTime();
+                result = diff / (24 * 60 * 60 * 1000);
+                System.out.println("날짜차이=" + result);
+
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+            return result;
         }
+        }
+
+
 
         public static class DateUtil {
 
