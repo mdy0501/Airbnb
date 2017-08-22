@@ -52,7 +52,7 @@ public class GuestWishListDetailFragment extends Fragment implements ITask.allWi
     private List<House> wishlist;
     private ImageView btnFilter;
     private GuestWistListFragment wishListFragment;
-    public static final String WISHLIST_HOUSES = "Wcom.android.airbnb.main.ISHLIST_HOUSES";
+    public static final String WISHLIST_HOUSES = "Wcom.android.airbnb.main.RESERVED_HOUSES";
     private String userToken = "";
 
     public GuestWishListDetailFragment() {
@@ -133,15 +133,14 @@ public class GuestWishListDetailFragment extends Fragment implements ITask.allWi
     private void setViews(View view) {
         txtTitle = (TextView) view.findViewById(R.id.txtTitle1);
         toolbar = (android.support.v7.widget.Toolbar) view.findViewById(R.id.content);
-        title = (TextView) view.findViewById(R.id.wishlist_title);
+        title = (TextView) view.findViewById(R.id.title);
         houseCount = (TextView) view.findViewById(R.id.reservation_house_count);
         wishRecycler = (RecyclerView) view.findViewById(R.id.wish_recycler);
         fabMap = (FloatingActionButton) view.findViewById(R.id.floatingActionButton);
     }
 
-
-
     private void connectData() {
+        title.setText("위시리스트");
         houseCount.setText("예약 가능한 숙소 " + wishlist.size() + "개");
 
     }
