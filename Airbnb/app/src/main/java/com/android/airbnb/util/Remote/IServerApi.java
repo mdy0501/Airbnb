@@ -96,7 +96,7 @@ public interface IServerApi {
                                          @Part("latitude") RequestBody latitude,
                                          @Part("longitude") RequestBody longitude,
 //                                         @Part("image") RequestBody image);
-                                         @Part MultipartBody.Part photo);
+                                         @Part List<MultipartBody.Part> photos);
 
 
     @GET("apis/like/")
