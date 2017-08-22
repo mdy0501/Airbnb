@@ -4,10 +4,12 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
@@ -18,7 +20,9 @@ import com.android.airbnb.R;
 import com.android.airbnb.domain.airbnb.House;
 import com.android.airbnb.domain.airbnb.House_images;
 import com.android.airbnb.util.GlideApp;
+import com.android.airbnb.util.PreferenceUtil;
 import com.android.airbnb.util.Remote.ITask;
+import com.android.airbnb.util.Remote.Loader;
 
 import java.util.List;
 
@@ -31,7 +35,7 @@ public class RoomsAdapter extends RecyclerView.Adapter<RoomsAdapter.Holder> impl
     private List<House> houses;
     private LayoutInflater inflater;
     private Context context;
-    int position = 0;
+    int position;
 
 
     public RoomsAdapter(Context context, List<House> data) {
@@ -53,14 +57,16 @@ public class RoomsAdapter extends RecyclerView.Adapter<RoomsAdapter.Holder> impl
 
     @Override
     public void onBindViewHolder(Holder holder, int position) {
+        Log.e("RoomsAdapter", "onBindViewHolder pos : " + position);
         House house = houses.get(position);
         holder.setPrice(house.getPrice_per_day());
         holder.setTitle(house.getTitle());
         holder.setRoomType(house.getRoom_type());
-        holder.setBtnSave(house.isWished());
+        holder.setBtnWish(house.isWished());
         holder.setRatingBar("4");
         holder.setReviewCount("110개");
         holder.setPosition(position);
+        holder.setBtnWish(house.isWished());
         House_images[] images = house.getHouse_images();
 
         GlideApp
@@ -82,10 +88,11 @@ public class RoomsAdapter extends RecyclerView.Adapter<RoomsAdapter.Holder> impl
     }
 
     class Holder extends RecyclerView.ViewHolder {
-        int position = -1;
+
+        int position;
         TextView txtPrice, txtTitle, txtRoomType, txtReview, txtReviewCount;
         ImageView img;
-        CheckBox btnSave;
+        CheckBox btnWish;
         RatingBar ratingBar;
 
         public Holder(View itemView) {
@@ -96,8 +103,13 @@ public class RoomsAdapter extends RecyclerView.Adapter<RoomsAdapter.Holder> impl
             txtReview = (TextView) itemView.findViewById(R.id.txtReview);
             txtReviewCount = (TextView) itemView.findViewById(R.id.txtReviewCount);
             img = (ImageView) itemView.findViewById(R.id.img);
-            btnSave = (CheckBox) itemView.findViewById(R.id.houselist_wish);
+            btnWish = (CheckBox) itemView.findViewById(R.id.houselist_wish);
             ratingBar = (RatingBar) itemView.findViewById(R.id.ratingBar);
+            setOnClick();
+            setBtnSave();
+        }
+
+        private void setOnClick(){
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -110,16 +122,18 @@ public class RoomsAdapter extends RecyclerView.Adapter<RoomsAdapter.Holder> impl
                     v.getContext().startActivity(intent);
                 }
             });
+        }
 
-//            btnSave.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-//                @Override
-//                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-//                    if (isChecked)
-//                        Loader.postWishList("Token " + PreferenceUtil.getToken(context), houses.get(position).getPk(), RoomsAdapter.this);
-//                    else
-//                        Loader.postWishList("Token " + PreferenceUtil.getToken(context), houses.get(position).getPk(), RoomsAdapter.this);
-//                }
-//            });
+        private void setBtnSave(){
+            btnWish.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                @Override
+                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                    if (isChecked)
+                        Loader.postWishList("Token " + PreferenceUtil.getToken(context), houses.get(position).getPk(), RoomsAdapter.this);
+                    else
+                        Loader.postWishList("Token " + PreferenceUtil.getToken(context), houses.get(position).getPk(), RoomsAdapter.this);
+                }
+            });
         }
 
         private void setPrice(String price) {
@@ -146,8 +160,8 @@ public class RoomsAdapter extends RecyclerView.Adapter<RoomsAdapter.Holder> impl
             this.txtReviewCount.setText(reviewCount);
         }
 
-        public void setBtnSave(boolean isWished) {
-            this.btnSave.setChecked(isWished);
+        public void setBtnWish(boolean isWished) {
+            this.btnWish.setChecked(isWished);
         }
     }
 }
