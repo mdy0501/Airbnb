@@ -72,16 +72,6 @@
         <activity
             android:name=".DetailExtraFeeActivity"
             android:theme="@style/reservation_register" />
-        <activity
-            android:name=".ReservationOneActivity"
-            android:theme="@style/reservation_register" />
-        <activity
-            android:name=".ReservationTwoActivity"
-            android:windowSoftInputMode="stateHidden|adjustResize"
-            android:theme="@style/reservation_register" />
-        <activity
-            android:name=".ReservationThreeActivity"
-            android:theme="@style/reservation_register"></activity>
     </application>
 
 </manifest>
