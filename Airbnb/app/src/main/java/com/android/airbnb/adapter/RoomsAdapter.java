@@ -69,7 +69,6 @@ public class RoomsAdapter extends RecyclerView.Adapter<RoomsAdapter.Holder> impl
                 .centerCrop()
                 .fallback(R.drawable.question_mark)
                 .into(holder.img);
-
     }
 
     @Override
