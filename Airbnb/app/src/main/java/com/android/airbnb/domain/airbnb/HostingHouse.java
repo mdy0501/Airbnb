@@ -1,6 +1,11 @@
 package com.android.airbnb.domain.airbnb;
 
+import android.net.Uri;
+
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by MDY on 2017-08-19.
@@ -25,6 +30,7 @@ public class HostingHouse {
         }
         return hostingHouse;
     }
+    
 
     private String title;   // 숙소 제목
     private String address; // 숙소 주소
@@ -41,10 +47,14 @@ public class HostingHouse {
     private String beds;        // 침대 개수
     private String room_type;   // 숙소 유형
     private String amenities;   // 편의시설 현황
+
+
     private String latitude;    // 숙소 위도
     private String longitude;   // 숙소 경도
     private byte[] image;       // 숙소 이미지
-    private List<Byte> image1;       // 숙소 이미지
+
+    public List<Uri> uris = new ArrayList<>();
+    public List<String> filePaths = new ArrayList<>();
 
     private String imagePath;   // 숙소 이미지 경로
 
@@ -54,7 +64,16 @@ public class HostingHouse {
     private String singleBeds = "0";  // 싱글사이즈 침대
 
 
-    public String facilities = null;
+
+    public Map<String, String> facilitiesMap = new HashMap<>();
+
+    public void addFacilities(String key, String value){
+        facilitiesMap.put(key, value);
+    }
+    public void removeFacilities(String key){
+        facilitiesMap.remove(key);
+    }
+
 
 
 
