@@ -88,10 +88,15 @@ public class HostRoomsRegisterBasicSpaceFragment extends Fragment implements Vie
                 hostRoomsRegisterBasicActivity.onBackPressed();
                 break;
             case R.id.ImgBtnNext:
+
+
+                /*
                 if(hostingHouse.facilities != null){
                     hostingHouse.facilities = hostingHouse.facilities.substring(0, hostingHouse.facilities.length() - 2);
                 }
                 hostingHouse.setAmenities(hostingHouse.facilities);
+                */
+
                 getFragmentManager().beginTransaction().remove(getFragmentManager().findFragmentById(R.id.basicRoomsRegisterContainer)).commit();
                 getActivity().finish();
                 break;
@@ -99,17 +104,20 @@ public class HostRoomsRegisterBasicSpaceFragment extends Fragment implements Vie
     }
 
     private void setCheckBoxListeners(){
-        if(hostingHouse.facilities != null){
+        /*if(hostingHouse.facilities != null){
             hostingHouse.facilities = hostingHouse.facilities + ", ";
-        }
+        }*/
 
         // 부엌
         checkBox1.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if(isChecked){
-                    hostingHouse.facilities = hostingHouse.facilities + "Kitchen, ";
+                    hostingHouse.addFacilities("Kitchen", "Kitchen");
+                } else if(isChecked == false){
+                    hostingHouse.removeFacilities("Kitchen");
                 }
+//                    hostingHouse.facilities = hostingHouse.facilities + "Kitchen, ";
             }
         });
 
@@ -118,8 +126,13 @@ public class HostRoomsRegisterBasicSpaceFragment extends Fragment implements Vie
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if(isChecked){
-                    hostingHouse.facilities = hostingHouse.facilities + "Washer, ";
+                    hostingHouse.addFacilities("Washer", "Washer");
+                } else if(isChecked == false){
+                    hostingHouse.removeFacilities("Washer");
                 }
+                /*if(isChecked){
+                    hostingHouse.facilities = hostingHouse.facilities + "Washer, ";
+                }*/
             }
         });
 
@@ -128,8 +141,13 @@ public class HostRoomsRegisterBasicSpaceFragment extends Fragment implements Vie
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if(isChecked){
-                    hostingHouse.facilities = hostingHouse.facilities + "Dryer, ";
+                    hostingHouse.addFacilities("Dryer", "Dryer");
+                } else if(isChecked == false){
+                    hostingHouse.removeFacilities("Dryer");
                 }
+                /*if(isChecked){
+                    hostingHouse.facilities = hostingHouse.facilities + "Dryer, ";
+                }*/
             }
         });
 
@@ -138,8 +156,13 @@ public class HostRoomsRegisterBasicSpaceFragment extends Fragment implements Vie
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if(isChecked){
-                    hostingHouse.facilities = hostingHouse.facilities + "Free_parking, ";
+                    hostingHouse.addFacilities("Free_parking", "Free_parking");
+                } else if(isChecked == false){
+                    hostingHouse.removeFacilities("Free_parking");
                 }
+                /*if(isChecked){
+                    hostingHouse.facilities = hostingHouse.facilities + "Free_parking, ";
+                }*/
             }
         });
 
@@ -148,8 +171,13 @@ public class HostRoomsRegisterBasicSpaceFragment extends Fragment implements Vie
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if(isChecked){
-                    hostingHouse.facilities = hostingHouse.facilities + "Elevator, ";
+                    hostingHouse.addFacilities("Elevator", "Elevator");
+                } else if(isChecked == false){
+                    hostingHouse.removeFacilities("Elevator");
                 }
+                /*if(isChecked){
+                    hostingHouse.facilities = hostingHouse.facilities + "Elevator, ";
+                }*/
             }
         });
 
@@ -158,8 +186,13 @@ public class HostRoomsRegisterBasicSpaceFragment extends Fragment implements Vie
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if(isChecked){
-                    hostingHouse.facilities = hostingHouse.facilities + "Pool, ";
+                    hostingHouse.addFacilities("Pool", "Pool");
+                } else if(isChecked == false){
+                    hostingHouse.removeFacilities("Pool");
                 }
+                /*if(isChecked){
+                    hostingHouse.facilities = hostingHouse.facilities + "Pool, ";
+                }*/
             }
         });
 
@@ -168,8 +201,13 @@ public class HostRoomsRegisterBasicSpaceFragment extends Fragment implements Vie
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if(isChecked){
-                    hostingHouse.facilities = hostingHouse.facilities + "Gym, ";
+                    hostingHouse.addFacilities("Gym", "Gym");
+                } else if(isChecked == false){
+                    hostingHouse.removeFacilities("Gym");
                 }
+                /*if(isChecked){
+                    hostingHouse.facilities = hostingHouse.facilities + "Gym, ";
+                }*/
             }
         });
     }
