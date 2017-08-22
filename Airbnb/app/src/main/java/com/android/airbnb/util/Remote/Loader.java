@@ -139,7 +139,7 @@ public class Loader {
         call.enqueue(new Callback<List<Reservation>>() {
             @Override
             public void onResponse(Call<List<Reservation>> call, Response<List<Reservation>> response) {
-                if (response.code() == 200) {
+                if (response.isSuccessful()) {
                     Log.e("Loader", "code : " + response.code());
                     reservations = response.body();
                     Log.e("Loader", "reservation : " + response.body().toString());
@@ -167,7 +167,7 @@ public class Loader {
         call.enqueue(new Callback<List<House>>() {
             @Override
             public void onResponse(Call<List<House>> call, Response<List<House>> response) {
-                if (response.code() == 200) {
+                if (response.isSuccessful()) {
                     Log.e("Loader", "wishlist : " + response.body().toString());
                     wishList = response.body();
                     allWishList.doAllWishList(wishList);
@@ -208,7 +208,7 @@ public class Loader {
         });
     }
 
-    public static void postReservation(String token, String housePk, String checkin, String checkout) throws UnsupportedEncodingException {
+    public static void postReservation(String token, String housePk, String checkin, String checkout, final ITask.postReservation iTask) throws UnsupportedEncodingException {
         Retrofit client = new Retrofit.Builder()
                 .baseUrl(BASE_URL)
                 .addConverterFactory(GsonConverterFactory.create())
@@ -216,7 +216,6 @@ public class Loader {
         IServerApi serverApi = client.create(IServerApi.class);
         RequestBody checkinBody = RequestBody.create(MediaType.parse("text/plain"), checkin);
         RequestBody checkoutBody = RequestBody.create(MediaType.parse("text/plain"), checkout);
-
 
         Call<Reservation> call = serverApi.postReservation(token, housePk, checkinBody, checkoutBody);
         String originalUrl = call.request().url().toString();
@@ -226,11 +225,9 @@ public class Loader {
             @Override
             public void onResponse(Call<Reservation> call, Response<Reservation> response) {
                 if (response.isSuccessful()) {
-                    Log.e("Loader", "code : " + response.code() + ", message : " + response.message());
-                    Log.e("Loader", "body : " + response.body().toString());
+                    iTask.getReservationResponse(response.body().toString());
                 } else {
-                    Log.e("Loader", "code : " + response.code() + "message : " + response.message());
-                    Log.e("Loader", "request body : " + response.raw().request().body() + ", url : " + response.raw().request().url());
+                    iTask.getReservationResponse(response.body().toString());
                 }
             }
 
@@ -241,7 +238,7 @@ public class Loader {
         });
     }
 
-    public static void getReservation(final ITask.getReservation iTask){
+    public static void getReservation(final ITask.getReservation iTask) {
         Retrofit client = new Retrofit.Builder()
                 .baseUrl(BASE_URL)
                 .addConverterFactory(GsonConverterFactory.create())
@@ -252,7 +249,7 @@ public class Loader {
         call.enqueue(new Callback<List<Reservation>>() {
             @Override
             public void onResponse(Call<List<Reservation>> call, Response<List<Reservation>> response) {
-                if(response.isSuccessful()){
+                if (response.isSuccessful()) {
                     List<Reservation> reservations = response.body();
                     iTask.getReservatoinResponse(reservations);
                 }
@@ -260,11 +257,8 @@ public class Loader {
 
             @Override
             public void onFailure(Call<List<Reservation>> call, Throwable t) {
-
+                t.printStackTrace();
             }
         });
-
-
-
     }
 }
