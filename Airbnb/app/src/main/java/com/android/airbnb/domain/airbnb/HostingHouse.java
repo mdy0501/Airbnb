@@ -1,5 +1,7 @@
 package com.android.airbnb.domain.airbnb;
 
+import java.util.List;
+
 /**
  * Created by MDY on 2017-08-19.
  */
@@ -42,6 +44,7 @@ public class HostingHouse {
     private String latitude;    // 숙소 위도
     private String longitude;   // 숙소 경도
     private byte[] image;       // 숙소 이미지
+    private List<Byte> image1;       // 숙소 이미지
 
     private String imagePath;   // 숙소 이미지 경로
 

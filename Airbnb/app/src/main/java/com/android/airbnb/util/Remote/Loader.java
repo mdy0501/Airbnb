@@ -61,7 +61,7 @@ public class Loader {
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
 
-        
+
         IServerApi serverApi = client.create(IServerApi.class);
         Call<List<House>> call = serverApi.readAllHouses();
         call.enqueue(new Callback<List<House>>() {
