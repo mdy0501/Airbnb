@@ -58,10 +58,6 @@ public class CalendarActivity extends AppCompatActivity implements CalendarItem.
         items = new ArrayList<>();
         getCalendarDate();
         getData();
-        Loader.getReservation(house.getPk(), this);
-//        initView();
-//        setOnClick();
-//        setCalendar();
     }
 
     private void getData() {
@@ -75,6 +71,15 @@ public class CalendarActivity extends AppCompatActivity implements CalendarItem.
         }
     }
 
+    // 생성 후, onResume 될 때마다 update된 reservation data 서버로부터 load
+    @Override
+    protected void onResume() {
+        super.onResume();
+        Loader.getReservation(house.getPk(), this);
+    }
+
+    // ================== code 중복이 있어서 다시 한번 보면서 메소드화 할 수 있는 것 하기 ===================
+
     private void setBookedDates(String checkin, String checkout) {
 
         String subCheckin = checkin.substring(0, 7);
@@ -82,9 +87,6 @@ public class CalendarActivity extends AppCompatActivity implements CalendarItem.
 
         int subCheckinDd = Integer.parseInt(checkin.substring(9));
         int subCheckoutDd = Integer.parseInt(checkout.substring(9));
-
-        Log.e("CustomCalendar", "subCheckin : " + subCheckin + ", checkout : " + subCheckout);
-        Log.e("CustomCalendar", "subCheckinDd : " + subCheckinDd + ", subCheckoutDd : " + subCheckoutDd);
 
         for (CalendarItem item : items) {
 
@@ -102,12 +104,26 @@ public class CalendarActivity extends AppCompatActivity implements CalendarItem.
                 else if ((subCheckout).equals(itemKey))
                     subCheckoutDd = items.indexOf(item);
 
-                setCalendarRange(subCheckinDd, subCheckoutDd);
+                setBookedRange(subCheckinDd, subCheckoutDd);
             }
         }
-        Log.e("CustomCalendar", "startIndex : " + subCheckinDd + ", endIndex : " + subCheckoutDd);
+    }
 
+    private void setBookedRange(int startIndex, int endIndex){
 
+        for (int i = startIndex; i <= endIndex; i++) {
+
+            CalendarItem item = items.get(i);
+            List<TextView> cols = item.getCols();
+
+            if (i == startIndex) {
+                item.setRanged(cols.indexOf(cols.get(startIndex)), cols.size() - 1);
+            } else if (i == endIndex) {
+                item.setRanged(0, cols.indexOf(cols.get(endIndex)));
+            } else {
+                item.setRanged(0, cols.size() - 1);
+            }
+        }
     }
 
     private void setRange(String startDate, String endDate) {
@@ -158,6 +174,8 @@ public class CalendarActivity extends AppCompatActivity implements CalendarItem.
             }
         }
     }
+
+    // ================== code 중복이 있어서 다시 한번 보면서 메소드화 할 수 있는 것 하기 ===================
 
     private void getCalendarDate() {
         calendarDatas = Utils.CalendarUtil.getCalendarData();
@@ -228,7 +246,6 @@ public class CalendarActivity extends AppCompatActivity implements CalendarItem.
     }
 
 
-
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
@@ -246,15 +263,15 @@ public class CalendarActivity extends AppCompatActivity implements CalendarItem.
         }
     }
 
-    private void checkDate(String checkinDate, String checkoutDate){
-        if (checkinDate.length() == checkoutDate.length()) {
+    private void checkDate(String checkinDate, String checkoutDate) {
+        if (checkinDate != null && !checkinDate.equals("") && checkoutDate != null && !checkoutDate.equals("")) {
             Intent intent = new Intent();
             intent.putExtra("checkin", checkinDate);
             intent.putExtra("checkout", checkoutDate);
             setResult(200, intent);
             finish();
         } else {
-            Toast.makeText(CalendarActivity.this, "날짜를 확인해주세요.", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "체크인 날짜와 체크아웃 날짜를 다시 한번 확인해주세요!", Toast.LENGTH_SHORT).show();
         }
     }
 
