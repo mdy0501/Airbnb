@@ -1,5 +1,6 @@
 package com.android.airbnb.login;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -40,10 +41,19 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     private EditText editEmail, editPassword;
     private CheckBox checkIndicate;
 
+    private ProgressDialog loginDialog;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+
+        // 프로그래스바 정의
+        loginDialog = new ProgressDialog(this);
+        loginDialog.setTitle("로그인");
+        loginDialog.setMessage("로그인 중 입니다...");
+        loginDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+
         setViews();
         setListeners();
     }
@@ -88,6 +98,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
 
     private void postLoginData(){
+        loginDialog.show();
         retrofit = new Retrofit.Builder()
                 .baseUrl(ApiService.API_URL)
                 .addConverterFactory(GsonConverterFactory.create())
@@ -130,6 +141,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                     Intent intent = new Intent(LoginActivity.this, GuestMainActivity.class);
                     startActivity(intent);
                     finish();
+                    loginDialog.dismiss();
                 } else if (response.code() == 400){
                     Log.e("response code", "Fail : " + response.code()+"");
                     Toast.makeText(LoginActivity.this, "이메일주소와 비밀번호를\n다시 확인해주세요.", Toast.LENGTH_SHORT).show();

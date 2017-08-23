@@ -231,6 +231,8 @@ public class HostRoomsRegisterActivity extends AppCompatActivity implements View
                     rotateBitmap = null;
 
                     hostingHouse = null;    // HostingHouse 인스턴스 초기화
+
+                    setResult(RESULT_OK);
                     finish();
                 } else {
                     int statusCode = response.code();

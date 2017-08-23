@@ -170,6 +170,10 @@ public class DetailHouseActivity extends AppCompatActivity implements OnMapReady
                 getDataFromBundle(extra, keyFromIntent);
                 break;
 
+            case "registerHouse":
+                getDataFromBundle(extra, keyFromIntent);
+                break;
+
             case MapPagerAdapter.HOUSE_OBJ:
                 getDataFromBundle(extra, keyFromIntent);
                 break;
