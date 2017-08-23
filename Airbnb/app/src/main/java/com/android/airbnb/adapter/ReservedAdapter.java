@@ -1,6 +1,7 @@
 package com.android.airbnb.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,6 +11,7 @@ import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
+import com.android.airbnb.DetailHouseActivity;
 import com.android.airbnb.R;
 import com.android.airbnb.domain.airbnb.House;
 import com.android.airbnb.domain.airbnb.House_images;
@@ -27,6 +29,7 @@ public class ReservedAdapter extends RecyclerView.Adapter<ReservedAdapter.Holder
 
     /* data 갈아 끼울 것 */
     private List<House> houseList;
+    public static final String RESERVED_ADAPTER = "com.android.airbnb.RESERVED_ADAPTER";
 
     public ReservedAdapter(List<House> house, Context mContext) {
         this.mContext = mContext;
@@ -78,6 +81,16 @@ public class ReservedAdapter extends RecyclerView.Adapter<ReservedAdapter.Holder
             houseType = (TextView) view.findViewById(R.id.wishlist_house_type);
             ratingBar = (RatingBar) view.findViewById(R.id.wishlist_house_ratingbar);
             reviewCount = (TextView) view.findViewById(R.id.wishlist_review_count);
+
+            view.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(mContext, DetailHouseActivity.class);
+                    intent.putExtra("key", RESERVED_ADAPTER);
+                    intent.putExtra(RESERVED_ADAPTER, houseList.get(position));
+                    v.getContext().startActivity(intent);
+                }
+            });
         }
 
         public void setHouseImg(String imgUrl) {

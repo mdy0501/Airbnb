@@ -1,5 +1,6 @@
 package com.android.airbnb;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -54,10 +55,19 @@ public class WelcomeActivity extends AppCompatActivity implements View.OnClickLi
     private LoginButton btnLoginFacebook;
     private CallbackManager callbackManager;
 
+    private ProgressDialog loginDialog;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_welcome);
+
+        // 프로그래스바 정의
+        loginDialog = new ProgressDialog(this);
+        loginDialog.setTitle("페이스북 로그인");
+        loginDialog.setMessage("로그인 중 입니다...");
+        loginDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+
         setViews();
         setListeners();
         facebookLogin();
@@ -71,6 +81,7 @@ public class WelcomeActivity extends AppCompatActivity implements View.OnClickLi
         btnLoginFacebook.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
             @Override
             public void onSuccess(final LoginResult loginResult) {
+                loginDialog.show();
                 AccessToken accessToken = loginResult.getAccessToken();
                 Profile profile = Profile.getCurrentProfile();
 
@@ -147,10 +158,6 @@ public class WelcomeActivity extends AppCompatActivity implements View.OnClickLi
             public void onResponse(Call<FacebookLoginResult> call, Response<FacebookLoginResult> response) {
                 Log.e("===============", "로그인 데이터 전송");
 
-
-
-
-
                 /*Log.e("User img_profile ", response.body().user.getImg_profile() );
                 Log.e("User first_name ", response.body().user.getFirst_name() );
                 Log.e("User last_name ", response.body().user.getLast_name() );
@@ -165,26 +172,31 @@ public class WelcomeActivity extends AppCompatActivity implements View.OnClickLi
                 Log.e("User date_joined ", response.body().user.getDate_joined() );*/
 
 
-                Log.e("response User pk ", response.body().user.getPk() );
-                Log.e("response User username ", response.body().user.getUsername() );
-                Log.e("response User email ", response.body().user.getEmail() );
-                Log.e("response Token ", "Success : " + response.body().getToken());
+                if(response.isSuccessful()) {
+                    Log.e("response User pk ", response.body().user.getPk());
+                    Log.e("response User username ", response.body().user.getUsername());
+                    Log.e("response User email ", response.body().user.getEmail());
+                    Log.e("response Token ", "Success : " + response.body().getToken());
 
-                // Shared Preference에 User Primary Key 저장
-                PreferenceUtil.setPrimaryKey(WelcomeActivity.this, response.body().user.getPk());
-                // Shared Preference에 User Email 저장
-                PreferenceUtil.setEmail(WelcomeActivity.this, response.body().user.getUsername());
-                // Shared Preference에 User Token 저장
-                PreferenceUtil.setToken(WelcomeActivity.this, response.body().getToken());
-
-
-                // 로그인 완료 후 메인화면으로 이동
-                Toast.makeText(WelcomeActivity.this, "Facebook 으로\n정상 로그인 되었습니다.\nMain 화면으로 이동합니다.", Toast.LENGTH_SHORT).show();
-                Intent intent = new Intent(WelcomeActivity.this, GuestMainActivity.class);
-                startActivity(intent);
-                finish();
+                    // Shared Preference에 User Primary Key 저장
+                    PreferenceUtil.setPrimaryKey(WelcomeActivity.this, response.body().user.getPk());
+                    // Shared Preference에 User Email 저장
+                    PreferenceUtil.setEmail(WelcomeActivity.this, response.body().user.getUsername());
+                    // Shared Preference에 User Token 저장
+                    PreferenceUtil.setToken(WelcomeActivity.this, response.body().getToken());
 
 
+                    // 로그인 완료 후 메인화면으로 이동
+                    Toast.makeText(WelcomeActivity.this, "Facebook 으로\n정상 로그인 되었습니다.\nMain 화면으로 이동합니다.", Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent(WelcomeActivity.this, GuestMainActivity.class);
+                    startActivity(intent);
+                    finish();
+                    loginDialog.dismiss();
+
+                } else {
+                    int statusCode = response.code();
+                    Log.e("response code ::" , statusCode + "");
+                }
 
                 // TODO - 서버에서 작업이 끝나면 response 코드에 따라 처리해줘야함.
                 /*

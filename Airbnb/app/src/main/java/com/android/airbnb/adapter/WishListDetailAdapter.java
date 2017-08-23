@@ -1,7 +1,9 @@
 package com.android.airbnb.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,8 +12,8 @@ import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
+import com.android.airbnb.DetailHouseActivity;
 import com.android.airbnb.R;
 import com.android.airbnb.domain.airbnb.House;
 import com.android.airbnb.domain.airbnb.House_images;
@@ -30,9 +32,8 @@ import java.util.List;
 public class WishListDetailAdapter extends RecyclerView.Adapter<WishListDetailAdapter.Holder> implements ITask.postWishList {
 
     private Context mContext;
-
-    /* data 갈아 끼울 것 */
     private List<House> houseList;
+    public static final String WISHLIST_HOUSE = "com.android.airbnb.adapter.WISHLIST_HOUSE";
 
     public WishListDetailAdapter(List<House> house, Context mContext) {
         this.mContext = mContext;
@@ -45,10 +46,14 @@ public class WishListDetailAdapter extends RecyclerView.Adapter<WishListDetailAd
         return new Holder(view);
     }
 
+    private Holder currentHolder;
+
     @Override
     public void onBindViewHolder(Holder holder, int position) {
         /* data 갈아 끼울 것 */
+        Log.e("WishListAdapter", "post : " + position);
         House house = houseList.get(position);
+        currentHolder = holder;
         holder.setTitle(house.getTitle());
         House_images[] houseImages = house.getHouse_images();
         holder.setHouseImg(houseImages.length >0 ? houseImages[0].getImage() : R.mipmap.dummy_host_img+"");
@@ -67,12 +72,10 @@ public class WishListDetailAdapter extends RecyclerView.Adapter<WishListDetailAd
 
     @Override
     public void getWishResponse(String message) {
-        Toast.makeText(mContext, message, Toast.LENGTH_SHORT).show();
+
     }
 
     class Holder extends RecyclerView.ViewHolder {
-
-
 
         private ImageView houseImg;
         private CheckBox btnSave;
@@ -93,20 +96,23 @@ public class WishListDetailAdapter extends RecyclerView.Adapter<WishListDetailAd
             houseType = (TextView) view.findViewById(R.id.wishlist_house_type);
             ratingBar = (RatingBar) view.findViewById(R.id.wishlist_house_ratingbar);
             reviewCount = (TextView) view.findViewById(R.id.wishlist_review_count);
-
             btnSave.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                 @Override
                 public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                     if(isChecked)
                         Loader.postWishList("Token " + PreferenceUtil.getToken(mContext), houseList.get(position).getPk(), WishListDetailAdapter.this);
-                    Toast.makeText(mContext, "isChecked :: " + isChecked, Toast.LENGTH_SHORT).show();
+                    else
+                        Loader.postWishList("Token " + PreferenceUtil.getToken(mContext), houseList.get(position).getPk(), WishListDetailAdapter.this);
                 }
             });
 
             view.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Toast.makeText(mContext, "item clicked ======= done! ", Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent(v.getContext(), DetailHouseActivity.class);
+                    intent.putExtra("key", WISHLIST_HOUSE);
+                    intent.putExtra(WISHLIST_HOUSE, houseList.get(position));
+                    v.getContext().startActivity(intent);
 
                 }
             });

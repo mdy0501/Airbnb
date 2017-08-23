@@ -99,10 +99,10 @@ public class HostRoomsRegisterBasicAmenitiesFragment extends Fragment implements
                 hostRoomsRegisterBasicActivity.onBackPressed();
                 break;
             case R.id.ImgBtnNext:
-                if(hostingHouse.facilities != null) {
+                /*if(hostingHouse.facilities != null) {
                     hostingHouse.facilities = hostingHouse.facilities.substring(0, hostingHouse.facilities.length() - 2);
                 }
-                hostingHouse.setAmenities(hostingHouse.facilities);
+                hostingHouse.setAmenities(hostingHouse.facilities);*/
                 goHostRoomsRegisterBasicSpaceFragment();
                 break;
         }
@@ -116,13 +116,17 @@ public class HostRoomsRegisterBasicAmenitiesFragment extends Fragment implements
     }
 
     private void setCheckBoxListeners(){
+
+
         // 필수 아이템(수건, 침구 등)
         checkBox1.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if(isChecked){
-//                    hostingHouse.setAmenities("Essentials");
-                    hostingHouse.facilities = "Essentials, ";
+                if(isChecked) {
+                    hostingHouse.addFacilities("Essentials", "Essentials");
+                } else if(isChecked == false){
+                    hostingHouse.removeFacilities("Essentials");
+//                    hostingHouse.facilities = "Essentials, ";
                 }
             }
         });
@@ -132,8 +136,11 @@ public class HostRoomsRegisterBasicAmenitiesFragment extends Fragment implements
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if(isChecked){
-                    hostingHouse.facilities = hostingHouse.facilities + "Wireless_Internet, ";
+                    hostingHouse.addFacilities("Wireless_Internet", "Wireless_Internet");
+                } else if(isChecked == false){
+                    hostingHouse.removeFacilities("Wireless_Internet");
                 }
+//                hostingHouse.facilities = hostingHouse.facilities + "Wireless_Internet, ";
             }
         });
 
@@ -142,8 +149,11 @@ public class HostRoomsRegisterBasicAmenitiesFragment extends Fragment implements
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if(isChecked){
-                    hostingHouse.facilities = hostingHouse.facilities + "Shampoo, ";
+                    hostingHouse.addFacilities("Shampoo", "Shampoo");
+                } else if(isChecked == false){
+                    hostingHouse.removeFacilities("Shampoo");
                 }
+//                hostingHouse.facilities = hostingHouse.facilities + "Shampoo, ";
             }
         });
 
@@ -152,8 +162,11 @@ public class HostRoomsRegisterBasicAmenitiesFragment extends Fragment implements
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if(isChecked){
-                    hostingHouse.facilities = hostingHouse.facilities + "Hangers, ";
+                    hostingHouse.addFacilities("Hangers", "Hangers");
+                } else if(isChecked == false){
+                    hostingHouse.removeFacilities("Hangers");
                 }
+//                    hostingHouse.facilities = hostingHouse.facilities + "Hangers, ";
             }
         });
 
@@ -162,8 +175,11 @@ public class HostRoomsRegisterBasicAmenitiesFragment extends Fragment implements
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if(isChecked){
-                    hostingHouse.facilities = hostingHouse.facilities + "TV, ";
+                    hostingHouse.addFacilities("TV", "TV");
+                } else if(isChecked == false){
+                    hostingHouse.removeFacilities("TV");
                 }
+//                    hostingHouse.facilities = hostingHouse.facilities + "TV, ";
             }
         });
 
@@ -172,8 +188,11 @@ public class HostRoomsRegisterBasicAmenitiesFragment extends Fragment implements
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if(isChecked){
-                    hostingHouse.facilities = hostingHouse.facilities + "Heating, ";
+                    hostingHouse.addFacilities("Heating", "Heating");
+                } else if(isChecked == false){
+                    hostingHouse.removeFacilities("Heating");
                 }
+//                    hostingHouse.facilities = hostingHouse.facilities + "Heating, ";
             }
         });
 
@@ -182,8 +201,11 @@ public class HostRoomsRegisterBasicAmenitiesFragment extends Fragment implements
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if(isChecked){
-                    hostingHouse.facilities = hostingHouse.facilities + "Air_conditioning, ";
+                    hostingHouse.addFacilities("Air_conditioning", "Air_conditioning");
+                } else if(isChecked == false){
+                    hostingHouse.removeFacilities("Air_conditioning");
                 }
+//                    hostingHouse.facilities = hostingHouse.facilities + "Air_conditioning, ";
             }
         });
 
@@ -192,8 +214,11 @@ public class HostRoomsRegisterBasicAmenitiesFragment extends Fragment implements
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if(isChecked){
-                    hostingHouse.facilities = hostingHouse.facilities + "Breakfast, ";
+                    hostingHouse.addFacilities("Breakfast", "Breakfast");
+                } else if(isChecked == false){
+                    hostingHouse.removeFacilities("Breakfast");
                 }
+//                    hostingHouse.facilities = hostingHouse.facilities + "Breakfast, ";
             }
         });
 
@@ -202,8 +227,11 @@ public class HostRoomsRegisterBasicAmenitiesFragment extends Fragment implements
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if(isChecked){
-                    hostingHouse.facilities = hostingHouse.facilities + "Indoor_fireplace, ";
+                    hostingHouse.addFacilities("Indoor_fireplace", "Indoor_fireplace");
+                } else if(isChecked == false){
+                    hostingHouse.removeFacilities("Indoor_fireplace");
                 }
+//                    hostingHouse.facilities = hostingHouse.facilities + "Indoor_fireplace, ";
             }
         });
 
@@ -212,8 +240,11 @@ public class HostRoomsRegisterBasicAmenitiesFragment extends Fragment implements
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if(isChecked){
-                    hostingHouse.facilities = hostingHouse.facilities + "Pets_allowed, ";
+                    hostingHouse.addFacilities("Pets_allowed", "Pets_allowed");
+                } else if(isChecked == false){
+                    hostingHouse.removeFacilities("Pets_allowed");
                 }
+//                    hostingHouse.facilities = hostingHouse.facilities + "Pets_allowed, ";
             }
         });
 
@@ -222,8 +253,11 @@ public class HostRoomsRegisterBasicAmenitiesFragment extends Fragment implements
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if(isChecked){
-                    hostingHouse.facilities = hostingHouse.facilities + "Smoking_allowed, ";
+                    hostingHouse.addFacilities("Smoking_allowed", "Smoking_allowed");
+                } else if(isChecked == false){
+                    hostingHouse.removeFacilities("Smoking_allowed");
                 }
+//                    hostingHouse.facilities = hostingHouse.facilities + "Smoking_allowed, ";
             }
         });
 
@@ -232,8 +266,11 @@ public class HostRoomsRegisterBasicAmenitiesFragment extends Fragment implements
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if(isChecked){
-                    hostingHouse.facilities = hostingHouse.facilities + "Wheelchair_accessible, ";
+                    hostingHouse.addFacilities("Wheelchair_accessible", "Wheelchair_accessible");
+                } else if(isChecked == false){
+                    hostingHouse.removeFacilities("Wheelchair_accessible");
                 }
+//                    hostingHouse.facilities = hostingHouse.facilities + "Wheelchair_accessible, ";
             }
         });
 
@@ -242,8 +279,11 @@ public class HostRoomsRegisterBasicAmenitiesFragment extends Fragment implements
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if(isChecked){
-                    hostingHouse.facilities = hostingHouse.facilities + "Doorman, ";
+                    hostingHouse.addFacilities("Doorman", "Doorman");
+                } else if(isChecked == false){
+                    hostingHouse.removeFacilities("Doorman");
                 }
+//                    hostingHouse.facilities = hostingHouse.facilities + "Doorman, ";
             }
         });
     }

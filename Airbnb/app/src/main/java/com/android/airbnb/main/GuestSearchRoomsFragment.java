@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -35,8 +36,8 @@ public class GuestSearchRoomsFragment extends Fragment implements ITask.totalHou
     private RoomsAdapter roomsAdapter;
     private FloatingActionButton fabGoogleMapViewPager;
     private Context context;
-    public static final String GUEST_SEARCH_ROOMS_FRAGMENT = "com.android.airbnb.main.GuestSearchRoomsFragment";
-
+    private SwipeRefreshLayout refreshLayout;
+    public static final String GUEST_SEARCH_ROOMS_FRAGMENT = "com.android.airbnb.main.GUEST_SEARCH_ROOMS_FRAGMENT";
 
     public GuestSearchRoomsFragment() {
         // Required empty public constructor
@@ -54,14 +55,10 @@ public class GuestSearchRoomsFragment extends Fragment implements ITask.totalHou
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_guest_search_rooms, container, false);
         setViews(view);
-        setListeners();
-        return view;
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
         Loader.getTotalHouse(this);
+        setListeners();
+        setRefreshLayout();
+        return view;
     }
 
     private void setWishlist() {
@@ -71,6 +68,21 @@ public class GuestSearchRoomsFragment extends Fragment implements ITask.totalHou
     private void setViews(View view) {
         recyclerRooms = (RecyclerView) view.findViewById(R.id.recyclerRooms);
         fabGoogleMapViewPager = (FloatingActionButton) view.findViewById(R.id.fabGoogleMapViewPager);
+        refreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.search_refresh);
+    }
+
+    private void setRefreshLayout() {
+        refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                Loader.getTotalHouse(GuestSearchRoomsFragment.this);
+            }
+        });
+
+        refreshLayout.setColorSchemeResources(android.R.color.holo_blue_bright,
+                android.R.color.holo_green_light,
+                android.R.color.holo_orange_light,
+                android.R.color.holo_red_light);
     }
 
     private void setListeners() {
@@ -106,6 +118,7 @@ public class GuestSearchRoomsFragment extends Fragment implements ITask.totalHou
         wishlist = houses;
         findWishHouses();
         setAdapter();
+        refreshLayout.setRefreshing(false);
     }
 
     @Override

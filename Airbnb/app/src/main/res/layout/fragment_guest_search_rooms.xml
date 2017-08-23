@@ -1,38 +1,55 @@
-<android.support.constraint.ConstraintLayout
+<android.support.v4.widget.SwipeRefreshLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:id="@+id/search_refresh"
     android:background="@color/white"
     tools:context="com.android.airbnb.main.GuestSearchRoomsFragment">
 
-    <android.support.design.widget.FloatingActionButton
-        android:id="@+id/fabGoogleMapViewPager"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="16dp"
-        android:clickable="true"
-        android:cropToPadding="false"
-        android:scaleType="fitXY"
-        app:fabSize="mini"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
-        app:layout_constraintLeft_toLeftOf="parent"
+    <android.support.constraint.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginRight="8dp"
         app:layout_constraintRight_toRightOf="parent"
-        app:srcCompat="@drawable/ic_map" />
-
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/recyclerRooms"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
         android:layout_marginLeft="0dp"
-        android:layout_marginRight="0dp"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
+        android:layout_marginStart="0dp"
+        android:layout_marginEnd="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
         android:layout_marginBottom="0dp"
         app:layout_constraintTop_toTopOf="parent"
-        android:layout_marginTop="0dp" />
-</android.support.constraint.ConstraintLayout>
+        android:layout_marginTop="0dp">
+
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/fabGoogleMapViewPager"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            android:clickable="true"
+            android:cropToPadding="false"
+            android:scaleType="fitXY"
+            app:fabSize="mini"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintHorizontal_bias="0.498"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:srcCompat="@drawable/ic_map" />
+
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/recyclerRooms"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+    </android.support.constraint.ConstraintLayout>
+
+
+
+</android.support.v4.widget.SwipeRefreshLayout>

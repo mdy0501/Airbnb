@@ -42,7 +42,7 @@ public class Const {
             amenitiesMap.put("Hangers", R.drawable.ic_hanger);
             amenitiesMap.put("Washer", R.drawable.ic_washer);
             amenitiesMap.put("Shampoo", R.drawable.ic_shampoo);
-            amenitiesMap.put("Essentials", R.drawable.airplane);
+            amenitiesMap.put("Essentials", R.drawable.ic_towel);
             amenitiesMap.put("Heating", R.drawable.ic_heating);
             amenitiesMap.put("TV", R.drawable.ic_tv);
             amenitiesMap.put("Air_conditioning", R.drawable.ic_air_conditioning);

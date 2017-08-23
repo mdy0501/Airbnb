@@ -5,13 +5,16 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.v4.app.Fragment;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.text.Spannable;
+import android.text.SpannableString;
 import android.text.SpannableStringBuilder;
+import android.text.Spanned;
+import android.text.style.AbsoluteSizeSpan;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -28,12 +31,14 @@ import android.widget.Toast;
 import com.android.airbnb.adapter.BottomSheetAdapter;
 import com.android.airbnb.adapter.DetailImgPager;
 import com.android.airbnb.adapter.MapPagerAdapter;
+import com.android.airbnb.adapter.ReservedAdapter;
+import com.android.airbnb.adapter.RoomsAdapter;
+import com.android.airbnb.adapter.WishListDetailAdapter;
 import com.android.airbnb.calendar.CalendarActivity;
 import com.android.airbnb.domain.airbnb.Amenities;
 import com.android.airbnb.domain.airbnb.House;
 import com.android.airbnb.domain.airbnb.House_images;
 import com.android.airbnb.domain.reservation.Reservation;
-import com.android.airbnb.domain.reservation.ReservationSingleTon;
 import com.android.airbnb.papago.Translator;
 import com.android.airbnb.papago.domain.Data;
 import com.android.airbnb.util.Const;
@@ -104,6 +109,22 @@ public class DetailHouseActivity extends AppCompatActivity implements OnMapReady
     private TextView detailHouseReadReview;
     private CheckBox btnWish;
 
+
+    // fragment
+    private ReservationOneFragment oneStepFragment;
+    private ReservationTwoFragment twoStepFragment;
+    private ReservationThreeFragment threeStepFragment;
+    private Fragment[] fragments;
+    private Reservation reservation;
+    private ImageView btnBack;
+
+    public ReservationTwoFragment getTwoStepFragment() {
+        return twoStepFragment;
+    }
+    public ReservationThreeFragment getThreeStepFragment() {
+        return threeStepFragment;
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -113,7 +134,9 @@ public class DetailHouseActivity extends AppCompatActivity implements OnMapReady
                 (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.detail_house_mapFragment);
 
         getExIntent();
+        fragments = new Fragment[3];
         initView();
+        setFragments();
         setData(this.house);
         mapFragment.getMapAsync(this);
         setRoomPager();
@@ -123,35 +146,60 @@ public class DetailHouseActivity extends AppCompatActivity implements OnMapReady
         setOnClick();
     }
 
+    public Reservation getReservation() {
+        return reservation;
+    }
+
+    public void setReservation(Reservation reservation) {
+        this.reservation = reservation;
+    }
+
     @Override
     protected void onResume() {
         super.onResume();
-
     }
 
     // DetailMapViewPagerActivity로 부터 전달 받은 intent를 꺼낸다.
     private void getExIntent() {
         Intent intent = getIntent();
         Bundle extra = intent.getExtras();
+        String keyFromIntent = extra.getString("key");
 
-        if (extra.getString("key").equals("roomsHouse")) {
-            house = extra.getParcelable("roomsHouse");
-            houseImages = house.getHouse_images();
-            amenities = house.getAmenities();
+        switch (keyFromIntent) {
+            case RoomsAdapter.ROOMS_ADAPTER:
+                getDataFromBundle(extra, keyFromIntent);
+                break;
 
-        } else if (extra.getString("key").equals(MapPagerAdapter.HOUSE_OBJ)) {
-            house = extra.getParcelable(MapPagerAdapter.HOUSE_OBJ);
-            houseImages = house.getHouse_images();
-            amenities = house.getAmenities();
+            case "registerHouse":
+                getDataFromBundle(extra, keyFromIntent);
+                break;
 
-        } else if (extra.getString("key").equals(BottomSheetAdapter.BOTTOM_SHEET_ADAPTER_PK)) {
-            house = extra.getParcelable(BottomSheetAdapter.BOTTOM_SHEET_ADAPTER_PK);
-            houseImages = house.getHouse_images();
-            amenities = house.getAmenities();
+            case MapPagerAdapter.HOUSE_OBJ:
+                getDataFromBundle(extra, keyFromIntent);
+                break;
+
+            case BottomSheetAdapter.BOTTOM_SHEET_ADAPTER_PK:
+                getDataFromBundle(extra, keyFromIntent);
+                break;
+
+            case WishListDetailAdapter.WISHLIST_HOUSE:
+                getDataFromBundle(extra, keyFromIntent);
+                break;
+
+            case ReservedAdapter.RESERVED_ADAPTER:
+                getDataFromBundle(extra, keyFromIntent);
+                break;
         }
     }
 
+    private void getDataFromBundle(Bundle extra, String key) {
+        house = extra.getParcelable(key);
+        houseImages = house.getHouse_images();
+        amenities = house.getAmenities();
+    }
+
     private void initView() {
+        btnBack = (ImageView) findViewById(R.id.detail_btn_back);
         detailHouseMapInfo = (TextView) findViewById(R.id.detail_house_map_info_txt);
         mapFrame = (FrameLayout) findViewById(R.id.mapFrameLayout);
         btnTranslate = (TextView) findViewById(R.id.btnTranslate);
@@ -177,19 +225,8 @@ public class DetailHouseActivity extends AppCompatActivity implements OnMapReady
         detailHouseBtnCheckReserve = (Button) findViewById(R.id.detailHouse_btn_check_reserve);
         detailHouseMoreCalendar = (TextView) findViewById(R.id.detail_house_more_calendar);
         detailHouseMoreExtrafee = (TextView) findViewById(R.id.detail_house_more_extrafee);
-        detailHouseReviewRegisterDate = (TextView) findViewById(R.id.detail_house_review_register_date);
-        detailReivewHostImg = (ImageView) findViewById(R.id.detail_reivew_host_img);
-        detailHouseReviewContent = (TextView) findViewById(R.id.detail_house_review_content);
-        detailHouseReviewCount = (TextView) findViewById(R.id.detail_house_review_count);
-        detailHouseReviewRatingbar = (RatingBar) findViewById(R.id.detail_house_review_ratingbar);
-        detailHouseReadReview = (TextView) findViewById(R.id.detail_house_read_review);
         btnWish = (CheckBox) findViewById(R.id.detail_wish);
-
-
-    }
-
-    private void setReviews() {
-        // Review data가 넘어오면 셋팅한다..
+        btnBack = (ImageView) findViewById(R.id.detail_btn_back);
     }
 
     private void setRoomPager() {
@@ -233,80 +270,61 @@ public class DetailHouseActivity extends AppCompatActivity implements OnMapReady
 
     private void setViewPager() {
         viewPager = (ViewPager) findViewById(R.id.detail_room_viewPager);
-        Log.e("Detail", "imgs size === :  " + house.getHouse_images().length);
         mAdapter = new DetailImgPager(house.getHouse_images(), this);
         viewPager.setAdapter(mAdapter);
     }
 
-    Handler mHandler = null;
-
-    private void setOnClick() {
-        detailHostImg.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getBaseContext(), HostInfoActivity.class);
+    @Override
+    public void onClick(View v) {
+        Intent intent;
+        switch (v.getId()) {
+            case R.id.detail_host_img:
+                intent = new Intent(getBaseContext(), HostInfoActivity.class);
                 intent.putExtra(HOST_INFO, house.getHost());
                 startActivity(intent);
-            }
-        });
-        // papago api를 통해 영문 -> 한글 번역한다.
-        btnTranslate.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mHandler = new Handler();
-                new Thread() {
-                    @Override
-                    public void run() {
-                        super.run();
-                        Log.e("detail", "========= doTranslate ======== ");
-                        Translator.doTranslate(house.getIntroduce(), DetailHouseActivity.this);
+                break;
 
-                        mHandler.post(new Runnable() {
-                            @Override
-                            public void run() {
-                                Log.e("thread", "thread txt :: " + translatedTxt);
-                                detailRoomIntro.setText(house.getIntroduce() + "\n === 한국어 번역 === \n  " + translatedTxt);
-                            }
-                        });
-                    }
-                }.start();
-            }
-        });
-        mapFrame.setClickable(true);
-        mapFrame.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(DetailHouseActivity.this, DetailMapActivity.class);
+            case R.id.btnTranslate:
+                doTranslate();
+                break;
+
+            case R.id.mapFrameLayout:
+                intent = new Intent(DetailHouseActivity.this, DetailMapActivity.class);
                 intent.putExtra(HOUSE_LATLNG, house.getLatLng());
                 intent.putExtra(HOUSE_ADDRESS, house.getAddress());
                 startActivity(intent);
-            }
-        });
+                break;
 
-        detailHouseBtnCheckReserve.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+            case R.id.detailHouse_btn_check_reserve:
                 doReservation(isDateSelected);
+                break;
 
-            }
-        });
-
-        detailHouseMoreCalendar.setClickable(true);
-        detailHouseMoreCalendar.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+            case R.id.detail_house_more_calendar:
                 goCalendar();
-            }
-        });
+                break;
 
-        detailHouseMoreExtrafee.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(v.getContext(), DetailExtraFeeActivity.class);
+            case R.id.detail_house_more_extrafee:
+                intent = new Intent(v.getContext(), DetailExtraFeeActivity.class);
                 intent.putExtra(DETAIL_HOUSE, house);
                 v.getContext().startActivity(intent);
-            }
-        });
+                break;
+
+            case R.id.detail_btn_back:
+                onBackPressed();
+                break;
+        }
+    }
+
+    private void setOnClick() {
+        mapFrame.setClickable(true);
+        detailHouseMoreCalendar.setClickable(true);
+        detailHostImg.setOnClickListener(this);
+        btnTranslate.setOnClickListener(this);
+        mapFrame.setOnClickListener(this);
+        detailHouseBtnCheckReserve.setOnClickListener(this);
+        detailHouseMoreCalendar.setOnClickListener(this);
+        detailHouseMoreExtrafee.setOnClickListener(this);
+        btnBack.setOnClickListener(this);
 
         btnWish.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
@@ -316,24 +334,44 @@ public class DetailHouseActivity extends AppCompatActivity implements OnMapReady
                 } else {
                     Loader.postWishList("Token " + PreferenceUtil.getToken(buttonView.getContext()), house.getPk(), DetailHouseActivity.this);
                 }
-
             }
         });
     }
 
+    private Handler mHandler = null;
+
+    private void doTranslate() {
+        mHandler = new Handler();
+        new Thread() {
+            @Override
+            public void run() {
+                super.run();
+                Translator.doTranslate(house.getIntroduce(), DetailHouseActivity.this);
+
+                mHandler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        detailRoomIntro.setText(house.getIntroduce() + "\n === 한국어 번역 === \n  " + translatedTxt);
+                    }
+                });
+            }
+        }.start();
+    }
+
+    // TODO 메소드로 분리하기
     @Override
     public void onMapReady(GoogleMap googleMap) {
         Log.i("Detail", house.getLatLng().toString());
         mMap = googleMap;
         mMap.getUiSettings().setScrollGesturesEnabled(false);
-        /* spannable 객체 사용법 */
+
+        // spannable 객체 사용하여 html 직접 작성하는 효과를 text에 줌
         String address = house.getAddress();
-        String title = address + "\n" + "정확한 위치는 예약 완료 후에 표시됩니다.";
-        SpannableStringBuilder builder = new SpannableStringBuilder(title);
-        builder.setSpan(title, 0, address.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-        detailHouseMapInfo.setText(title);
+        detailHouseMapInfo.setText(getSpannableString(address));
+        detailHouseMapInfo.setTextSize(20f);
         detailHouseMapInfo.setTextColor(Color.BLACK);
-        // marker title 제거
+
+        // marker title 중복 제거 완료
         Marker marker = googleMap.addMarker(new MarkerOptions().position(house.getLatLng()));
         mMap.moveCamera(CameraUpdateFactory.newLatLng(house.getLatLng()));
         mMap.animateCamera(CameraUpdateFactory.zoomTo(12));
@@ -341,6 +379,29 @@ public class DetailHouseActivity extends AppCompatActivity implements OnMapReady
     }
 
     private String translatedTxt = "";
+
+
+    // SpannableStringBuilder 사용
+    private SpannableStringBuilder getSpannableString(String address){
+
+        // 1. SpannableStringBuilder를 생성한다.
+        SpannableStringBuilder ssb = new SpannableStringBuilder();
+        String info = "\n" + "정확한 위치는 예약 완료 후에 표시됩니다.";
+
+        // 2. String -> SpannableString 변환해준다.
+        SpannableString ssAddress = new SpannableString(address);
+        SpannableString ssInfo = new SpannableString(info);
+
+        // 3. SpannableString에 text 설정을 해준다.
+        ssAddress.setSpan(new AbsoluteSizeSpan(80), 0, address.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+        ssInfo.setSpan(new AbsoluteSizeSpan(60), 0, info.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+
+        // 4. SpannableStringBuilder에 append하여 완성된 text를 가진 SpannableStringBuilder를 만들어준다.
+        ssb.append(ssAddress);
+        ssb.append(ssInfo);
+
+        return ssb;
+    }
 
     @Override
     public void getResult(String jsonString) {
@@ -350,22 +411,16 @@ public class DetailHouseActivity extends AppCompatActivity implements OnMapReady
     }
 
     @Override
-    public void onClick(View v) {
-        // TODO OnClickListener 정리하기
-    }
-
-    @Override
     public void getWishResponse(String message) {
         Toast.makeText(this, message.toString(), Toast.LENGTH_SHORT).show();
     }
 
-    /* 재사용하지 않는 어댑터 - 이너 클래스로 작성 */
+    /* 재사용하지 않는 어댑터이므로 이너 클래스로 작성 */
     class DetailAmenitiesAdapter extends RecyclerView.Adapter<DetailAmenitiesAdapter.Holder> {
 
         Amenities[] amenities;
 
         public DetailAmenitiesAdapter(Amenities[] amenities) {
-            Log.e("adapter", "amenities" + amenities.length);
             this.amenities = amenities;
         }
 
@@ -378,7 +433,6 @@ public class DetailHouseActivity extends AppCompatActivity implements OnMapReady
         @Override
         public void onBindViewHolder(Holder holder, int position) {
             // 받아온 amenities 목록에 맞는 이미지 리소스를 조회하여 imageView에 setting한다.
-            Log.e("amen", "adapter :: amen name" + position + ", " + amenities[position].getName());
             holder.setAmenityImg(Const.Amenities.getAmenityImg(amenities[position].getName()));
         }
 
@@ -391,14 +445,11 @@ public class DetailHouseActivity extends AppCompatActivity implements OnMapReady
 
             private ImageView amenityImg;
 
-            // toolbug 발견 -> () 안에 typecasting 안해줘도 빨간줄이 뜨지 않는 문제...
-            // 해결 완료
             public Holder(View itemView) {
                 super(itemView);
                 amenityImg = (ImageView) itemView.findViewById(R.id.amenity_img);
             }
 
-            // amenities 이미지를 setting한다..
             public void setAmenityImg(int resId) {
                 GlideApp
                         .with(getBaseContext())
@@ -409,7 +460,6 @@ public class DetailHouseActivity extends AppCompatActivity implements OnMapReady
         }
     }
 
-    private Reservation reservation;
     private boolean isDateSelected = false;
     private String checkIn = "";
     private String checkOut = "";
@@ -427,30 +477,66 @@ public class DetailHouseActivity extends AppCompatActivity implements OnMapReady
         }
     }
 
+    public void removeAllFragments() {
+        for (int i = fragments.length - 1; i > -1; i--) {
+            getSupportFragmentManager()
+                    .beginTransaction()
+                    .remove(fragments[i])
+                    .commit();
+        }
+    }
+
+    private void setFragments() {
+        // 1. fragment를 생성한다.
+        oneStepFragment = new ReservationOneFragment();
+        twoStepFragment = new ReservationTwoFragment();
+        threeStepFragment = new ReservationThreeFragment();
+
+        // 2. 추후 DetailActivity class 내에서 프레그먼트 관리를 위해 배열에 셋팅한다.
+        fragments[0] = oneStepFragment;
+        fragments[1] = twoStepFragment;
+        fragments[2] = threeStepFragment;
+    }
+
     private void doReservation(boolean isDateSelected) {
+
+        // 1. flag 상태에 따라
         if (isDateSelected) {
-            // 예약진행한다.
-            Intent intent = new Intent(DetailHouseActivity.this, ReservationOneActivity.class);
-            ReservationSingleTon reservation = ReservationSingleTon.getInstnace();
-            reservation.setCheckin_date(checkIn);
-            reservation.setCheckout_date(checkOut);
-            reservation.setHouse(house);
-            startActivity(intent);
+            // 2. 예약진행한다.
+            goReservationOneStep();
         } else {
-            // 달력을 통해 날짜를 먼저 선택한다.
+            // 3. 달력을 통해 날짜를 먼저 선택한다.
             goCalendar();
         }
     }
 
-    // 반복적으로 사용되어 메소드로 뺌
+    // 예약절차 1step으로 이동하는 메소드
+    private void goReservationOneStep() {
+
+        // 1. 초기화된 fragment에 presenter 역할을 하는 activity를 넘겨준다.
+        oneStepFragment.setPresenter(this);
+
+        // 2. fragment를 호출한다.
+        getSupportFragmentManager()
+                .beginTransaction()
+                .add(R.id.fragmentContainer, oneStepFragment)
+                .addToBackStack(null)
+                .commit();
+
+        // 3. 예약 객체에 예약날짜를 저장한다.
+        reservation = new Reservation(checkIn, checkOut, house);
+
+        // 4. flag 값을 false로 재설정
+        isDateSelected = false;
+    }
+
     private void goCalendar() {
         Intent intent = new Intent(DetailHouseActivity.this, CalendarActivity.class);
         intent.putExtra(DETAIL_HOUSE, house);
         startActivityForResult(intent, DETAIL_HOUSE_ACTIVITY);
-        // activity 전환효과를 위해 anim에 전환효과 설정값 셋팅
-        // 아래 메소드를 통해 전환효과 설정
-        overridePendingTransition(R.anim.slide_in_up, R.anim.stay);
 
+        // activity 전환효과를 위해 anim에 전환효과 설정값 셋팅 후, 아래 메소드를 통해 전환효과를 준다.
+        overridePendingTransition(R.anim.slide_in_up, R.anim.stay);
     }
 
     public void setHousePricePerDay(TextView housePricePerDay) {

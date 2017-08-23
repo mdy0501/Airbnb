@@ -8,6 +8,7 @@ import android.os.Parcelable;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -58,6 +59,7 @@ public class GuestReservedListFragment extends Fragment implements ITask.getRese
     private GuestWistListFragment wishListFragment;
     public static final String RESERVED_HOUSES = "Wcom.android.airbnb.main.RESERVED_HOUSES";
     private String userToken = "";
+    private SwipeRefreshLayout refreshLayout;
 
     public GuestReservedListFragment() {
         // Required empty public constructor
@@ -86,6 +88,7 @@ public class GuestReservedListFragment extends Fragment implements ITask.getRese
         setViews(view);
         setToolbar();
         setListeners();
+        setRefreshLayout();
         return view;
     }
 
@@ -143,6 +146,20 @@ public class GuestReservedListFragment extends Fragment implements ITask.getRese
         houseCount = (TextView) view.findViewById(R.id.reservation_house_count);
         wishRecycler = (RecyclerView) view.findViewById(R.id.wish_recycler);
         fabMap = (FloatingActionButton) view.findViewById(R.id.floatingActionButton);
+        refreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.wishlist_refresh);
+    }
+
+    private void setRefreshLayout() {
+        refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                Loader.getReservation(GuestReservedListFragment.this);
+            }
+        });
+        refreshLayout.setColorSchemeResources(android.R.color.holo_blue_bright,
+                android.R.color.holo_green_light,
+                android.R.color.holo_orange_light,
+                android.R.color.holo_red_light);
     }
 
 
@@ -174,8 +191,9 @@ public class GuestReservedListFragment extends Fragment implements ITask.getRese
     @Override
     public void getReservatoinResponse(List<Reservation> reservations) {
         if (reservations != null) {
+            this.reservedHouses.clear();
             List<Reservation> reservationList = reservations;
-            for (int i= reservationList.size()-1; i > -1; i--) {
+            for (int i = reservationList.size() - 1; i > -1; i--) {
                 if (reservationList.get(i).getGuest().getPk().equals(PreferenceUtil.getPrimaryKey(guestMainActivity))) {
                     Log.e("Reserved", reservationList.get(i).getPk());
                     reservedHouses.add(reservationList.get(i).getHouse());
@@ -183,8 +201,10 @@ public class GuestReservedListFragment extends Fragment implements ITask.getRese
             }
             setAdapter();
             connectData();
+            refreshLayout.setRefreshing(false);
         } else {
             Toast.makeText(guestMainActivity, "예약된 숙소가 없습니다.", Toast.LENGTH_SHORT).show();
+            refreshLayout.setRefreshing(false);
         }
     }
 }

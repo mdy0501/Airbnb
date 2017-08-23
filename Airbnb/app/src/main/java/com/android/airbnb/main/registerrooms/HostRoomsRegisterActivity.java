@@ -25,6 +25,8 @@ import com.android.airbnb.util.Remote.IServerApi;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
@@ -110,6 +112,18 @@ public class HostRoomsRegisterActivity extends AppCompatActivity implements View
                 break;
             case R.id.btnRegisterRooms:
                 Toast.makeText(this, "숙소등록 버튼 클릭!", Toast.LENGTH_SHORT).show();
+
+                String totalAmenities = "";
+                for(String key : hostingHouse.facilitiesMap.keySet()){
+                    totalAmenities = totalAmenities + ", " + hostingHouse.facilitiesMap.get(key);
+                }
+
+                if(totalAmenities != null && !"".equals(totalAmenities)){
+                    totalAmenities = totalAmenities.substring(2, totalAmenities.length());
+                }
+
+                hostingHouse.setAmenities(totalAmenities);
+                Log.e("편의시설 변수", totalAmenities + " 편의시설 ");
                 postRegiserRooms();
                 break;
         }
@@ -150,35 +164,33 @@ public class HostRoomsRegisterActivity extends AppCompatActivity implements View
 
 
 
-        MultipartBody.Part photo = null;
+        List<MultipartBody.Part> photos = new ArrayList<>();
 
-        if(hostingHouse.getImagePath() != null){
-            String imagePath = hostingHouse.getImagePath();
-            File file = new File(imagePath);
+        if(hostingHouse.filePaths != null){
+            for(int i=0 ; i<hostingHouse.filePaths.size() ; i++){
+                String imagePath = hostingHouse.filePaths.get(i);
+                File file = new File(imagePath);
+                // 이미지를 비트맵으로 변환하는 옵션을 만들어준다
+                BitmapFactory.Options options = new BitmapFactory.Options();
+                options.inPreferredConfig = Bitmap.Config.ARGB_8888;
+                options.inSampleSize = 2; // 이미지의 사이즈를 1/2로 축소
+                bitmap = BitmapFactory.decodeFile(imagePath, options); // 비트맵으로 만들어준다
+                rotateBitmap = imgRotate(bitmap); // 사진을 변환하게되면 EXIF 값중 회전값이 날아가는데 이걸 완충하려고 미리 오른쪽으로 90도를 돌린다.
 
-            // 이미지를 비트맵으로 변환하는 옵션을 만들어준다
-            BitmapFactory.Options options = new BitmapFactory.Options();
-            options.inPreferredConfig = Bitmap.Config.ARGB_8888;
-            options.inSampleSize = 2; // 이미지의 사이즈를 1/2로 축소
-            bitmap = BitmapFactory.decodeFile(imagePath, options); // 비트맵으로 만들어준다
-            rotateBitmap = imgRotate(bitmap); // 사진을 변환하게되면 EXIF 값중 회전값이 날아가는데 이걸 완충하려고 미리 오른쪽으로 90도를 돌린다.
-
-            // 비트맵을 바이트 어레이로 변경 --> 이미지를 축소하려면 변경해야되고 , 전송까지 하려면 변경해야된다
-            ByteArrayOutputStream stream = new ByteArrayOutputStream();
-
-
-            // Compress the bitmap to jpeg format and 50% image quality --> 크기줄인것을 압축을 하는 작업이다. (용량을줄인다)
-            rotateBitmap.compress(Bitmap.CompressFormat.JPEG, 50, stream);
+                // 비트맵을 바이트 어레이로 변경 --> 이미지를 축소하려면 변경해야되고 , 전송까지 하려면 변경해야된다
+                ByteArrayOutputStream stream = new ByteArrayOutputStream();
 
 
-            // Create a byte array from ByteArrayOutputStream  --> JPEG 포맷을 서버와의 통신을 위해 바이트어레이로 변경
-            byte[] byteArray = stream.toByteArray();
+                // Compress the bitmap to jpeg format and 50% image quality --> 크기줄인것을 압축을 하는 작업이다. (용량을줄인다)
+                rotateBitmap.compress(Bitmap.CompressFormat.JPEG, 50, stream);
 
+                // Create a byte array from ByteArrayOutputStream  --> JPEG 포맷을 서버와의 통신을 위해 바이트어레이로 변경
+                byte[] byteArray = stream.toByteArray();
 
-            RequestBody imageFile = RequestBody.create(MediaType.parse("image/*"), byteArray);
+                RequestBody imageFile = RequestBody.create(MediaType.parse("image/*"), byteArray);
 
-            photo = MultipartBody.Part.createFormData("photo", file.getName(), imageFile);
-
+                photos.add(  MultipartBody.Part.createFormData("photo"+i, file.getName(), imageFile)  );
+            }
         }
 
 
@@ -200,14 +212,13 @@ public class HostRoomsRegisterActivity extends AppCompatActivity implements View
         RequestBody latitude = RequestBody.create(MediaType.parse("text/plain"), hostingHouse.getLatitude());
         RequestBody longitude = RequestBody.create(MediaType.parse("text/plain"), hostingHouse.getLongitude());
 
-        Call<ResponseBody> postRegisterRooms = iServerApi.postRegisterRooms(token, title, address, introduce, space_info, guest_access, price_per_day, extra_people_day, cleaning_fee, weekly_discount, accommodates, bathrooms, bedrooms, beds, room_type, amenities, latitude, longitude, photo);
+        Call<ResponseBody> postRegisterRooms = iServerApi.postRegisterRooms(token, title, address, introduce, space_info, guest_access, price_per_day, extra_people_day, cleaning_fee, weekly_discount, accommodates, bathrooms, bedrooms, beds, room_type, amenities, latitude, longitude, photos);
         postRegisterRooms.enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 Log.e("숙소 등록 성공", "숙소등록 성공");
                 Log.e("숙소 등록 isSuccessful ", response.isSuccessful() + "");
                 Log.e("response.code ::" , response.code()+"");
-//                Log.e("response.body ::" , response.body().toString() );
 
                 if(response.isSuccessful()){
 
@@ -220,9 +231,12 @@ public class HostRoomsRegisterActivity extends AppCompatActivity implements View
                     rotateBitmap = null;
 
                     hostingHouse = null;    // HostingHouse 인스턴스 초기화
+
+                    setResult(RESULT_OK);
                     finish();
                 } else {
-                    Log.e("실패 코드", "실패 코드");
+                    int statusCode = response.code();
+                    Log.e("WriteActivity", "image 응답코드 ============= " + statusCode);
                 }
             }
 
@@ -232,7 +246,6 @@ public class HostRoomsRegisterActivity extends AppCompatActivity implements View
             }
         });
 
-
     }
 
     private Bitmap imgRotate(Bitmap bmp){
@@ -240,7 +253,7 @@ public class HostRoomsRegisterActivity extends AppCompatActivity implements View
         int height = bmp.getHeight();
 
         Matrix matrix = new Matrix();
-        matrix.postRotate(90);
+        matrix.postRotate(0);
 
         bitmap = Bitmap.createBitmap(bmp, 0, 0, width, height, matrix, true);
 

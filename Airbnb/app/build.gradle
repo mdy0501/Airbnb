@@ -10,7 +10,7 @@ android {
 
     defaultConfig {
         applicationId "com.android.airbnb"
-        minSdkVersion 15
+        minSdkVersion 16
         targetSdkVersion 25
         versionCode 1
         versionName "1.0"
@@ -54,7 +54,8 @@ dependencies {
     compile 'com.facebook.android:facebook-android-sdk:4.+'
     compile 'com.google.android.gms:play-services:11.0.4'
     compile 'com.tsengvn:typekit:1.0.1'
-    compile 'in.srain.cube:ultra-ptr:1.0.11'
+    compile 'com.baoyz.pullrefreshlayout:library:1.2.0'
     testCompile 'junit:junit:4.12'
     annotationProcessor 'com.github.bumptech.glide:compiler:4.0.0'
+    compile 'com.wang.avi:library:2.1.3'
 }
