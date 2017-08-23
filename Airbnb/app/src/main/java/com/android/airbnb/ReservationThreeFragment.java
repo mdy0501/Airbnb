@@ -160,6 +160,7 @@ public class ReservationThreeFragment extends Fragment implements View.OnClickLi
                                     e.printStackTrace();
                                 }
                                 presenter.removeAllFragments();
+                                presenter.finish();
                             }
                         })
                 .setNegativeButton("아니요",

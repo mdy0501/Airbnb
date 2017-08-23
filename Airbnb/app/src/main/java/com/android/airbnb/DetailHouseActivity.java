@@ -31,6 +31,8 @@ import android.widget.Toast;
 import com.android.airbnb.adapter.BottomSheetAdapter;
 import com.android.airbnb.adapter.DetailImgPager;
 import com.android.airbnb.adapter.MapPagerAdapter;
+import com.android.airbnb.adapter.ReservedAdapter;
+import com.android.airbnb.adapter.RoomsAdapter;
 import com.android.airbnb.adapter.WishListDetailAdapter;
 import com.android.airbnb.calendar.CalendarActivity;
 import com.android.airbnb.domain.airbnb.Amenities;
@@ -164,7 +166,7 @@ public class DetailHouseActivity extends AppCompatActivity implements OnMapReady
         String keyFromIntent = extra.getString("key");
 
         switch (keyFromIntent) {
-            case "roomsHouse":
+            case RoomsAdapter.ROOMS_ADAPTER:
                 getDataFromBundle(extra, keyFromIntent);
                 break;
 
@@ -177,6 +179,10 @@ public class DetailHouseActivity extends AppCompatActivity implements OnMapReady
                 break;
 
             case WishListDetailAdapter.WISHLIST_HOUSE:
+                getDataFromBundle(extra, keyFromIntent);
+                break;
+
+            case ReservedAdapter.RESERVED_ADAPTER:
                 getDataFromBundle(extra, keyFromIntent);
                 break;
         }

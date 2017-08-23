@@ -191,6 +191,7 @@ public class GuestReservedListFragment extends Fragment implements ITask.getRese
     @Override
     public void getReservatoinResponse(List<Reservation> reservations) {
         if (reservations != null) {
+            this.reservedHouses.clear();
             List<Reservation> reservationList = reservations;
             for (int i = reservationList.size() - 1; i > -1; i--) {
                 if (reservationList.get(i).getGuest().getPk().equals(PreferenceUtil.getPrimaryKey(guestMainActivity))) {
