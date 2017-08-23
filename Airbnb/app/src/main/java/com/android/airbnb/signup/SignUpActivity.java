@@ -23,8 +23,6 @@ public class SignUpActivity extends AppCompatActivity {
         setContentView(R.layout.activity_sign_up);
         setFragments();
         addFirstFragment();
-
-
     }
 
     private void addFirstFragment(){
