@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -20,7 +21,6 @@ import com.android.airbnb.domain.airbnb.House;
 import com.android.airbnb.util.PreferenceUtil;
 import com.android.airbnb.util.Remote.ITask;
 import com.android.airbnb.util.Remote.Loader;
-import com.baoyz.widget.PullRefreshLayout;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -36,7 +36,7 @@ public class GuestSearchRoomsFragment extends Fragment implements ITask.totalHou
     private RoomsAdapter roomsAdapter;
     private FloatingActionButton fabGoogleMapViewPager;
     private Context context;
-    private PullRefreshLayout refreshLayout;
+    private SwipeRefreshLayout refreshLayout;
     public static final String GUEST_SEARCH_ROOMS_FRAGMENT = "com.android.airbnb.main.GUEST_SEARCH_ROOMS_FRAGMENT";
 
     public GuestSearchRoomsFragment() {
@@ -68,17 +68,21 @@ public class GuestSearchRoomsFragment extends Fragment implements ITask.totalHou
     private void setViews(View view) {
         recyclerRooms = (RecyclerView) view.findViewById(R.id.recyclerRooms);
         fabGoogleMapViewPager = (FloatingActionButton) view.findViewById(R.id.fabGoogleMapViewPager);
-        refreshLayout = (PullRefreshLayout) view.findViewById(R.id.search_refresh);
+        refreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.search_refresh);
     }
 
-    private void setRefreshLayout(){
-        refreshLayout.setRefreshStyle(PullRefreshLayout.STYLE_CIRCLES);
-        refreshLayout.setOnRefreshListener(new PullRefreshLayout.OnRefreshListener() {
+    private void setRefreshLayout() {
+        refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
                 Loader.getTotalHouse(GuestSearchRoomsFragment.this);
             }
         });
+
+        refreshLayout.setColorSchemeResources(android.R.color.holo_blue_bright,
+                android.R.color.holo_green_light,
+                android.R.color.holo_orange_light,
+                android.R.color.holo_red_light);
     }
 
     private void setListeners() {

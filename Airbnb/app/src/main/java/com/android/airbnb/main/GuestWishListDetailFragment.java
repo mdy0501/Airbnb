@@ -8,6 +8,7 @@ import android.os.Parcelable;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -29,7 +30,6 @@ import com.android.airbnb.domain.airbnb.House;
 import com.android.airbnb.util.PreferenceUtil;
 import com.android.airbnb.util.Remote.ITask;
 import com.android.airbnb.util.Remote.Loader;
-import com.baoyz.widget.PullRefreshLayout;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -51,7 +51,7 @@ public class GuestWishListDetailFragment extends Fragment implements ITask.allWi
     private List<House> wishlist;
     public static final String WISHLIST_HOUSES = "Wcom.android.airbnb.main.RESERVED_HOUSES";
     private String userToken = "";
-    private PullRefreshLayout refreshLayout;
+    private SwipeRefreshLayout refreshLayout;
 
     public GuestWishListDetailFragment() {
         // Required empty public constructor
@@ -90,9 +90,9 @@ public class GuestWishListDetailFragment extends Fragment implements ITask.allWi
         return view;
     }
 
-    private void setToolbar(){
-        ((AppCompatActivity)getActivity()).setSupportActionBar(toolbar);
-        ((AppCompatActivity)getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+    private void setToolbar() {
+        ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
+        ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         ActionBar actionBar = ((AppCompatActivity) getActivity()).getSupportActionBar();
         actionBar.setDisplayShowCustomEnabled(true); //커스터마이징 하기 위해 필요
@@ -108,7 +108,7 @@ public class GuestWishListDetailFragment extends Fragment implements ITask.allWi
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()){
+        switch (item.getItemId()) {
             case R.id.wishlist_menu_delete:
                 Toast.makeText(mContext, "목록을 삭제합니다.", Toast.LENGTH_SHORT).show();
                 break;
@@ -143,17 +143,23 @@ public class GuestWishListDetailFragment extends Fragment implements ITask.allWi
         houseCount = (TextView) view.findViewById(R.id.reservation_house_count);
         wishRecycler = (RecyclerView) view.findViewById(R.id.wish_recycler);
         fabMap = (FloatingActionButton) view.findViewById(R.id.floatingActionButton);
-//        refreshLayout = (PullRefreshLayout) view.findViewById(R.id.wishlist_refresh);
+        refreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.wishlist_refresh);
     }
 
-    private void setRefreshLayout(){
-        refreshLayout.setRefreshStyle(PullRefreshLayout.STYLE_RING);
-        refreshLayout.setOnRefreshListener(new PullRefreshLayout.OnRefreshListener() {
+    // 새로고침 기능 구현
+    private void setRefreshLayout() {
+        refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
                 Loader.getWishList(userToken, GuestWishListDetailFragment.this);
             }
         });
+
+        refreshLayout.setColorSchemeResources(android.R.color.holo_blue_bright,
+                android.R.color.holo_green_light,
+                android.R.color.holo_orange_light,
+                android.R.color.holo_red_light);
+
     }
 
     private void connectData() {
@@ -177,7 +183,7 @@ public class GuestWishListDetailFragment extends Fragment implements ITask.allWi
     public void doAllWishList(List<House> wishlist) {
         Log.e("GuestWishList", "wishlist.size : " + wishlist.size());
         this.wishlist = wishlist;
-        for (House item : wishlist){
+        for (House item : wishlist) {
             item.setWished(true);
         }
         setAdapter();
