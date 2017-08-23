@@ -68,11 +68,9 @@ public class DetailMapActivity extends AppCompatActivity implements OnMapReadyCa
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
         MapUtil.drawCircle(mMap, houseLatlng);
-        // airbnb는 정책상, 예약이 완료 후, 숙소의 정확한 위치 정보를 제공한다.
+        // airbnb는 정책상, 예약이 완료 후 숙소의 정확한 위치 정보를 제공하는 플로우를 따라했다.
         mMap.moveCamera(CameraUpdateFactory.newLatLng(houseLatlng));
-        // zoom 수치 조정할 수 있음
         mMap.animateCamera(CameraUpdateFactory.zoomTo(13f));
-
     }
 
     private void init() {

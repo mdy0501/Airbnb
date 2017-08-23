@@ -12,7 +12,6 @@ import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.android.airbnb.DetailHouseActivity;
 import com.android.airbnb.R;
@@ -73,7 +72,7 @@ public class WishListDetailAdapter extends RecyclerView.Adapter<WishListDetailAd
 
     @Override
     public void getWishResponse(String message) {
-        Toast.makeText(mContext, message, Toast.LENGTH_SHORT).show();
+
     }
 
     class Holder extends RecyclerView.ViewHolder {

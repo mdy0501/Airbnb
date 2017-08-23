@@ -13,7 +13,6 @@ import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.android.airbnb.DetailHouseActivity;
 import com.android.airbnb.R;
@@ -35,6 +34,8 @@ public class RoomsAdapter extends RecyclerView.Adapter<RoomsAdapter.Holder> impl
     private List<House> houses;
     private LayoutInflater inflater;
     private Context context;
+    int position;
+    public static final String ROOMS_ADAPTER = "com.android.airbnb.adapter.ROOMS_ADAPTER";
 
 
     public RoomsAdapter(Context context, List<House> data) {
@@ -83,7 +84,7 @@ public class RoomsAdapter extends RecyclerView.Adapter<RoomsAdapter.Holder> impl
 
     @Override
     public void getWishResponse(String message) {
-        Toast.makeText(context, "msg : " + message, Toast.LENGTH_SHORT).show();
+
     }
 
     class Holder extends RecyclerView.ViewHolder {
@@ -115,8 +116,8 @@ public class RoomsAdapter extends RecyclerView.Adapter<RoomsAdapter.Holder> impl
                     Intent intent = new Intent(v.getContext(), DetailHouseActivity.class);
                     House roomsHouse = houses.get(position);
                     Bundle extra = new Bundle();
-                    extra.putString("key", "roomsHouse");
-                    extra.putParcelable("roomsHouse", roomsHouse);
+                    extra.putString("key", ROOMS_ADAPTER);
+                    extra.putParcelable(ROOMS_ADAPTER, roomsHouse);
                     intent.putExtras(extra);
                     v.getContext().startActivity(intent);
                 }
