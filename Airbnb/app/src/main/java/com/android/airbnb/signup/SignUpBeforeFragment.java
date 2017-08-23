@@ -122,7 +122,7 @@ public class SignUpBeforeFragment extends Fragment implements View.OnClickListen
                                 PreferenceUtil.setEmail(getActivity(), response.body().getEmail());
 
                                 // 로그인 완료되면 Guest Main 화면으로 이동
-                                Intent intent = new Intent(getActivity(), GuestMainActivity.class);
+                                Intent intent = new Intent(getContext(), GuestMainActivity.class);
                                 startActivity(intent);
                                 signUpActivity.finish();
                             } else if (response.code() == 400) {
