@@ -217,7 +217,6 @@ public class GoogleMapViewPagerActivity extends FragmentActivity implements OnMa
         fabMap.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Snackbar.make(findViewById(R.id.snackbar_place), "필털ㅇㄴㅁㄹㅁㄴㅇㄹ", Snackbar.LENGTH_SHORT).show();
                 Toast.makeText(GoogleMapViewPagerActivity.this, "필터로 이동..!", Toast.LENGTH_SHORT).show();
             }
         });
