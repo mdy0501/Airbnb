@@ -215,10 +215,13 @@ public class Loader {
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
         IServerApi serverApi = client.create(IServerApi.class);
+
         RequestBody checkinBody = RequestBody.create(MediaType.parse("text/plain"), checkin);
         RequestBody checkoutBody = RequestBody.create(MediaType.parse("text/plain"), checkout);
 
-        Call<Reservation> call = serverApi.postReservation(token, housePk, checkinBody, checkoutBody);
+        Log.e("Loader", "postReservation : token : " + token + ", housePk : " + housePk + ", check in : " + checkin + ", checkout : " + checkout);
+
+        Call<Reservation> call = serverApi.postReservation(token, housePk.toString(), checkinBody, checkoutBody);
         String originalUrl = call.request().url().toString();
         Log.e("Loader", " origin : " + originalUrl);
 
@@ -228,6 +231,8 @@ public class Loader {
                 if (response.isSuccessful()) {
                     iTask.getReservationResponse("예약이 완료되었습니다.");
                 } else {
+                    Log.e("Loader", "body : " + response.body());
+                    Log.e("Loader", "error : " + response.code());
                     iTask.getReservationResponse("예약이 실패하였습니다. 다시 한번 시도해주세요.");
                 }
             }
