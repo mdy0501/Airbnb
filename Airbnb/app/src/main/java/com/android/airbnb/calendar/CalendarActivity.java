@@ -49,7 +49,7 @@ public class CalendarActivity extends AppCompatActivity implements CalendarItem.
     public static String checkoutDate = "";
 
     private List<CalendarItem> items;
-    private List<Reservation> reservations;
+    private List<Reservation> reservations = null;
     private House house;
     private AVLoadingIndicatorView indicatorView;
 
@@ -65,7 +65,8 @@ public class CalendarActivity extends AppCompatActivity implements CalendarItem.
 
     private void getData() {
         Intent intent = getIntent();
-        house = intent.getParcelableExtra(DetailHouseActivity.DETAIL_HOUSE);
+        house = (House) intent.getParcelableExtra(DetailHouseActivity.DETAIL_HOUSE);
+        Log.e("CalendarActivity", "getData house pk : " + house.getPk());
     }
 
     private void resetAllCalendar() {
@@ -78,7 +79,9 @@ public class CalendarActivity extends AppCompatActivity implements CalendarItem.
     @Override
     protected void onResume() {
         super.onResume();
+        Log.e("CalendarActivity", "onResume : housepk " + house.getPk());
         Loader.getReservation(house.getPk(), this);
+        Log.e("CalendarActivity", " status : " + STATUS);
     }
 
     // ================== code 중복이 있어서 다시 한번 보면서 메소드화 할 수 있는 것 하기 ===================
@@ -86,33 +89,40 @@ public class CalendarActivity extends AppCompatActivity implements CalendarItem.
     private void setBookedDates(String checkin, String checkout) {
 
         String subCheckin = checkin.substring(0, 7);
-        String subCheckout = checkout.substring(0, 7);
+        final String subCheckout = checkout.substring(0, 7);
 
-        int subCheckinDd = Integer.parseInt(checkin.substring(9));
-        int subCheckoutDd = Integer.parseInt(checkout.substring(9));
+        int subCheckinDd = Integer.parseInt(checkin.substring(8));
+        int subCheckoutDd = Integer.parseInt(checkout.substring(8));
 
         for (CalendarItem item : items) {
+            Log.e("CalendarActivity", "item tag : " + item.getTag());
+            Log.e("CalendarActivity", "subCheckin : " + subCheckin + ", subCheckout : " + subCheckout);
 
             String itemKey = (String) item.getTag();
 
+            Log.e("CalendarActivity", "subCheckinDd : " + subCheckinDd + ", subCheckoutDd : " + subCheckoutDd);
             if ((subCheckin).equals(itemKey) && (subCheckout).equals(itemKey)) {
-                for (int i = subCheckinDd; i <= subCheckoutDd; i++) {
+                for (int i = subCheckinDd-1; i < subCheckoutDd; i++) {
+                    Log.e("CalendarActivity", "i : " + i );
                     item.setBooked(item.getCols().get(i));
                 }
 
             } else if ((subCheckin).equals(itemKey) || (subCheckout).equals(itemKey)) {
+                int checkInDate = 0;
+                int checkOutDate = 0;
+
 
                 if ((subCheckin).equals(itemKey))
-                    subCheckinDd = items.indexOf(item);
+                    checkInDate = items.indexOf(item);
                 else if ((subCheckout).equals(itemKey))
-                    subCheckoutDd = items.indexOf(item);
+                    checkOutDate = items.indexOf(item);
 
-                setBookedRange(subCheckinDd, subCheckoutDd);
+                setBookedRange(checkInDate, checkOutDate);
             }
         }
     }
 
-    private void setBookedRange(int startIndex, int endIndex){
+    private void setBookedRange(int startIndex, int endIndex) {
 
         for (int i = startIndex; i <= endIndex; i++) {
 
@@ -186,6 +196,8 @@ public class CalendarActivity extends AppCompatActivity implements CalendarItem.
     }
 
     private void setCalendar() {
+        if (items.size() > 0)
+            items.clear();
         for (int i = 0; i < calendarDatas.size(); i++) {
             CalendarData calendarData = calendarDatas.get(i);
             Log.e("CalendarActivity", "month : " + calendarData.getMonth());
@@ -199,6 +211,12 @@ public class CalendarActivity extends AppCompatActivity implements CalendarItem.
             items.add(calendarItem);
             calendarContainer.addView(calendarItem);
         }
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        this.STATUS = NOTHING;
     }
 
     private void initView() {
@@ -280,12 +298,21 @@ public class CalendarActivity extends AppCompatActivity implements CalendarItem.
 
     @Override
     public void doOneReservation(List<Reservation> reservations) {
-        this.reservations = reservations;
+        if (this.reservations == null) {
+            this.reservations = reservations;
+        } else {
+            this.reservations.clear();
+            this.reservations = reservations;
+        }
+
+        Log.e("CalendarActivity", "reservation : " + reservations.size());
+
         initView();
         setOnClick();
         setCalendar();
 
         for (Reservation item : reservations) {
+            Log.e("CalendarActivity", "reservation : " + item.getCheckin_date() + ", " + item.getCheckout_date());
             setBookedDates(item.getCheckin_date(), item.getCheckout_date());
         }
     }

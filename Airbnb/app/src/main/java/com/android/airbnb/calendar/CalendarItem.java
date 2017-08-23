@@ -181,7 +181,7 @@ public class CalendarItem extends LinearLayout {
 
     // booking 완료된 날짜 속성값 변경하는 메소드
     public void setBooked(TextView tv) {
-        if (tv.getText() != "" || !tv.getText().equals("")) {
+        if (tv.getText() != "" || !"".equals(tv.getText())) {
             tv.setTag(CHECK_BOOKING_TAG, true);
             tv.setClickable(false);
             Log.e("CalendarItem", "CHECK_BOOKING_TAG : " + (boolean) tv.getTag(CHECK_BOOKING_TAG));
