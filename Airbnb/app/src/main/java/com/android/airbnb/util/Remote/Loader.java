@@ -193,11 +193,11 @@ public class Loader {
             @Override
             public void onResponse(Call<String> call, Response<String> response) {
                 if (response.code() == 200) {
-                    postWishList.getWishResponse(response.body().toString());
+                    postWishList.getWishResponse("위시리스트에 저장되었습니다.");
                 } else if (response.code() == 201) {
-                    postWishList.getWishResponse(response.body().toString());
+                    postWishList.getWishResponse("위시리스트에서 삭제되었습니다.");
                 } else {
-                    postWishList.getWishResponse(response.body().toString());
+                    postWishList.getWishResponse("통신이 실패하였습니다. 다시 한번 시도해주세요.");
                 }
             }
 
@@ -225,9 +225,9 @@ public class Loader {
             @Override
             public void onResponse(Call<Reservation> call, Response<Reservation> response) {
                 if (response.isSuccessful()) {
-                    iTask.getReservationResponse(response.body().toString());
+                    iTask.getReservationResponse("예약이 완료되었습니다.");
                 } else {
-                    iTask.getReservationResponse(response.body().toString());
+                    iTask.getReservationResponse("예약이 실패하였습니다. 다시 한번 시도해주세요.");
                 }
             }
 
