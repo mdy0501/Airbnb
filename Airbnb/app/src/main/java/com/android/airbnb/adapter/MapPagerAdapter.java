@@ -162,7 +162,7 @@ public class MapPagerAdapter extends PagerAdapter implements ITask.postWishList 
 
     @Override
     public void getWishResponse(String message) {
-        
+
     }
 
     public interface OnMapPagerListener {

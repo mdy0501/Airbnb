@@ -61,20 +61,6 @@ public class BottomSheetAdapter extends RecyclerView.Adapter<BottomSheetAdapter.
                     .fallback(R.mipmap.dummy_host_img)
                     .centerCrop()
                     .into(holder.listImg1);
-
-            GlideApp
-                    .with(mContext)
-                    .load(houseImages[1].getImage())
-                    .fallback(R.mipmap.dummy_host_img)
-                    .centerCrop()
-                    .into(holder.listImg2);
-
-            GlideApp
-                    .with(mContext)
-                    .load(houseImages[2].getImage())
-                    .fallback(R.mipmap.dummy_host_img)
-                    .centerCrop()
-                    .into(holder.listImg3);
         }
     }
 
@@ -85,11 +71,7 @@ public class BottomSheetAdapter extends RecyclerView.Adapter<BottomSheetAdapter.
 
     class Holder extends RecyclerView.ViewHolder {
 
-
-
         private ImageView listImg1;
-        private ImageView listImg2;
-        private ImageView listImg3;
         private TextView listName;
         private TextView itemCount;
 
@@ -102,8 +84,6 @@ public class BottomSheetAdapter extends RecyclerView.Adapter<BottomSheetAdapter.
         public Holder(View itemView) {
             super(itemView);
             listImg1 = (ImageView) itemView.findViewById(R.id.wishlist_bottomsheet_img_1);
-            listImg2 = (ImageView) itemView.findViewById(R.id.wishlist_bottomsheet_img_2);
-            listImg3 = (ImageView) itemView.findViewById(R.id.wishlist_bottomsheet_img_3);
             listName = (TextView) itemView.findViewById(R.id.wishlist_bottomsheet_listname);
             itemCount = (TextView) itemView.findViewById(R.id.wishlist_bottomsheet_count);
             setOnClick(itemView);
@@ -120,13 +100,6 @@ public class BottomSheetAdapter extends RecyclerView.Adapter<BottomSheetAdapter.
                     v.getContext().startActivity(intent);
                 }
             });
-        }
-
-        public void setListImg1(String imgUrl) {
-            GlideApp
-                    .with(mContext)
-                    .load(imgUrl)
-                    .into(listImg1);
         }
 
         public void setListName(String name) {
