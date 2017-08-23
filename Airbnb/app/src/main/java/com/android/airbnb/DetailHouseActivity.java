@@ -195,7 +195,8 @@ public class DetailHouseActivity extends AppCompatActivity implements OnMapReady
     }
 
     private void getDataFromBundle(Bundle extra, String key) {
-        house = extra.getParcelable(key);
+        this.house = (House) extra.getParcelable(key);
+        Log.e("DetailHouseActivity", "house pk : " + house.getPk().toString());
         houseImages = house.getHouse_images();
         amenities = house.getAmenities();
     }
@@ -420,6 +421,7 @@ public class DetailHouseActivity extends AppCompatActivity implements OnMapReady
     @Override
     public void getReservationResponse(String message) {
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
+        reservation = null;
     }
 
     /* 재사용하지 않는 어댑터이므로 이너 클래스로 작성 */
@@ -485,12 +487,14 @@ public class DetailHouseActivity extends AppCompatActivity implements OnMapReady
     }
 
     public void removeAllFragments() {
+        // 1. backstack에 저장되어 있는 fragment들을 하나하나 pop시킨다.
         for (int i = fragments.length - 1; i > -1; i--) {
             getSupportFragmentManager()
-                    .beginTransaction()
-                    .remove(fragments[i])
-                    .commit();
+                    .popBackStack();
         }
+        // 2. widget과 flag 값을 초기화한다.
+        isDateSelected = false;
+        detailHouseBtnCheckReserve.setText("예약 가능 여부 확인");
     }
 
     private void setFragments() {
