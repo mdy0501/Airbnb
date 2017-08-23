@@ -55,9 +55,11 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.gson.Gson;
 import com.tsengvn.typekit.TypekitContextWrapper;
 
+import java.io.UnsupportedEncodingException;
+
 import me.relex.circleindicator.CircleIndicator;
 
-public class DetailHouseActivity extends AppCompatActivity implements OnMapReadyCallback, Translator.IPapago, View.OnClickListener, ITask.postWishList {
+public class DetailHouseActivity extends AppCompatActivity implements OnMapReadyCallback, Translator.IPapago, View.OnClickListener, ITask.postWishList, ITask.postReservation {
 
 
     private TextView detailGuestCountTxt;
@@ -412,7 +414,12 @@ public class DetailHouseActivity extends AppCompatActivity implements OnMapReady
 
     @Override
     public void getWishResponse(String message) {
-        Toast.makeText(this, message.toString(), Toast.LENGTH_SHORT).show();
+//        Toast.makeText(this, message.toString(), Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void getReservationResponse(String message) {
+        Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
     }
 
     /* 재사용하지 않는 어댑터이므로 이너 클래스로 작성 */
@@ -537,6 +544,11 @@ public class DetailHouseActivity extends AppCompatActivity implements OnMapReady
 
         // activity 전환효과를 위해 anim에 전환효과 설정값 셋팅 후, 아래 메소드를 통해 전환효과를 준다.
         overridePendingTransition(R.anim.slide_in_up, R.anim.stay);
+    }
+
+    public void postReservation() throws UnsupportedEncodingException {
+
+        Loader.postReservation("Token " + PreferenceUtil.getToken(this), house.getPk(), threeStepFragment.getCheckIn(), threeStepFragment.getCheckOut(), this);
     }
 
     public void setHousePricePerDay(TextView housePricePerDay) {

@@ -19,9 +19,7 @@ import com.android.airbnb.domain.airbnb.House;
 import com.android.airbnb.domain.airbnb.House_images;
 import com.android.airbnb.domain.reservation.Reservation;
 import com.android.airbnb.util.GlideApp;
-import com.android.airbnb.util.PreferenceUtil;
 import com.android.airbnb.util.Remote.ITask;
-import com.android.airbnb.util.Remote.Loader;
 
 import java.io.UnsupportedEncodingException;
 
@@ -155,7 +153,7 @@ public class ReservationThreeFragment extends Fragment implements View.OnClickLi
                             public void onClick(DialogInterface dialog, int which) {
                                 // 예약 관련 엑티비티 한번에 꺼지게 하기
                                 try {
-                                    Loader.postReservation("Token " + PreferenceUtil.getToken(presenter), house.getPk(), checkIn, checkOut, ReservationThreeFragment.this);
+                                    presenter.postReservation();
                                 } catch (UnsupportedEncodingException e) {
                                     e.printStackTrace();
                                 }
@@ -202,5 +200,21 @@ public class ReservationThreeFragment extends Fragment implements View.OnClickLi
     public void getReservationResponse(String message) {
         Toast.makeText(presenter, message, Toast.LENGTH_SHORT).show();
         presenter.setReservation(null);
+    }
+
+    public String getCheckIn() {
+        return checkIn;
+    }
+
+    public void setCheckIn(String checkIn) {
+        this.checkIn = checkIn;
+    }
+
+    public String getCheckOut() {
+        return checkOut;
+    }
+
+    public void setCheckOut(String checkOut) {
+        this.checkOut = checkOut;
     }
 }
