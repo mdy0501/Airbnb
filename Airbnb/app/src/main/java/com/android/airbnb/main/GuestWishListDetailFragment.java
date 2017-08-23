@@ -70,13 +70,7 @@ public class GuestWishListDetailFragment extends Fragment implements ITask.allWi
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
         Loader.getWishList(userToken, this);
-        Log.e("WishListDetail", "====== getWishList");
     }
 
     @Override
