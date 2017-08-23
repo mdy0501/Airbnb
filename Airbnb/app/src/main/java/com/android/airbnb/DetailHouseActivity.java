@@ -547,8 +547,8 @@ public class DetailHouseActivity extends AppCompatActivity implements OnMapReady
     }
 
     public void postReservation() throws UnsupportedEncodingException {
-
-        Loader.postReservation("Token " + PreferenceUtil.getToken(this), house.getPk(), threeStepFragment.getCheckIn(), threeStepFragment.getCheckOut(), this);
+        Log.e("DetailHouseActivity", reservation.getHouse().getPk()+", " + reservation.getCheckin_date() + ", " + reservation.getCheckout_date());
+        Loader.postReservation("Token " + PreferenceUtil.getToken(this), reservation.getHouse().getPk(), reservation.getCheckin_date(), reservation.getCheckout_date(), this);
     }
 
     public void setHousePricePerDay(TextView housePricePerDay) {
