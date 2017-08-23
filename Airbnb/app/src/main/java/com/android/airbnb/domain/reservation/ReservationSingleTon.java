@@ -6,7 +6,7 @@ package com.android.airbnb.domain.reservation;
 
 public class ReservationSingleTon {
 
-    private static ReservationSingleTon instance = null;
+    public static ReservationSingleTon instance = null;
 
     public static ReservationSingleTon getInstnace() {
         if (instance != null)

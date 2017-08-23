@@ -8,6 +8,17 @@ import com.android.airbnb.domain.airbnb.House;
 
 public class Reservation {
 
+
+    public Reservation(String checkin, String checkout, House house){
+        this.checkin_date = checkin;
+        this.checkout_date = checkout;
+        this.house = house;
+    }
+
+    public Reservation(){
+
+    }
+
     private String created_date;
 
     private String message_to_host;
