@@ -47,11 +47,14 @@ public class WishListDetailAdapter extends RecyclerView.Adapter<WishListDetailAd
         return new Holder(view);
     }
 
+    private Holder currentHolder;
+
     @Override
     public void onBindViewHolder(Holder holder, int position) {
         /* data 갈아 끼울 것 */
         Log.e("WishListAdapter", "post : " + position);
         House house = houseList.get(position);
+        currentHolder = holder;
         holder.setTitle(house.getTitle());
         House_images[] houseImages = house.getHouse_images();
         holder.setHouseImg(houseImages.length >0 ? houseImages[0].getImage() : R.mipmap.dummy_host_img+"");
@@ -94,7 +97,6 @@ public class WishListDetailAdapter extends RecyclerView.Adapter<WishListDetailAd
             houseType = (TextView) view.findViewById(R.id.wishlist_house_type);
             ratingBar = (RatingBar) view.findViewById(R.id.wishlist_house_ratingbar);
             reviewCount = (TextView) view.findViewById(R.id.wishlist_review_count);
-
             btnSave.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                 @Override
                 public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
