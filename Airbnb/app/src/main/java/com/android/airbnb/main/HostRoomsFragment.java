@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,6 +26,8 @@ import com.android.airbnb.util.Remote.Loader;
 import java.util.ArrayList;
 import java.util.List;
 
+import static android.app.Activity.RESULT_OK;
+
 /**
  * A simple {@link Fragment} subclass.
  */
@@ -35,6 +38,8 @@ public class HostRoomsFragment extends Fragment implements View.OnClickListener,
     private ImageButton imgBtnAddRooms;
     private RecyclerView recyclerRegisterRooms;
     private RegisterRoomsAdapter registerRoomsAdapter;
+
+    public static final int ADD_ROOMS = 10001;
 
     // 내가 등록한 숙소들 보여주는 변수
     private List<House> myRegisterHouses = new ArrayList<>();
@@ -88,8 +93,20 @@ public class HostRoomsFragment extends Fragment implements View.OnClickListener,
         switch (v.getId()){
             case R.id.imgBtnAddRooms:
                 Intent intent = new Intent(getActivity(), HostRoomsRegisterActivity.class);
-                startActivity(intent);
+                startActivityForResult(intent, ADD_ROOMS);
                 break;
+        }
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(resultCode == RESULT_OK){
+            if(requestCode == ADD_ROOMS){
+                Log.e("ADD_ROOMS", "ADD_ROOMS");
+                registerRoomsAdapter.clearData();
+                getData();
+            }
         }
     }
 
