@@ -314,6 +314,7 @@ public class DetailHouseActivity extends AppCompatActivity implements OnMapReady
         detailHouseBtnCheckReserve.setOnClickListener(this);
         detailHouseMoreCalendar.setOnClickListener(this);
         detailHouseMoreExtrafee.setOnClickListener(this);
+        btnBack.setOnClickListener(this);
 
         btnWish.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
@@ -523,7 +524,7 @@ public class DetailHouseActivity extends AppCompatActivity implements OnMapReady
         Intent intent = new Intent(DetailHouseActivity.this, CalendarActivity.class);
         intent.putExtra(DETAIL_HOUSE, house);
         startActivityForResult(intent, DETAIL_HOUSE_ACTIVITY);
-        
+
         // activity 전환효과를 위해 anim에 전환효과 설정값 셋팅 후, 아래 메소드를 통해 전환효과를 준다.
         overridePendingTransition(R.anim.slide_in_up, R.anim.stay);
     }
