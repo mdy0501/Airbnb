@@ -21,6 +21,7 @@ import com.android.airbnb.domain.reservation.Reservation;
 import com.android.airbnb.util.Remote.ITask;
 import com.android.airbnb.util.Remote.Loader;
 import com.tsengvn.typekit.TypekitContextWrapper;
+import com.wang.avi.AVLoadingIndicatorView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -50,12 +51,14 @@ public class CalendarActivity extends AppCompatActivity implements CalendarItem.
     private List<CalendarItem> items;
     private List<Reservation> reservations;
     private House house;
+    private AVLoadingIndicatorView indicatorView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_calendar);
         items = new ArrayList<>();
+        initView();
         getCalendarDate();
         getData();
     }
