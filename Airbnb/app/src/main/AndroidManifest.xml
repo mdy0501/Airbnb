@@ -19,7 +19,7 @@
             android:value="@string/facebook_app_id" />
 
         <activity
-            android:name=".StartActivity"
+            android:name=".WelcomeActivity"
             android:windowSoftInputMode="adjustResize">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -51,7 +51,7 @@
             android:name=".HostInfoActivity"
             android:theme="@style/NoActioinBarTheme" />
         <activity android:name=".signup.SignUpActivity" />
-        <activity android:name=".WelcomeActivity" />
+        <activity android:name=".StartActivity" />
         <activity android:name=".login.FindPasswordActivity" />
         <activity android:name=".ReviewActivity" />
         <activity android:name=".main.GuestMainActivity" />
