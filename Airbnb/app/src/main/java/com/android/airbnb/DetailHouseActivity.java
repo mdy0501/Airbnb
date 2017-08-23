@@ -11,8 +11,10 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.text.Spannable;
+import android.text.SpannableString;
 import android.text.SpannableStringBuilder;
+import android.text.Spanned;
+import android.text.style.AbsoluteSizeSpan;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -352,12 +354,10 @@ public class DetailHouseActivity extends AppCompatActivity implements OnMapReady
         mMap = googleMap;
         mMap.getUiSettings().setScrollGesturesEnabled(false);
 
-        /* spannable 객체 사용법 */
+        // spannable 객체 사용하여 html 직접 작성하는 효과를 text에 줌
         String address = house.getAddress();
-        String title = address + "\n" + "정확한 위치는 예약 완료 후에 표시됩니다.";
-        SpannableStringBuilder builder = new SpannableStringBuilder(title);
-        builder.setSpan(title, 0, address.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-        detailHouseMapInfo.setText(title);
+        detailHouseMapInfo.setText(getSpannableString(address));
+        detailHouseMapInfo.setTextSize(20f);
         detailHouseMapInfo.setTextColor(Color.BLACK);
 
         // marker title 중복 제거 완료
@@ -369,13 +369,35 @@ public class DetailHouseActivity extends AppCompatActivity implements OnMapReady
 
     private String translatedTxt = "";
 
+
+    // SpannableStringBuilder 사용
+    private SpannableStringBuilder getSpannableString(String address){
+
+        // 1. SpannableStringBuilder를 생성한다.
+        SpannableStringBuilder ssb = new SpannableStringBuilder();
+        String info = "\n" + "정확한 위치는 예약 완료 후에 표시됩니다.";
+
+        // 2. String -> SpannableString 변환해준다.
+        SpannableString ssAddress = new SpannableString(address);
+        SpannableString ssInfo = new SpannableString(info);
+
+        // 3. SpannableString에 text 설정을 해준다.
+        ssAddress.setSpan(new AbsoluteSizeSpan(80), 0, address.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+        ssInfo.setSpan(new AbsoluteSizeSpan(60), 0, info.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+
+        // 4. SpannableStringBuilder에 append하여 완성된 text를 가진 SpannableStringBuilder를 만들어준다.
+        ssb.append(ssAddress);
+        ssb.append(ssInfo);
+
+        return ssb;
+    }
+
     @Override
     public void getResult(String jsonString) {
         Gson gson = new Gson();
         Data data = gson.fromJson(jsonString, Data.class);
         translatedTxt = data.getMessage().getResult().getTranslatedText();
     }
-
 
     @Override
     public void getWishResponse(String message) {
@@ -459,25 +481,27 @@ public class DetailHouseActivity extends AppCompatActivity implements OnMapReady
         twoStepFragment = new ReservationTwoFragment();
         threeStepFragment = new ReservationThreeFragment();
 
-        // 2. 추후 프레그먼트 관리를 위해 배열에 셋팅한다.
+        // 2. 추후 DetailActivity class 내에서 프레그먼트 관리를 위해 배열에 셋팅한다.
         fragments[0] = oneStepFragment;
         fragments[1] = twoStepFragment;
         fragments[2] = threeStepFragment;
     }
 
     private void doReservation(boolean isDateSelected) {
-        if (isDateSelected) {
-            // 1. 예약진행한다.
-            goReservationOneStep();
 
+        // 1. flag 상태에 따라
+        if (isDateSelected) {
+            // 2. 예약진행한다.
+            goReservationOneStep();
         } else {
-            // 2. 달력을 통해 날짜를 먼저 선택한다.
+            // 3. 달력을 통해 날짜를 먼저 선택한다.
             goCalendar();
         }
     }
 
-    // 예약절차 1 step 으로 이동하는 메소드
+    // 예약절차 1step으로 이동하는 메소드
     private void goReservationOneStep() {
+
         // 1. 초기화된 fragment에 presenter 역할을 하는 activity를 넘겨준다.
         oneStepFragment.setPresenter(this);
 
@@ -499,6 +523,7 @@ public class DetailHouseActivity extends AppCompatActivity implements OnMapReady
         Intent intent = new Intent(DetailHouseActivity.this, CalendarActivity.class);
         intent.putExtra(DETAIL_HOUSE, house);
         startActivityForResult(intent, DETAIL_HOUSE_ACTIVITY);
+        
         // activity 전환효과를 위해 anim에 전환효과 설정값 셋팅 후, 아래 메소드를 통해 전환효과를 준다.
         overridePendingTransition(R.anim.slide_in_up, R.anim.stay);
     }
