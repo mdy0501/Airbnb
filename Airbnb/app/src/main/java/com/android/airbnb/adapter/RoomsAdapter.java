@@ -35,7 +35,6 @@ public class RoomsAdapter extends RecyclerView.Adapter<RoomsAdapter.Holder> impl
     private List<House> houses;
     private LayoutInflater inflater;
     private Context context;
-    int position;
 
 
     public RoomsAdapter(Context context, List<House> data) {
