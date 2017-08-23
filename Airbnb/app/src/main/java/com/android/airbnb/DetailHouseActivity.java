@@ -112,11 +112,11 @@ public class DetailHouseActivity extends AppCompatActivity implements OnMapReady
     private ReservationThreeFragment threeStepFragment;
     private Fragment[] fragments;
     private Reservation reservation;
+    private ImageView btnBack;
 
     public ReservationTwoFragment getTwoStepFragment() {
         return twoStepFragment;
     }
-
     public ReservationThreeFragment getThreeStepFragment() {
         return threeStepFragment;
     }
@@ -187,6 +187,7 @@ public class DetailHouseActivity extends AppCompatActivity implements OnMapReady
     }
 
     private void initView() {
+        btnBack = (ImageView) findViewById(R.id.detail_btn_back);
         detailHouseMapInfo = (TextView) findViewById(R.id.detail_house_map_info_txt);
         mapFrame = (FrameLayout) findViewById(R.id.mapFrameLayout);
         btnTranslate = (TextView) findViewById(R.id.btnTranslate);
@@ -212,17 +213,8 @@ public class DetailHouseActivity extends AppCompatActivity implements OnMapReady
         detailHouseBtnCheckReserve = (Button) findViewById(R.id.detailHouse_btn_check_reserve);
         detailHouseMoreCalendar = (TextView) findViewById(R.id.detail_house_more_calendar);
         detailHouseMoreExtrafee = (TextView) findViewById(R.id.detail_house_more_extrafee);
-        detailHouseReviewRegisterDate = (TextView) findViewById(R.id.detail_house_review_register_date);
-        detailReivewHostImg = (ImageView) findViewById(R.id.detail_reivew_host_img);
-        detailHouseReviewContent = (TextView) findViewById(R.id.detail_house_review_content);
-        detailHouseReviewCount = (TextView) findViewById(R.id.detail_house_review_count);
-        detailHouseReviewRatingbar = (RatingBar) findViewById(R.id.detail_house_review_ratingbar);
-        detailHouseReadReview = (TextView) findViewById(R.id.detail_house_read_review);
         btnWish = (CheckBox) findViewById(R.id.detail_wish);
-    }
-
-    private void setReviews() {
-        // Review data가 넘어오면 셋팅 예정
+        btnBack = (ImageView) findViewById(R.id.detail_btn_back);
     }
 
     private void setRoomPager() {
@@ -303,6 +295,10 @@ public class DetailHouseActivity extends AppCompatActivity implements OnMapReady
                 intent = new Intent(v.getContext(), DetailExtraFeeActivity.class);
                 intent.putExtra(DETAIL_HOUSE, house);
                 v.getContext().startActivity(intent);
+                break;
+
+            case R.id.detail_btn_back:
+                onBackPressed();
                 break;
         }
     }
