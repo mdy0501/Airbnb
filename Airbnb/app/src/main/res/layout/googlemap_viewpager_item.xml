@@ -113,8 +113,7 @@
                 android:layout_marginEnd="8dp"
                 android:layout_marginRight="8dp"
                 android:layout_marginTop="8dp"
-                android:button="@null"
-                android:background="@drawable/icon_wish_empty"
+                android:button="@drawable/btn_wish"
                 android:checked="false"
                 app:layout_constraintRight_toRightOf="@+id/house_img"
                 app:layout_constraintTop_toTopOf="@+id/house_img" />

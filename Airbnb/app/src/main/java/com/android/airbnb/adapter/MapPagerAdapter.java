@@ -106,7 +106,7 @@ public class MapPagerAdapter extends PagerAdapter implements ITask.postWishList 
     }
 
     private void setBtnWish(CompoundButton buttonView, int resId, boolean isChecked) {
-        buttonView.setBackgroundResource(resId);
+//        buttonView.setBackgroundResource(resId);
         buttonView.setChecked(isChecked);
         houseList.get(currentPostition).setWished(isChecked);
     }
