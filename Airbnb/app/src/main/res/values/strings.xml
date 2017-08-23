@@ -139,7 +139,7 @@
     </string-array>
 
     <!-- reservation string-->
-    <string name="reservation_step2_title">호스트에게 회원님의 여행에 대해 알려주세요.</string>
+    <string name="reservation_step2_title">호스트에게 회원님의\n여행에 대해 알려주세요.</string>
     <string name="reservation_step2_detail">여행 계획 세부사항을 공유하면 호스트가 회원님의 숙박을 준비하는데 도움이 됩니다.</string>
     <string name="reservation_step2_host_talk">안녕하세요. 만나게 되어 반갑습니다. 도움이 필요하시면 무엇이든 말씀해주세요. 곧 만나요!</string>
     <string name="reservation_step2_hint_talk">호스트에게 회원님을 간단히 소개하고 여행 목적을 알려주세요.</string>
