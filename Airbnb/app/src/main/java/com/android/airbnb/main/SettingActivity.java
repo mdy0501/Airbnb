@@ -1,5 +1,6 @@
 package com.android.airbnb.main;
 
+import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -35,10 +36,19 @@ public class SettingActivity extends AppCompatActivity implements View.OnClickLi
     private TextView txtTitle, txtNotice, txtReceivePayment, txtCurrency, txtCurrencyDetail, txtInformation, txtAdvancedSettings, txtMultipleAccounts, txtSendFeedback, txtLogout;
     private Button btnBack;
 
+    private ProgressDialog logoutDialog;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_setting);
+
+        // 프로그래스바 정의
+        logoutDialog = new ProgressDialog(this);
+        logoutDialog.setTitle("로그아웃");
+        logoutDialog.setMessage("로그아웃 중 입니다...");
+        logoutDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+
         setViews();
         setListeners();
     }
@@ -78,6 +88,7 @@ public class SettingActivity extends AppCompatActivity implements View.OnClickLi
     }
 
     private void postLogout(){
+        logoutDialog.show();
         retrofit = new Retrofit.Builder()
                 .baseUrl(ApiService.API_URL)
                 .addConverterFactory(GsonConverterFactory.create())
@@ -93,6 +104,7 @@ public class SettingActivity extends AppCompatActivity implements View.OnClickLi
                 Intent intent = new Intent(SettingActivity.this, WelcomeActivity.class);
                 startActivity(intent);
                 finish();
+                logoutDialog.dismiss();
                 Toast.makeText(SettingActivity.this, "정상적으로 로그아웃 되었습니다.", Toast.LENGTH_SHORT).show();
             }
 
@@ -122,7 +134,6 @@ public class SettingActivity extends AppCompatActivity implements View.OnClickLi
                                 // 로그아웃을 한다.
                                 postLogout();
                                 LoginManager.getInstance().logOut();
-
                             }
                         })
                 .setPositiveButton("아니오",
