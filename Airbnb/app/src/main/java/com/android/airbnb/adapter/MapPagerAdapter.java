@@ -12,10 +12,8 @@ import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.ImageView;
-
 import android.widget.RatingBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.android.airbnb.DetailHouseActivity;
 import com.android.airbnb.R;
@@ -164,7 +162,7 @@ public class MapPagerAdapter extends PagerAdapter implements ITask.postWishList 
 
     @Override
     public void getWishResponse(String message) {
-        Toast.makeText(mContext, "message : " + message, Toast.LENGTH_SHORT).show();
+
     }
 
     public interface OnMapPagerListener {
