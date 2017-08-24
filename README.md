@@ -1,11 +1,16 @@
 # Airbnb Application
 
-<br>
-<br>
 
 ## 어플리케이션 소개
 
-- #### **[전체소스코드](https://github.com/mdy0501/Airbnb/tree/master/Airbnb/app/src/main/java/com/android/airbnb)**
+- #### 안드로이드 개발공부를 목적으로 약 2억 명의 Guest, 3백만 개의 숙소를 확보하고 있는 숙박 플랫폼 'Airbnb App'을 따라 개발하기로 하였다.
+- #### 최대한 Airbnb의 UI(VIew)를 따라 만들기 위해 노력했으며 숙박 정책과 같이 현재 불필요한 부분 간소화했다.
+- #### Airbnb App을 분석하는 과정에서 개발로직과 구현 이유에 대해 생각해볼 수 있는 좋은 기회였다.
+- #### 또한 백엔드 개발자와의 협업을 통해 실제 웹서버로부터 데이터를 받아 어플리케이션에 셋팅할 수 있는 좋은 경험이었다.
+
+<br>
+
+- ### **[전체소스코드](https://github.com/mdy0501/Airbnb/tree/master/Airbnb/app/src/main/java/com/android/airbnb)**
 
 <br>
 <br>
@@ -26,12 +31,9 @@
 
 ![screenshot6](https://github.com/mdy0501/Airbnb/blob/master/Airbnb/graphics/screenshot6.png)
 
-<br>
-<br>
-<br>
 
 ## 어플리케이션 영상 링크
-- #### https://www.youtube.com/watch?v=2XVoROcGZWc&t=26s
+- #### https://www.youtube.com/watch?v=2XVoROcGZWc
 
 
 <br>
