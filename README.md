@@ -19,18 +19,19 @@
 
 ## 어플리케이션 화면
 
-![screenshot1](https://github.com/mdy0501/Airbnb/blob/master/Airbnb/graphics/screenshot1.png)
+![screenshot01](https://github.com/mdy0501/Airbnb/blob/master/Airbnb/graphics/screenshot01.png)
 
-![screenshot2](https://github.com/mdy0501/Airbnb/blob/master/Airbnb/graphics/screenshot2.png)
+![screenshot02](https://github.com/mdy0501/Airbnb/blob/master/Airbnb/graphics/screenshot02.png)
 
-![screenshot3](https://github.com/mdy0501/Airbnb/blob/master/Airbnb/graphics/screenshot3.png)
+![screenshot03](https://github.com/mdy0501/Airbnb/blob/master/Airbnb/graphics/screenshot03.png)
 
-![screenshot4](https://github.com/mdy0501/Airbnb/blob/master/Airbnb/graphics/screenshot4.png)
+![screenshot04](https://github.com/mdy0501/Airbnb/blob/master/Airbnb/graphics/screenshot04.png)
 
-![screenshot5](https://github.com/mdy0501/Airbnb/blob/master/Airbnb/graphics/screenshot5.png)
+![screenshot05](https://github.com/mdy0501/Airbnb/blob/master/Airbnb/graphics/screenshot05.png)
 
-![screenshot6](https://github.com/mdy0501/Airbnb/blob/master/Airbnb/graphics/screenshot6.png)
-
+<br>
+<br>
+<br>
 
 ## 어플리케이션 영상 링크
 - #### https://www.youtube.com/watch?v=2XVoROcGZWc
