@@ -13,8 +13,8 @@ import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
-import com.android.airbnb.detailActivity.DetailHouseActivity;
 import com.android.airbnb.R;
+import com.android.airbnb.detailActivity.DetailHouseActivity;
 import com.android.airbnb.domain.airbnb.House;
 import com.android.airbnb.domain.airbnb.House_images;
 import com.android.airbnb.util.GlideApp;
@@ -37,7 +37,6 @@ public class WishListDetailAdapter extends RecyclerView.Adapter<WishListDetailAd
 
     public WishListDetailAdapter(List<House> house, Context mContext) {
         this.context = mContext;
-        this.wishList = house;
     }
 
     @Override
@@ -77,7 +76,7 @@ public class WishListDetailAdapter extends RecyclerView.Adapter<WishListDetailAd
 
     @Override
     public void getWishResponse(String message) {
-
+        // response 메시지 받는 부분
     }
 
     class Holder extends RecyclerView.ViewHolder {
@@ -103,7 +102,10 @@ public class WishListDetailAdapter extends RecyclerView.Adapter<WishListDetailAd
             btnWish.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                 @Override
                 public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                    btnWishClicked(isChecked, position);
+                    if(!isChecked) {
+                        Log.e("WishAdapter", "isChecked : " + isChecked);
+                        Loader.postWishList("Token " + PreferenceUtil.getToken(context), wishList.get(position).getPk(), WishListDetailAdapter.this);
+                    }
                 }
             });
 
@@ -124,11 +126,6 @@ public class WishListDetailAdapter extends RecyclerView.Adapter<WishListDetailAd
                     .load(imgUrl)
                     .centerCrop()
                     .into(houseImg);
-        }
-
-        public void btnWishClicked(boolean isChecked, int position) {
-            wishList.get(position).setWished(isChecked);
-            Loader.postWishList("Token " + PreferenceUtil.getToken(context), wishList.get(position).getPk(), WishListDetailAdapter.this);
         }
 
         public void setBtnWish(boolean isSaved) {

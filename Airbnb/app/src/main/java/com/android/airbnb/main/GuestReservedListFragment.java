@@ -14,7 +14,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -25,11 +24,11 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.android.airbnb.googleMap.GoogleMapViewPagerActivity;
 import com.android.airbnb.R;
 import com.android.airbnb.adapter.ReservedAdapter;
 import com.android.airbnb.domain.airbnb.House;
 import com.android.airbnb.domain.reservation.Reservation;
+import com.android.airbnb.googleMap.GoogleMapViewPagerActivity;
 import com.android.airbnb.util.PreferenceUtil;
 import com.android.airbnb.util.Remote.ITask;
 import com.android.airbnb.util.Remote.Loader;
@@ -132,12 +131,11 @@ public class GuestReservedListFragment extends Fragment implements ITask.getRese
     }
 
     private void setAdapter() {
-        if (reservedHouses != null) {
-            reservedAdapter = new ReservedAdapter(reservedHouses, mContext);
-            wishRecycler.setAdapter(reservedAdapter);
-            wishRecycler.setLayoutManager(new LinearLayoutManager(mContext));
-        }
+        reservedAdapter = new ReservedAdapter(reservedHouses, mContext);
+        wishRecycler.setAdapter(reservedAdapter);
+        wishRecycler.setLayoutManager(new LinearLayoutManager(mContext));
     }
+
 
     private void setViews(View view) {
         txtTitle = (TextView) view.findViewById(R.id.txtTitle1);
@@ -147,6 +145,12 @@ public class GuestReservedListFragment extends Fragment implements ITask.getRese
         wishRecycler = (RecyclerView) view.findViewById(R.id.wish_recycler);
         fabMap = (FloatingActionButton) view.findViewById(R.id.floatingActionButton);
         refreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.wishlist_refresh);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        Loader.getReservation(GuestReservedListFragment.this);
     }
 
     private void setRefreshLayout() {
@@ -195,16 +199,15 @@ public class GuestReservedListFragment extends Fragment implements ITask.getRese
             List<Reservation> reservationList = reservations;
             for (int i = reservationList.size() - 1; i > -1; i--) {
                 if (reservationList.get(i).getGuest().getPk().equals(PreferenceUtil.getPrimaryKey(guestMainActivity))) {
-                    Log.e("Reserved", reservationList.get(i).getPk());
-                    reservedHouses.add(reservationList.get(i).getHouse());
+                    this.reservedHouses.add(reservationList.get(i).getHouse());
                 }
             }
             setAdapter();
             connectData();
-            refreshLayout.setRefreshing(false);
         } else {
             Toast.makeText(guestMainActivity, "예약된 숙소가 없습니다.", Toast.LENGTH_SHORT).show();
-            refreshLayout.setRefreshing(false);
         }
+        refreshLayout.setRefreshing(false);
+
     }
 }

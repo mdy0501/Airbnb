@@ -15,10 +15,9 @@ import java.net.URLEncoder;
 
 public class Translator {
 
-    static String clientId = "ORVua_Xj8g56JOfCpjhr";//애플리케이션 클라이언트 아이디값";
-    static String clientSecret = "MehwXU_4h6";//애플리케이션 클라이언트 시크릿값";
+    static String clientId = "ORVua_Xj8g56JOfCpjhr"; //애플리케이션 클라이언트 id
+    static String clientSecret = "MehwXU_4h6"; //애플리케이션 클라이언트 시크릿 key
     static String resultString = "";
-
 
     public static void doTranslate(String content, IPapago iPapago) {
         try {

@@ -13,7 +13,6 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -23,10 +22,10 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.android.airbnb.googleMap.GoogleMapViewPagerActivity;
 import com.android.airbnb.R;
 import com.android.airbnb.adapter.WishListDetailAdapter;
 import com.android.airbnb.domain.airbnb.House;
+import com.android.airbnb.googleMap.GoogleMapViewPagerActivity;
 import com.android.airbnb.util.PreferenceUtil;
 import com.android.airbnb.util.Remote.ITask;
 import com.android.airbnb.util.Remote.Loader;
@@ -66,14 +65,18 @@ public class GuestWishListDetailFragment extends Fragment implements ITask.allWi
         wishlist = new ArrayList<>();
         guestMainActivity = (GuestMainActivity) context;
         userToken = "Token " + PreferenceUtil.getToken(mContext);
-        Loader.getWishList(userToken, this);
     }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
-//        Loader.getWishList(userToken, this);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        Loader.getWishList(userToken, this);
     }
 
     @Override
@@ -177,13 +180,9 @@ public class GuestWishListDetailFragment extends Fragment implements ITask.allWi
     // 통신 후, wishlist 데이터를 갱신한 후, wishlist 데이터를 사용하는 인스턴스들과 widget들을 refresh한다.
     @Override
     public void doAllWishList(List<House> wishlist) {
-//        if(this.wishlist == null)
-//            wishlist = new ArrayList<>();
 
         this.wishlist.clear();
-        Log.e("GuestWishListDetailFragment", "this.wishlist size : " + this.wishlist.size() + ", wishlist : " + wishlist.size());
         this.wishlist = wishlist;
-        Log.e("GuestWishListDetailFragment", "this.wishlist size : " + this.wishlist.size() + ", wishlist : " + wishlist.size());
 
         for (House item : wishlist) {
             item.setWished(true);
@@ -192,6 +191,5 @@ public class GuestWishListDetailFragment extends Fragment implements ITask.allWi
         adapter.refreshData(wishlist);
         setWidget();
         refreshLayout.setRefreshing(false);
-        Log.e("GuestWishListDetailFragment", "==== load wishlist end");
     }
 }
