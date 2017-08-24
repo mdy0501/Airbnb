@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,8 +13,8 @@ import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
-import com.android.airbnb.DetailHouseActivity;
 import com.android.airbnb.R;
+import com.android.airbnb.detailActivity.DetailHouseActivity;
 import com.android.airbnb.domain.airbnb.House;
 import com.android.airbnb.domain.airbnb.House_images;
 import com.android.airbnb.util.GlideApp;
@@ -37,7 +36,6 @@ public class RoomsAdapter extends RecyclerView.Adapter<RoomsAdapter.Holder> impl
     int position;
     public static final String ROOMS_ADAPTER = "com.android.airbnb.adapter.ROOMS_ADAPTER";
 
-
     public RoomsAdapter(Context context, List<House> data) {
         this.houses = data;
         this.context = context;
@@ -57,7 +55,6 @@ public class RoomsAdapter extends RecyclerView.Adapter<RoomsAdapter.Holder> impl
 
     @Override
     public void onBindViewHolder(Holder holder, int position) {
-        Log.e("RoomsAdapter", "onBindViewHolder pos : " + position);
         House house = houses.get(position);
         holder.setPrice(house.getPrice_per_day());
         holder.setTitle(house.getTitle());
@@ -84,7 +81,7 @@ public class RoomsAdapter extends RecyclerView.Adapter<RoomsAdapter.Holder> impl
 
     @Override
     public void getWishResponse(String message) {
-
+        // wishlist을 받아왔을 때, 메시지로 response를 뿌려준다.
     }
 
     class Holder extends RecyclerView.ViewHolder {
@@ -109,7 +106,7 @@ public class RoomsAdapter extends RecyclerView.Adapter<RoomsAdapter.Holder> impl
             setBtnSave();
         }
 
-        private void setOnClick(){
+        private void setOnClick() {
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -124,14 +121,17 @@ public class RoomsAdapter extends RecyclerView.Adapter<RoomsAdapter.Holder> impl
             });
         }
 
-        private void setBtnSave(){
+        private void setBtnSave() {
             btnWish.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                 @Override
                 public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                    if (isChecked)
+                    if (isChecked) {
+                        houses.get(position).setWished(isChecked);
                         Loader.postWishList("Token " + PreferenceUtil.getToken(context), houses.get(position).getPk(), RoomsAdapter.this);
-                    else
+                    } else {
+                        houses.get(position).setWished(isChecked);
                         Loader.postWishList("Token " + PreferenceUtil.getToken(context), houses.get(position).getPk(), RoomsAdapter.this);
+                    }
                 }
             });
         }

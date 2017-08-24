@@ -63,7 +63,6 @@ public class TripAdapter extends RecyclerView.Adapter<TripAdapter.Holder> {
     class Holder extends RecyclerView.ViewHolder{
         TextView txtPrice, txtTitle, txtRoomType, txtReview, txtReviewCount;
         ImageView img;
-        // ImageButton btnWish;
         RatingBar ratingBar;
 
         public Holder(View itemView) {
@@ -74,7 +73,6 @@ public class TripAdapter extends RecyclerView.Adapter<TripAdapter.Holder> {
             txtReview = (TextView) itemView.findViewById(R.id.txtReview);
             txtReviewCount = (TextView) itemView.findViewById(R.id.txtReviewCount);
             img = (ImageView) itemView.findViewById(R.id.img);
-            // btnWish = (ImageButton) itemView.findViewById(R.id.btnWish);
             ratingBar = (RatingBar) itemView.findViewById(R.id.ratingBar);
         }
 
@@ -90,6 +88,7 @@ public class TripAdapter extends RecyclerView.Adapter<TripAdapter.Holder> {
         private void setRatingBar(String ratingBar) {
             this.ratingBar.setRating(Float.parseFloat(ratingBar));
         }
+
         private void setReviewCount(String reviewCount) {
             this.txtReviewCount.setText(reviewCount);
         }

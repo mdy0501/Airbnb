@@ -3,7 +3,6 @@ package com.android.airbnb.adapter;
 import android.content.Context;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -53,12 +52,7 @@ public class PlaceFirstAdapter extends PagerAdapter {
         txtPrice.setText(house.getPrice_per_day() + " 원");
         txtTitle.setText(house.getTitle());
 
-
         House_images[] images = house.getHouse_images();
-        if(images.length > 0){
-            Log.e("image",images[0].getImage());
-        }
-
         GlideApp
                 .with(inflater.getContext())
                 .load(images.length > 0 ? images[0].getImage() : null)

@@ -14,14 +14,13 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.android.airbnb.DetailHouseActivity;
+import com.android.airbnb.detailActivity.DetailHouseActivity;
 import com.android.airbnb.R;
 import com.android.airbnb.domain.airbnb.House;
 import com.android.airbnb.domain.reservation.Reservation;
 import com.android.airbnb.util.Remote.ITask;
 import com.android.airbnb.util.Remote.Loader;
 import com.tsengvn.typekit.TypekitContextWrapper;
-import com.wang.avi.AVLoadingIndicatorView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -51,7 +50,6 @@ public class CalendarActivity extends AppCompatActivity implements CalendarItem.
     private List<CalendarItem> items;
     private List<Reservation> reservations = null;
     private House house;
-    private AVLoadingIndicatorView indicatorView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,42 +73,33 @@ public class CalendarActivity extends AppCompatActivity implements CalendarItem.
         }
     }
 
-    // 생성 후, onResume 될 때마다 update된 reservation data 서버로부터 load
+    // 생성 후, onResume 될 때마다 update된 reservation data 서버로부터 Reservation list를 request한다.
     @Override
     protected void onResume() {
         super.onResume();
-        Log.e("CalendarActivity", "onResume : housepk " + house.getPk());
         Loader.getReservation(house.getPk(), this);
-        Log.e("CalendarActivity", " status : " + STATUS);
     }
-
-    // ================== code 중복이 있어서 다시 한번 보면서 메소드화 할 수 있는 것 하기 ===================
 
     private void setBookedDates(String checkin, String checkout) {
 
         String subCheckin = checkin.substring(0, 7);
-        final String subCheckout = checkout.substring(0, 7);
+        String subCheckout = checkout.substring(0, 7);
 
         int subCheckinDd = Integer.parseInt(checkin.substring(8));
         int subCheckoutDd = Integer.parseInt(checkout.substring(8));
 
         for (CalendarItem item : items) {
-            Log.e("CalendarActivity", "item tag : " + item.getTag());
-            Log.e("CalendarActivity", "subCheckin : " + subCheckin + ", subCheckout : " + subCheckout);
 
             String itemKey = (String) item.getTag();
 
-            Log.e("CalendarActivity", "subCheckinDd : " + subCheckinDd + ", subCheckoutDd : " + subCheckoutDd);
             if ((subCheckin).equals(itemKey) && (subCheckout).equals(itemKey)) {
-                for (int i = subCheckinDd-1; i < subCheckoutDd; i++) {
-                    Log.e("CalendarActivity", "i : " + i );
+                for (int i = subCheckinDd - 1; i < subCheckoutDd; i++) {
                     item.setBooked(item.getCols().get(i));
                 }
 
             } else if ((subCheckin).equals(itemKey) || (subCheckout).equals(itemKey)) {
                 int checkInDate = 0;
                 int checkOutDate = 0;
-
 
                 if ((subCheckin).equals(itemKey))
                     checkInDate = items.indexOf(item);
@@ -123,7 +112,6 @@ public class CalendarActivity extends AppCompatActivity implements CalendarItem.
     }
 
     private void setBookedRange(int startIndex, int endIndex) {
-
         for (int i = startIndex; i <= endIndex; i++) {
 
             CalendarItem item = items.get(i);
@@ -139,6 +127,7 @@ public class CalendarActivity extends AppCompatActivity implements CalendarItem.
         }
     }
 
+    // check in 날짜와 check out 날짜 선택 시, 날짜 범위 체크하는 메소드
     private void setRange(String startDate, String endDate) {
 
         String subCheckin = startDate.substring(0, 7);
@@ -149,7 +138,6 @@ public class CalendarActivity extends AppCompatActivity implements CalendarItem.
 
         for (CalendarItem item : items) {
             String itemKey = (String) item.getTag();
-            Log.e("CustomCalendar", "subCheckin : " + subCheckin + ", checkout : " + subCheckout + ", item tag : " + (String) item.getTag());
 
             if ((subCheckin).equals(itemKey) && (subCheckout).equals(itemKey)) {
                 int startTextview = item.getCols().indexOf(item.getSelectedTvs().get(0));
@@ -167,7 +155,6 @@ public class CalendarActivity extends AppCompatActivity implements CalendarItem.
                 setCalendarRange(startIndex, endIndex);
             }
         }
-        Log.e("CustomCalendar", "startIndex : " + startIndex + ", endIndex : " + endIndex);
     }
 
     private void setCalendarRange(int startIndex, int endIndex) {
@@ -188,26 +175,17 @@ public class CalendarActivity extends AppCompatActivity implements CalendarItem.
         }
     }
 
-    // ================== code 중복이 있어서 다시 한번 보면서 메소드화 할 수 있는 것 하기 ===================
-
-    private void getCalendarDate() {
-        calendarDatas = Utils.CalendarUtil.getCalendarData();
-        Log.e("CustomCalendar", "size : " + calendarDatas.size());
-    }
 
     private void setCalendar() {
         if (items.size() > 0)
             items.clear();
         for (int i = 0; i < calendarDatas.size(); i++) {
             CalendarData calendarData = calendarDatas.get(i);
-            Log.e("CalendarActivity", "month : " + calendarData.getMonth());
-            Log.e("CalendarActivity", " start : " + calendarData.getFirstWeekDay());
             CalendarItem calendarItem = new CalendarItem(calendarData, this, this);
 
-            // back-end에서 넘어오는 날짜 데이터와 형식을 맞춰 객체에 .setTag를 한다.
+            // 서버에서 받아오는 날짜 데이터와 형식을 맞춰 객체에 .setTag()를 한다.
             String tag = calendarData.getYear() + "-" + Utils.CalendarUtil.getFormattedForCal(calendarData.getMonth());
             calendarItem.setTag(tag);
-            Log.e("CustomCalendar", "tag : " + tag);
             items.add(calendarItem);
             calendarContainer.addView(calendarItem);
         }
@@ -217,6 +195,10 @@ public class CalendarActivity extends AppCompatActivity implements CalendarItem.
     protected void onPause() {
         super.onPause();
         this.STATUS = NOTHING;
+    }
+
+    private void getCalendarDate() {
+        calendarDatas = Utils.CalendarUtil.getCalendarData();
     }
 
     private void initView() {
@@ -266,7 +248,6 @@ public class CalendarActivity extends AppCompatActivity implements CalendarItem.
         super.attachBaseContext(TypekitContextWrapper.wrap(newBase));
     }
 
-
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
@@ -305,14 +286,11 @@ public class CalendarActivity extends AppCompatActivity implements CalendarItem.
             this.reservations = reservations;
         }
 
-        Log.e("CalendarActivity", "reservation : " + reservations.size());
-
         initView();
         setOnClick();
         setCalendar();
 
         for (Reservation item : reservations) {
-            Log.e("CalendarActivity", "reservation : " + item.getCheckin_date() + ", " + item.getCheckout_date());
             setBookedDates(item.getCheckin_date(), item.getCheckout_date());
         }
     }

@@ -57,5 +57,4 @@ dependencies {
     compile 'com.baoyz.pullrefreshlayout:library:1.2.0'
     testCompile 'junit:junit:4.12'
     annotationProcessor 'com.github.bumptech.glide:compiler:4.0.0'
-    compile 'com.wang.avi:library:2.1.3'
 }

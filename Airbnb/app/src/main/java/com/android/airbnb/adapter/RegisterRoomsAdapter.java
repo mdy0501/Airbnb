@@ -10,7 +10,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.android.airbnb.DetailHouseActivity;
+import com.android.airbnb.detailActivity.DetailHouseActivity;
 import com.android.airbnb.R;
 import com.android.airbnb.domain.airbnb.House;
 import com.android.airbnb.domain.airbnb.House_images;

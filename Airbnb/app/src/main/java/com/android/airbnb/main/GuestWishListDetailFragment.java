@@ -23,7 +23,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.android.airbnb.GoogleMapViewPagerActivity;
+import com.android.airbnb.googleMap.GoogleMapViewPagerActivity;
 import com.android.airbnb.R;
 import com.android.airbnb.adapter.WishListDetailAdapter;
 import com.android.airbnb.domain.airbnb.House;
@@ -57,20 +57,23 @@ public class GuestWishListDetailFragment extends Fragment implements ITask.allWi
         // Required empty public constructor
     }
 
+
+    // Fragment 생명주기를 활용해 activity에 onCreateView가 되기 전에 widget 셋팅 시 필요한 data들을 셋팅한다.
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
         this.mContext = context;
+        wishlist = new ArrayList<>();
         guestMainActivity = (GuestMainActivity) context;
         userToken = "Token " + PreferenceUtil.getToken(mContext);
-        getData();
+        Loader.getWishList(userToken, this);
     }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
-        Loader.getWishList(userToken, this);
+//        Loader.getWishList(userToken, this);
     }
 
     @Override
@@ -119,15 +122,10 @@ public class GuestWishListDetailFragment extends Fragment implements ITask.allWi
 
     }
 
-    private void getData() {
-        Loader.getWishList(userToken, this);
-    }
-
     private void setAdapter() {
         adapter = new WishListDetailAdapter(wishlist, mContext);
         wishRecycler.setAdapter(adapter);
         wishRecycler.setLayoutManager(new LinearLayoutManager(mContext));
-
     }
 
     private void setViews(View view) {
@@ -140,8 +138,10 @@ public class GuestWishListDetailFragment extends Fragment implements ITask.allWi
         refreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.wishlist_refresh);
     }
 
-    // 새로고침 기능 구현
+    // SwipeRefreshLayout를 아래로 swipe했을 때, user의 wishlist 받아오는 refresh 기능을 구현했다.
     private void setRefreshLayout() {
+
+        // reSwipeRefreshLayout을 아래로 swipe 당기면 서버에 request를 요청한다.
         refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
@@ -153,14 +153,15 @@ public class GuestWishListDetailFragment extends Fragment implements ITask.allWi
                 android.R.color.holo_green_light,
                 android.R.color.holo_orange_light,
                 android.R.color.holo_red_light);
-
     }
 
-    private void connectData() {
+    //
+    private void setWidget() {
         title.setText("위시리스트");
         houseCount.setText("예약 가능한 숙소 " + wishlist.size() + "개");
     }
 
+    // 화면에 떠있는 map button 클릭 시, wishlist 정보만 map 상에 셋팅한다.
     private void setListeners() {
         fabMap.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -173,15 +174,24 @@ public class GuestWishListDetailFragment extends Fragment implements ITask.allWi
         });
     }
 
+    // 통신 후, wishlist 데이터를 갱신한 후, wishlist 데이터를 사용하는 인스턴스들과 widget들을 refresh한다.
     @Override
     public void doAllWishList(List<House> wishlist) {
-        Log.e("GuestWishList", "wishlist.size : " + wishlist.size());
+//        if(this.wishlist == null)
+//            wishlist = new ArrayList<>();
+
+        this.wishlist.clear();
+        Log.e("GuestWishListDetailFragment", "this.wishlist size : " + this.wishlist.size() + ", wishlist : " + wishlist.size());
         this.wishlist = wishlist;
+        Log.e("GuestWishListDetailFragment", "this.wishlist size : " + this.wishlist.size() + ", wishlist : " + wishlist.size());
+
         for (House item : wishlist) {
             item.setWished(true);
         }
         setAdapter();
-        connectData();
+        adapter.refreshData(wishlist);
+        setWidget();
         refreshLayout.setRefreshing(false);
+        Log.e("GuestWishListDetailFragment", "==== load wishlist end");
     }
 }

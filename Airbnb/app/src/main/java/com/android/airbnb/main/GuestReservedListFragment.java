@@ -25,7 +25,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.android.airbnb.GoogleMapViewPagerActivity;
+import com.android.airbnb.googleMap.GoogleMapViewPagerActivity;
 import com.android.airbnb.R;
 import com.android.airbnb.adapter.ReservedAdapter;
 import com.android.airbnb.domain.airbnb.House;

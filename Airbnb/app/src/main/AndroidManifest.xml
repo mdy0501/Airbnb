@@ -40,28 +40,28 @@
             android:value="@string/google_maps_key" />
 
         <activity
-            android:name=".GoogleMapViewPagerActivity"
+            android:name=".googleMap.GoogleMapViewPagerActivity"
             android:label="@string/title_activity_google_map_view_pager"
             android:theme="@style/AppTheme.Translucent" />
         <activity
-            android:name=".DetailHouseActivity"
+            android:name=".detailActivity.DetailHouseActivity"
             android:theme="@style/NoActioinBarTheme" />
         <activity
-            android:name=".HostInfoActivity"
+            android:name=".detailActivity.HostInfoActivity"
             android:theme="@style/NoActioinBarTheme" />
         <activity android:name=".signup.SignUpActivity" />
         <activity android:name=".StartActivity" />
         <activity android:name=".login.FindPasswordActivity" />
-        <activity android:name=".ReviewActivity" />
+        <activity android:name=".detailActivity.ReviewActivity" />
         <activity android:name=".main.GuestMainActivity" />
         <activity
-            android:name=".MakeWishListActivity"
+            android:name=".detailActivity.MakeWishListActivity"
             android:theme="@style/NoActioinBarTheme" />
         <activity android:name=".main.SettingActivity" />
         <activity android:name=".main.HostMainActivity" />
         <activity android:name=".main.registerrooms.HostRoomsRegisterActivity" />
         <activity
-            android:name=".DetailMapActivity"
+            android:name=".googleMap.DetailMapActivity"
             android:label="@string/title_activity_detail_map"
             android:theme="@style/NoActioinBarTheme" />
         <activity android:name=".calendar.CalendarActivity" />
@@ -69,7 +69,7 @@
         <activity android:name=".main.registerrooms.detail.HostRoomsRegisterDetailActivity" />
         <activity android:name=".main.registerrooms.prepare.HostRoomsRegisterPrepareActivity" />
         <activity
-            android:name=".DetailExtraFeeActivity"
+            android:name=".detailActivity.DetailExtraFeeActivity"
             android:theme="@style/reservation_register" />
     </application>
 

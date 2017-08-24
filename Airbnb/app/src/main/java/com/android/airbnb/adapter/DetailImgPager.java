@@ -3,7 +3,6 @@ package com.android.airbnb.adapter;
 import android.content.Context;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,34 +18,32 @@ import com.android.airbnb.util.GlideApp;
 
 public class DetailImgPager extends PagerAdapter {
 
-    private House_images[] mImgUrl;
-    private Context mContext;
+    private House_images[] imgUrl;
+    private Context context;
 
     public DetailImgPager(House_images[] imgUrl, Context mContext) {
-        Log.e("imgpager", "img size" + imgUrl.length);
-        this.mContext = mContext;
-        this.mImgUrl = imgUrl;
+        this.context = mContext;
+        this.imgUrl = imgUrl;
     }
 
     @Override
     public Object instantiateItem(ViewGroup container, int position) {
 
-        LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View viewItem = inflater.inflate(R.layout.detail_house_fragment, container, false);
         ImageView imageView = (ImageView) viewItem.findViewById(R.id.detail_viewpager_img);
         GlideApp
-                .with(mContext)
-                .load(mImgUrl.length > 0 ? mImgUrl[position].getImage() : null)
+                .with(context)
+                .load(imgUrl.length > 0 ? imgUrl[position].getImage() : null)
                 .fallback(R.mipmap.dummy_room)
                 .into(imageView);
         ((ViewPager) container).addView(viewItem);
         return viewItem;
     }
 
-    /* image count check 하기 */
     @Override
     public int getCount() {
-        return mImgUrl.length;
+        return imgUrl.length;
     }
 
     @Override

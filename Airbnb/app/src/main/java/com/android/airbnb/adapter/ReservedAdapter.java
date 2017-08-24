@@ -11,7 +11,7 @@ import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
-import com.android.airbnb.DetailHouseActivity;
+import com.android.airbnb.detailActivity.DetailHouseActivity;
 import com.android.airbnb.R;
 import com.android.airbnb.domain.airbnb.House;
 import com.android.airbnb.domain.airbnb.House_images;
@@ -26,8 +26,6 @@ import java.util.List;
 public class ReservedAdapter extends RecyclerView.Adapter<ReservedAdapter.Holder> {
 
     private Context mContext;
-
-    /* data 갈아 끼울 것 */
     private List<House> houseList;
     public static final String RESERVED_ADAPTER = "com.android.airbnb.RESERVED_ADAPTER";
 
@@ -44,7 +42,6 @@ public class ReservedAdapter extends RecyclerView.Adapter<ReservedAdapter.Holder
 
     @Override
     public void onBindViewHolder(Holder holder, int position) {
-        /* data 갈아 끼울 것 */
         House house = houseList.get(position);
         holder.setTitle(house.getTitle());
         House_images[] houseImages = house.getHouse_images();
@@ -71,7 +68,6 @@ public class ReservedAdapter extends RecyclerView.Adapter<ReservedAdapter.Holder
         private RatingBar ratingBar;
         private TextView reviewCount;
         private int position;
-
 
         public Holder(View view) {
             super(view);
@@ -100,7 +96,6 @@ public class ReservedAdapter extends RecyclerView.Adapter<ReservedAdapter.Holder
                     .centerCrop()
                     .into(houseImg);
         }
-
 
         public void setPrice(String price) {
             this.price.setText(price);

@@ -14,7 +14,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.android.airbnb.GoogleMapViewPagerActivity;
+import com.android.airbnb.googleMap.GoogleMapViewPagerActivity;
 import com.android.airbnb.R;
 import com.android.airbnb.adapter.RoomsAdapter;
 import com.android.airbnb.domain.airbnb.House;

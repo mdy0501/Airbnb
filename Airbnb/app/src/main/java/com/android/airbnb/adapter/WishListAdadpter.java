@@ -35,11 +35,7 @@ public class WishListAdadpter extends RecyclerView.Adapter<WishListAdadpter.Hold
 
     @Override
     public void onBindViewHolder(Holder holder, int position) {
-        House house = houselist.get(position);
-        // 추가 작업할 것 ===
-//        holder.setSavedItemCount();
-//        holder.setSavedItemTitle();
-//        holder.setSavedListImg();
+
     }
     
     @Override
@@ -52,6 +48,20 @@ public class WishListAdadpter extends RecyclerView.Adapter<WishListAdadpter.Hold
         private TextView savedItemCount;
         private TextView savedItemTitle;
 
+        public Holder(View itemView) {
+            super(itemView);
+            int position = -1;
+            savedListImg = (ImageView) itemView.findViewById(R.id.saved_item_img);
+            savedItemCount = (TextView) itemView.findViewById(R.id.saved_item_count);
+            savedItemTitle = (TextView) itemView.findViewById(R.id.saved_item_title);
+
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Toast.makeText(v.getContext(), "item clicked", Toast.LENGTH_SHORT).show();
+                }
+            });
+        }
 
         public void setSavedListImg(String imgUrl) {
             GlideApp
@@ -67,23 +77,6 @@ public class WishListAdadpter extends RecyclerView.Adapter<WishListAdadpter.Hold
 
         public void setSavedItemTitle(String savedItemTitle) {
             this.savedItemTitle.setText(savedItemTitle);
-        }
-
-
-        public Holder(View itemView) {
-            super(itemView);
-            int position = -1;
-            savedListImg = (ImageView) itemView.findViewById(R.id.saved_item_img);
-            savedItemCount = (TextView) itemView.findViewById(R.id.saved_item_count);
-            savedItemTitle = (TextView) itemView.findViewById(R.id.saved_item_title);
-
-            itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Toast.makeText(v.getContext(), "item clicked", Toast.LENGTH_SHORT).show();
-
-                }
-            });
         }
     }
 }

@@ -9,7 +9,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.android.airbnb.DetailHouseActivity;
+import com.android.airbnb.detailActivity.DetailHouseActivity;
 import com.android.airbnb.R;
 import com.android.airbnb.domain.airbnb.House;
 import com.android.airbnb.domain.airbnb.House_images;
@@ -94,7 +94,6 @@ public class BottomSheetAdapter extends RecyclerView.Adapter<BottomSheetAdapter.
                 @Override
                 public void onClick(View v) {
                     Intent intent = new Intent(mContext, DetailHouseActivity.class);
-                    // Intent에 담아서 pk 보내기
                     intent.putExtra(BOTTOM_SHEET_ADAPTER_PK, wishList.get(position));
                     intent.putExtra("key", BOTTOM_SHEET_ADAPTER_PK);
                     v.getContext().startActivity(intent);
@@ -109,6 +108,5 @@ public class BottomSheetAdapter extends RecyclerView.Adapter<BottomSheetAdapter.
         public void setItemCount(String itemCount) {
             this.itemCount.setText(itemCount);
         }
-
     }
 }
