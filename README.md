@@ -1,10 +1,11 @@
-# Airbnb 어플리케이션
-#### 간단한 설명
-- **[전체소스코드](https://github.com/mdy0501/Study/blob/master/Android/Mini%20Project/프로젝트명/app/src/main/java/com/mdy/android/프로젝트명-소문자/MainActivity.java)**
+# Airbnb Application
+
+<br>
+<br>
 
 ## 어플리케이션 소개
-- 소제목1에 대한 설명
 
+- #### **[전체소스코드](https://github.com/mdy0501/Airbnb/tree/master/Airbnb/app/src/main/java/com/android/airbnb)**
 
 <br>
 <br>
@@ -13,17 +14,17 @@
 
 ## 어플리케이션 화면
 
-![screenshot1](https://github.com/mdy0501/Study/blob/master/Android/Mini%20Project/MultipleCounter/graphics/Handler01.JPG)
+![screenshot1](https://github.com/mdy0501/Airbnb/blob/master/Airbnb/graphics/screenshot1.png)
 
-![screenshot2](https://github.com/mdy0501/Airbnb/tree/master/Airbnb/graphics/screenshot2.png)
+![screenshot2](https://github.com/mdy0501/Airbnb/blob/master/Airbnb/graphics/screenshot2.png)
 
-![screenshot3](https://github.com/mdy0501/Airbnb/tree/master/Airbnb/graphics/screenshot3.png)
+![screenshot3](https://github.com/mdy0501/Airbnb/blob/master/Airbnb/graphics/screenshot3.png)
 
-![screenshot4](https://github.com/mdy0501/Airbnb/tree/master/Airbnb/graphics/screenshot4.png)
+![screenshot4](https://github.com/mdy0501/Airbnb/blob/master/Airbnb/graphics/screenshot4.png)
 
-![screenshot5](https://github.com/mdy0501/Airbnb/tree/master/Airbnb/graphics/screenshot5.png)
+![screenshot5](https://github.com/mdy0501/Airbnb/blob/master/Airbnb/graphics/screenshot5.png)
 
-![screenshot6](https://github.com/mdy0501/Airbnb/tree/master/Airbnb/graphics/screenshot6.png)
+![screenshot6](https://github.com/mdy0501/Airbnb/blob/master/Airbnb/graphics/screenshot6.png)
 
 <br>
 <br>
