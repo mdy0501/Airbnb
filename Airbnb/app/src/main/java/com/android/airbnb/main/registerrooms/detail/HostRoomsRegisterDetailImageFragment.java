@@ -92,55 +92,15 @@ public class HostRoomsRegisterDetailImageFragment extends Fragment implements Vi
         if(resultCode == RESULT_OK){
             switch (requestCode){
                 case 100:
-//                    List<Uri> uris = new ArrayList<>();
                     ClipData clipData = data.getClipData();
                     int count = clipData.getItemCount();
                     for(int i=0 ; i<count ; i++){
                         ClipData.Item item = clipData.getItemAt(i);
-                        Uri imageUri = item.getUri();
+                        Uri imageUri = item.getUri(); // image Uri를 저장한다.
                         hostingHouse.uris.add(imageUri);
                         String filePath = getPathFromUri(getActivity(), imageUri);  // Uri에서 실제 경로를 꺼낸다.
                         hostingHouse.filePaths.add(filePath);
                     }
-
-
-
-//                    String filePath1 = getPathFromUri(getActivity(), hostingHouse.uris.get(0));
-//                    GlideApp
-//                            .with(getActivity())
-//                            .load(hostingHouse.uris.get(0))
-//                            .centerCrop()
-//                            .fallback(R.drawable.question_mark)
-//                            .into(img1);
-//
-//                    String filePath2 = getPathFromUri(getActivity(), hostingHouse.uris.get(1));
-//                    GlideApp
-//                            .with(getActivity())
-//                            .load(hostingHouse.uris.get(1))
-//                            .centerCrop()
-//                            .fallback(R.drawable.question_mark)
-//                            .into(img2);
-//
-//                    String filePath3 = getPathFromUri(getActivity(), hostingHouse.uris.get(2));
-//                    GlideApp
-//                            .with(getActivity())
-//                            .load(hostingHouse.uris.get(2))
-//                            .centerCrop()
-//                            .fallback(R.drawable.question_mark)
-//                            .into(img3);
-
-//                    String filePath = getPathFromUri(getActivity(), imageUri);
-//                    hostingHouse.setImagePath(filePath);    // 숙소 이미지 경로 저장
-//                    Log.e("Gallery","imageUri========================="+imageUri);
-//                    Log.e("Gallery","filePath========================="+filePath);
-//                    txtImage.setText(filePath);
-//                    GlideApp
-//                            .with(getActivity())
-//                            .load(imageUri)
-//                            .centerCrop()
-//                            .fallback(R.drawable.question_mark)
-//                            .into(img1);
-
             }
 
         }
