@@ -63,12 +63,12 @@
                     android:layout_alignParentLeft="true"
                     android:layout_alignParentStart="true"
                     android:layout_alignParentTop="true"
-                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="8dp"
                     android:text="후기"
                     android:textSize="24sp"
                     android:textStyle="bold"
                     app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/line4" />
+                    app:layout_constraintTop_toBottomOf="parent" />
 
                 <TextView
                     android:id="@+id/textView29"
@@ -80,6 +80,7 @@
                     android:layout_toEndOf="@+id/textView28"
                     android:layout_toRightOf="@+id/textView28"
                     android:text="24개"
+                    android:layout_marginTop="8dp"
                     android:textSize="24sp"
                     android:textStyle="bold"
                     app:layout_constraintBottom_toBottomOf="@+id/textView28"
