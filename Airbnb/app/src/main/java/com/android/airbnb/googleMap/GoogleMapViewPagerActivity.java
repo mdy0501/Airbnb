@@ -177,7 +177,8 @@ public class GoogleMapViewPagerActivity extends FragmentActivity implements OnMa
             public void onPageSelected(int position) {
                 Log.e("map", "onPageSelected pos :: " + position);
                 adapter.setCurrentPostition(position);
-                // ... ?
+
+                // marker title에 onclick이 일어날 때마다 viewPager adapter의 currentItem이 바뀜
                 setMarkerChanged(markerList.get(position));
                 mMap.moveCamera(CameraUpdateFactory.newLatLng(houseList.get(position).getLatLng()));
                 mMap.animateCamera(CameraUpdateFactory.zoomTo(15));
