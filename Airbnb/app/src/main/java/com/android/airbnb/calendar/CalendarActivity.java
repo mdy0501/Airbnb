@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.constraint.ConstraintLayout;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -14,8 +13,8 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.android.airbnb.detailActivity.DetailHouseActivity;
 import com.android.airbnb.R;
+import com.android.airbnb.detailActivity.DetailHouseActivity;
 import com.android.airbnb.domain.airbnb.House;
 import com.android.airbnb.domain.reservation.Reservation;
 import com.android.airbnb.util.Remote.ITask;
@@ -64,7 +63,6 @@ public class CalendarActivity extends AppCompatActivity implements CalendarItem.
     private void getData() {
         Intent intent = getIntent();
         house = (House) intent.getParcelableExtra(DetailHouseActivity.DETAIL_HOUSE);
-        Log.e("CalendarActivity", "getData house pk : " + house.getPk());
     }
 
     private void resetAllCalendar() {
@@ -130,6 +128,7 @@ public class CalendarActivity extends AppCompatActivity implements CalendarItem.
     // check in 날짜와 check out 날짜 선택 시, 날짜 범위 체크하는 메소드
     private void setRange(String startDate, String endDate) {
 
+        // 'yyyy-MM-dd' 형태로 넘어오는 String data를 잘라서 분기에 사용한다.
         String subCheckin = startDate.substring(0, 7);
         String subCheckout = endDate.substring(0, 7);
 
@@ -137,21 +136,30 @@ public class CalendarActivity extends AppCompatActivity implements CalendarItem.
         int endIndex = 0;
 
         for (CalendarItem item : items) {
-            String itemKey = (String) item.getTag();
+            String itemTag = (String) item.getTag();
 
-            if ((subCheckin).equals(itemKey) && (subCheckout).equals(itemKey)) {
+            // 1. checkIn date와 checkOut date가 같은 달에 있을 경우
+            if ((subCheckin).equals(itemTag) && (subCheckout).equals(itemTag)) {
+                // 1.1. CalendarItem 마다 전체 날짜 holder를 List에 저장했다.
+                // 1.2. 해당되는 indext를 찾아 사용자가 선택한 표기하도록 한다.
                 int startTextview = item.getCols().indexOf(item.getSelectedTvs().get(0));
                 int endTextView = item.getCols().indexOf(item.getSelectedTvs().get(1));
 
                 for (int i = startTextview; i <= endTextView; i++) {
                     item.setSelected(item.getCols().get(i));
                 }
-            } else if ((subCheckin).equals(itemKey) || (subCheckout).equals(itemKey)) {
-                if ((subCheckin).equals(itemKey))
+
+            // 2. checkIn date와 checkout date가 다른 달에 있을 경우
+            } else if ((subCheckin).equals(itemTag) || (subCheckout).equals(itemTag)) {
+
+                // 2.1. itemTag와 subCheckin을 비교한다.
+                // 2.2. 분기별로 걸러진 index를 각각의 item index를 startIndex와 endIndex에 저장한다.
+                if ((subCheckin).equals(itemTag))
                     startIndex = items.indexOf(item);
-                else if ((subCheckout).equals(itemKey))
+                else if ((subCheckout).equals(itemTag))
                     endIndex = items.indexOf(item);
 
+                // 2.3. 위에서 찾은 index로 아래 작업을 수행한다.
                 setCalendarRange(startIndex, endIndex);
             }
         }
@@ -163,13 +171,19 @@ public class CalendarActivity extends AppCompatActivity implements CalendarItem.
 
             CalendarItem item = items.get(i);
             List<TextView> cols = item.getCols();
+
             List<TextView> selectedTvs = item.getSelectedTvs();
 
+                // 파라미터로 넘겨 받은 index의 경우 선택된 index가 무조건 1개 존재한다.
+                // 1. checkin data가 있는 월의 경우, checkindata 월부터 말일까지 선택되면 된다.
             if (i == startIndex) {
-                item.setRanged(cols.indexOf(item.getSelectedTvs().get(0)), cols.size() - 1);
+                item.setRanged(cols.indexOf(selectedTvs.get(0)), cols.size() - 1);
             } else if (i == endIndex) {
+                // 2. checkOut data가 있는 월의 경우, checkOut 일부터 1일까지 선택되면 된다.
                 item.setRanged(0, cols.indexOf(selectedTvs.get(0)));
             } else {
+
+                // 3. 위의 월 사이에 있는 월의 경우, 해당 월 전체가 선택되면 된다.
                 item.setRanged(0, cols.size() - 1);
             }
         }
